@@ -18,13 +18,13 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
   final List<Widget> screens = [
     const TransactionsScreen(),
     const StatsScreen(),
-    const HomeScreen(),
+     HomeScreen(),
     const CategoryScreen(),
     const SettingsScreen()
   ];
 
   final PageStorageBucket bucket = PageStorageBucket();
-  Widget currentScreen = const HomeScreen();
+  Widget currentScreen =  HomeScreen();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +39,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
           child: FloatingActionButton(
             onPressed: () {
               setState(() {
-                currentScreen = const HomeScreen();
+                currentScreen =  HomeScreen();
                 currentTab = null;
               });
             },
@@ -81,21 +81,30 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                   ],
                 ),
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  FaIcon(
-                    FontAwesomeIcons.chartPie,
-                    color: currentTab == 1 ? Colors.blue : Colors.black,
-                  ),
-                  Text(
-                    'Stats',
-                    style: TextStyle(
-                      color:
-                          currentTab == 1 ? Colors.blue : Colors.black,
+              MaterialButton(
+                minWidth: 40,
+                onPressed: () {
+                  setState(() {
+                    currentScreen = const StatsScreen();
+                    currentTab = 1;
+                  });
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    FaIcon(
+                      FontAwesomeIcons.chartPie,
+                      color: currentTab == 1 ? Colors.blue : Colors.black,
                     ),
-                  )
-                ],
+                    Text(
+                      'Stats',
+                      style: TextStyle(
+                        color:
+                            currentTab == 1 ? Colors.blue : Colors.black,
+                      ),
+                    )
+                  ],
+                ),
               ),
               MaterialButton(
                 minWidth: 40,

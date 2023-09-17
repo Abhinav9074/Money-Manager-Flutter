@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:money_manager/custom_navigation_bar.dart';
+import 'package:money_manager/Transactions/custom_navigation_bar.dart';
 
 void main() {
   runApp(const MyApp());

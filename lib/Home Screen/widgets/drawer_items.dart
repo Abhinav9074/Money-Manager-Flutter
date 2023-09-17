@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:money_manager/dummy.dart';
+import 'package:money_manager/DeletedTransactions/screens/deleted_transactions.dart';
 
 class DrawerItems extends StatelessWidget {
   const DrawerItems({super.key});
@@ -49,8 +49,9 @@ class DrawerItems extends StatelessWidget {
                           InkWell(
                             onTap: (){
                               Navigator.of(context).push(MaterialPageRoute(builder: (ctx){
-                                return Dummy();
+                                return DeletedTransactions();
                               }));
+                              
                             },
                               child: const Text(
                             'Deleted Transactions',
