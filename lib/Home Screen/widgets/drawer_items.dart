@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:money_manager/DeletedTransactions/screens/deleted_transactions.dart';
+import 'package:money_manager/Faq/screens/faq_screen.dart';
+import 'package:money_manager/PrivacyPolicy/privacy_policy_screen.dart';
+import 'package:money_manager/ProfileEditScreen/screens/profile_edit_screen.dart';
+
 
 class DrawerItems extends StatelessWidget {
   const DrawerItems({super.key});
@@ -16,13 +20,20 @@ class DrawerItems extends StatelessWidget {
                   ),
                   PhysicalModel(
                     color: Colors.black,
-                    shape: BoxShape.circle,
+                    shape: BoxShape.circle, 
                     elevation: 8.0,
-                    child: ClipOval(
-                      child: Image.asset(
-                        'assets/images/profile.png',
-                        height: 150,
-                        width: 150,
+                    child: InkWell(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(builder: (ctx){
+                          return ProfileEditScreen();
+                        }));
+                      },
+                      child: ClipOval(
+                        child: Image.asset(
+                          'assets/images/profile.png',
+                          height: 150,
+                          width: 150,
+                        ),
                       ),
                     ),
                   ),
@@ -64,18 +75,29 @@ class DrawerItems extends StatelessWidget {
                             height: 15,
                           ),
                           InkWell(
-                            onTap: (){},
+                            onTap: (){
+                              Navigator.of(context).push(MaterialPageRoute(builder: (ctx){
+                                return FaqScreen();
+                              }));
+                            },
                               child: const Text('Faq',
                                   style: TextStyle(
                                       fontSize: 20,
                                       fontFamily: 'texgyreadventor-regular',
                                       color:
-                                          Color.fromARGB(255, 130, 129, 129)))),
+                                          Color.fromARGB(255, 130, 129, 129)
+                                          )
+                                          )
+                                          ),
                           const SizedBox(
                             height: 15,
                           ),
                           InkWell(
-                            onTap: (){},
+                            onTap: (){
+                              Navigator.of(context).push(MaterialPageRoute(builder: (ctx){
+                                return PrivacyPolicyScreen();
+                              }));
+                            },
                               child: const Text('Privacy Policy',
                                   style: TextStyle(
                                       fontSize: 20,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:money_manager/Stats/widgets/expense_stat.dart';
 import 'package:money_manager/Stats/widgets/income_stats.dart';
+import 'package:money_manager/Stats/widgets/stat_filter.dart';
 
 class StatsScreen extends StatefulWidget {
   const StatsScreen({super.key});
@@ -29,7 +31,7 @@ class _StatsScreenState extends State<StatsScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 232, 235, 235),
+        backgroundColor: Color.fromARGB(255, 232, 235, 235),
         appBar: AppBar(
           title: Text(
             'Statistics',
@@ -44,30 +46,47 @@ class _StatsScreenState extends State<StatsScreen>
           elevation: 0,
         ),
         body: SafeArea(
-          child: Column(
+          child: Stack(
             children: [
-              TabBar(
-                  labelColor: Colors.black,
-                  labelStyle: TextStyle(
-                      fontSize: 20, fontFamily: 'texgyreadventor-regular'),
-                  unselectedLabelColor: Colors.grey,
-                  controller: _tabController,
-                  tabs: [
-                    Tab(
-                      text: 'Income',
-                    ),
-                    Tab(
-                      text: 'Expense',
-                    )
-                  ]),
-              Expanded(
-                child: TabBarView(
-                    controller: _tabController,
-                    children: [
-                    IncomeStats(),
-                    ExpenseStats()
-                    ]
-                    ),
+              Column(
+                children: [
+                  TabBar(
+                      labelColor: Colors.black,
+                      labelStyle: TextStyle(
+                          fontSize: 20, fontFamily: 'texgyreadventor-regular'),
+                      unselectedLabelColor: Colors.grey,
+                      controller: _tabController,
+                      tabs: [
+                        Tab(
+                          text: 'Income',
+                        ),
+                        Tab(
+                          text: 'Expense',
+                        )
+                      ]),
+                  Expanded(
+                    child: TabBarView(
+                        controller: _tabController,
+                        children: [IncomeStats(), ExpenseStats()]),
+                  )
+                ],
+              ),
+              Positioned(
+                bottom: 40,
+                right: 0,
+                left: 0,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    ElevatedButton.icon(
+                        onPressed: () {
+                          ShowStatFilterSheet(context);
+                        },
+                        icon: FaIcon(FontAwesomeIcons.filter),
+                        label: Text('Filter')),
+                  ],
+                ),
               )
             ],
           ),

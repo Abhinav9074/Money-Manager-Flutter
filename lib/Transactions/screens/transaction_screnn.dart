@@ -17,12 +17,11 @@ class TransactionsScreen extends StatefulWidget {
 class _TransactionsScreenState extends State<TransactionsScreen>
     with TickerProviderStateMixin {
   late TabController _tabController;
-  late AnimationController _bottomSheetController;
+
 
   @override
   void initState() {
     _tabController = TabController(length: 3, vsync: this);
-    _bottomSheetController= AnimationController(duration: Duration(seconds: 1),vsync: this);
     super.initState();
   }
 
@@ -30,7 +29,6 @@ class _TransactionsScreenState extends State<TransactionsScreen>
   void dispose() {
     // Dispose of the TabController to prevent memory leaks
     _tabController.dispose();
-    _bottomSheetController.dispose();
     super.dispose();
   }
 
@@ -112,14 +110,14 @@ class _TransactionsScreenState extends State<TransactionsScreen>
               children: [
                 ElevatedButton.icon(
                     onPressed: () {
-                      ShowSortSheet(context, _bottomSheetController);
+                      ShowSortSheet(context);
                     },
                     icon: FaIcon(FontAwesomeIcons.sort),
                     label: Text('Sort')),
                 ElevatedButton.icon(
                     onPressed: () {
                       
-                      ShowFilterSheet(context, _bottomSheetController);
+                      ShowFilterSheet(context);
                     },
                     icon: FaIcon(FontAwesomeIcons.filter),
                     label: Text('Filter'))

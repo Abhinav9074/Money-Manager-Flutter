@@ -20,7 +20,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
     const StatsScreen(),
      HomeScreen(),
     const CategoryScreen(),
-    const SettingsScreen()
+     SettingsScreen()
   ];
 
   final PageStorageBucket bucket = PageStorageBucket();
@@ -49,8 +49,6 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
-        shape: const CircularNotchedRectangle(),
-        notchMargin: 10,
         child: SizedBox(
           height: 80,
           child: Row(
@@ -135,7 +133,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                 minWidth: 40,
                 onPressed: () {
                   setState(() {
-                    currentScreen = const SettingsScreen();
+                    currentScreen =  SettingsScreen();
                     currentTab = 3;
                   });
                 },
