@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:money_manager/SplashScreen/splash_screen.dart';
+import 'package:money_manager/Screens/SplashScreen/splash_screen.dart';
+import 'package:money_manager/db/main_db_functions/main_db_functions.dart';
 
-void main() {
+Future<void> main() async{
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await InitDb();
   runApp(const MyApp());
 }
 
