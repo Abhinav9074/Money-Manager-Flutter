@@ -13,6 +13,7 @@ class EditTransaction extends StatefulWidget {
 
 class _AddTransactionsState extends State<EditTransaction> {
   List<DropdownMenuItem<Object>>? dropList;
+  // ignore: prefer_typing_uninitialized_variables
   late var _selectedImage;
   File? _finalImage;
   DateTime? _selectedDate;
@@ -28,7 +29,7 @@ class _AddTransactionsState extends State<EditTransaction> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              icon: FaIcon(
+              icon: const FaIcon(
                 FontAwesomeIcons.arrowLeft,
                 color: Colors.black,
               )),
@@ -226,19 +227,19 @@ class _AddTransactionsState extends State<EditTransaction> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text('Select Category',
+                  const Text('Select Category',
                       style: TextStyle(
                           fontSize: 20, fontFamily: 'texgyreadventor-regular')),
                   DropdownButton(items: dropList, onChanged: (string) {}),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ElevatedButton(onPressed: (){}, child: Text('Update',
+                  ElevatedButton(onPressed: (){}, child: const Text('Update',
                           style: TextStyle(
                               fontSize: 20,
                               fontFamily: 'texgyreadventor-regular')))

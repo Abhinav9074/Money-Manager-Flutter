@@ -48,7 +48,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
               IconButton(
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(builder: (ctx){
-                      return SearchingBar();
+                      return const SearchingBar();
                     }));
                   },
                   icon: const FaIcon(

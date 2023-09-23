@@ -15,7 +15,7 @@ class CategoryEditScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              icon: FaIcon(
+              icon: const FaIcon(
                 FontAwesomeIcons.arrowLeft,
                 color: Colors.black,
               )),
@@ -97,7 +97,7 @@ class CategoryEditScreen extends StatelessWidget {
                 ],
               ),
 
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Row(
@@ -105,7 +105,7 @@ class CategoryEditScreen extends StatelessWidget {
                 children: [
                   ElevatedButton(
                       onPressed: () {},
-                      child: Text('Update',
+                      child: const Text('Update',
                           style: TextStyle(
                               fontSize: 20,
                               fontFamily: 'texgyreadventor-regular')))

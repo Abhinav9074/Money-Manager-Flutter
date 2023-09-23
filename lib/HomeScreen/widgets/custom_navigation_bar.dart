@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:money_manager/Categories/screens/categories_screen.dart';
-import 'package:money_manager/Home%20Screen/screens/home_screen.dart';
+import 'package:money_manager/HomeScreen/screens/home_screen.dart';
 import 'package:money_manager/Settings/screens/settings_screen.dart';
 import 'package:money_manager/Stats/screens/stats_screen.dart';
 import 'package:money_manager/Transactions/screens/transaction_screnn.dart';

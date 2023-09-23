@@ -26,7 +26,7 @@ class ExpenseTransaction extends StatelessWidget {
                     children: [
                       Slidable(
                     key: Key('$index'),
-                    startActionPane: ActionPane(motion: BehindMotion(), children: [
+                    startActionPane: ActionPane(motion: const BehindMotion(), children: [
                       SlidableAction(
                         onPressed: (ctx) {},
                         icon: FontAwesomeIcons.trash,
@@ -36,16 +36,16 @@ class ExpenseTransaction extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       )
                     ]),
-                    endActionPane: ActionPane(motion: BehindMotion(), children: [
+                    endActionPane: ActionPane(motion: const BehindMotion(), children: [
                       SlidableAction(
                         onPressed: (ctx) {
                           Navigator.of(context).push(MaterialPageRoute(builder: (ctx){
-                            return EditTransaction();
+                            return const EditTransaction();
                           }));
                         },
                         icon: FontAwesomeIcons.penToSquare,
                         autoClose: true,
-                        padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
+                        padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
                         borderRadius: BorderRadius.circular(10),
                         backgroundColor: Colors.blue,
                         label: 'Edit',
@@ -78,21 +78,21 @@ class ExpenseTransaction extends StatelessWidget {
                                     width: 70,
                                     height: 70,
                                     decoration: BoxDecoration(
-                                        color: Color.fromARGB(255, 232, 235, 235),
+                                        color: const Color.fromARGB(255, 232, 235, 235),
                                         borderRadius: BorderRadius.circular(10)),
                                     child: Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
                                         Text('${index + 10}',
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                                 fontSize: 18,
                                                 fontFamily:
                                                     'texgyreadventor-regular',
                                                 fontWeight: FontWeight.w900,
                                                 color: Color.fromARGB(
                                                     255, 2, 39, 71))),
-                                        Text('Sept',
+                                        const Text('Sept',
                                             style: TextStyle(
                                                 fontSize: 18,
                                                 fontFamily:
@@ -104,7 +104,7 @@ class ExpenseTransaction extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 10,
                                 ),
                                 Expanded(
@@ -113,16 +113,16 @@ class ExpenseTransaction extends StatelessWidget {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text('Lunch${index + 1}',
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               fontSize: 25,
                                               fontFamily: 'texgyreadventor-regular',
                                               fontWeight: FontWeight.w900,
                                               color:
                                                   Color.fromARGB(255, 2, 39, 71))),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 10,
                                       ),
-                                      Text('Food',
+                                      const Text('Food',
                                           style: TextStyle(
                                               fontSize: 18,
                                               fontFamily: 'texgyreadventor-regular',
@@ -140,7 +140,7 @@ class ExpenseTransaction extends StatelessWidget {
                                         color: index % 2 == 0
                                             ? Colors.green
                                             : Colors.red)),
-                                SizedBox(
+                                const SizedBox(
                                   width: 20,
                                 )
                               ],

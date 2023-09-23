@@ -13,7 +13,7 @@ class FaqScreen extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            icon: FaIcon(
+            icon: const FaIcon(
               FontAwesomeIcons.arrowLeft,
               color: Colors.black,
             )),
@@ -30,7 +30,7 @@ class FaqScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body: ListView(children: [
-        ExpansionTile(
+        const ExpansionTile(
           title: Text(
             'How Can I add Transactions ?',
             style: TextStyle(
@@ -41,7 +41,7 @@ class FaqScreen extends StatelessWidget {
           ),
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
               child: Text(
                 'Users can add transactions by navigating to the transaction tab from the home screen and clicking on the + button',textAlign: TextAlign.left,
                 style: TextStyle(
@@ -53,8 +53,8 @@ class FaqScreen extends StatelessWidget {
             )
           ],
         ),
-        SizedBox(height: 15,),
-        ExpansionTile(
+        const SizedBox(height: 15,),
+        const ExpansionTile(
           title: Text(
             'Is This App Safe To Use ?',
             style: TextStyle(
@@ -65,7 +65,7 @@ class FaqScreen extends StatelessWidget {
           ),
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
               child: Text(
                 'Yes , Money Manager is a well organised and user friendly app that is trusted and used by millions of people worldwide',textAlign: TextAlign.left,
                 style: TextStyle(
@@ -77,8 +77,8 @@ class FaqScreen extends StatelessWidget {
             )
           ],
         ),
-        SizedBox(height: 15,),
-        ExpansionTile(
+        const SizedBox(height: 15,),
+        const ExpansionTile(
           title: Text(
             'How Can I Restore the deleted transactions ?',
             style: TextStyle(
@@ -89,7 +89,7 @@ class FaqScreen extends StatelessWidget {
           ),
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
               child: Text(
                 'Users can restore the deleted transactions withing 30 days from the deletion date , the deleted transactions page can be found as the second option in the drawer in home screen',textAlign: TextAlign.left,
                 style: TextStyle(
@@ -101,8 +101,8 @@ class FaqScreen extends StatelessWidget {
             )
           ],
         ),
-        SizedBox(height: 15,),
-        ExpansionTile(
+        const SizedBox(height: 15,),
+        const ExpansionTile(
           title: Text(
             'How to view the statistics of my monthly transactions ?',
             style: TextStyle(
@@ -113,7 +113,7 @@ class FaqScreen extends StatelessWidget {
           ),
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+              padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
               child: Text(
                 'Navigate to the stats tab from the home screen to view the graph reppresentation of the monthly transactions',textAlign: TextAlign.left,
                 style: TextStyle(

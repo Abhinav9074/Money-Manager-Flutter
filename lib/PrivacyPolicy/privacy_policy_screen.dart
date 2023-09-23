@@ -13,7 +13,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            icon: FaIcon(
+            icon: const FaIcon(
               FontAwesomeIcons.arrowLeft,
               color: Colors.black,
             )),
@@ -29,9 +29,9 @@ class PrivacyPolicyScreen extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: ListView(children: [
+      body: ListView(children: const [
         Padding(
-          padding: const EdgeInsets.all(15.0),
+          padding: EdgeInsets.all(15.0),
           child: Text(
             'Privacy Policy',
             style: TextStyle(
@@ -42,7 +42,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
+          padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
           child: Text(
             '''Billion Dots Devs built the Money Manager app as an Open Source app. This SERVICE is provided by Billion Dots Devs at no cost and is intended for use as is. This page is used to inform visitors regarding our policies with the collection, use, and disclosure of Personal Information if anyone decided to use our Service.If you choose to use our Service, then you agree to the collection and use of information in relation to this policy. The Personal Information that we collect is used for providing and improving the Service. We will not use or share your information with anyone except as described in this Privacy Policy.The terms used in this Privacy Policy have the same meanings as in our Terms and Conditions, which are accessible at Money Manager unless otherwise defined in this Privacy Policy.''',
             textAlign: TextAlign.justify,
@@ -50,7 +50,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.fromLTRB(15, 0, 0, 15),
+          padding: EdgeInsets.fromLTRB(15, 0, 0, 15),
           child: Text(
             'Security',
             style: TextStyle(
@@ -61,7 +61,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+          padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
           child: Text(
             '''We value your trust in providing us your Personal Information, thus we are striving to use commercially acceptable means of protecting it. But remember that no method of transmission over the internet, or method of electronic storage is 100% secure and reliable, and we cannot guarantee its absolute security.''',
             textAlign: TextAlign.justify,

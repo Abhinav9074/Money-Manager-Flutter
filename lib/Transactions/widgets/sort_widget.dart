@@ -22,8 +22,8 @@ class _SortWidgetState extends State<SortWidget> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(20.0),
+        const Padding(
+          padding: EdgeInsets.all(20.0),
           child: Text(
             'Sort By',
             style: TextStyle(
@@ -47,7 +47,7 @@ class _SortWidgetState extends State<SortWidget> {
             });
           },
         ),
-        ElevatedButton.icon(onPressed: (){}, icon: FaIcon(FontAwesomeIcons.sort), label: Text('Sort'))
+        ElevatedButton.icon(onPressed: (){}, icon: const FaIcon(FontAwesomeIcons.sort), label: const Text('Sort'))
       ],
     );
   }

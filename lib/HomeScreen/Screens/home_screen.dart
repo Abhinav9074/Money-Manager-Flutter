@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:money_manager/Home%20Screen/widgets/app_bar.dart';
-import 'package:money_manager/Home%20Screen/widgets/drawer_items.dart';
+import 'package:money_manager/HomeScreen/widgets/app_bar.dart';
+import 'package:money_manager/HomeScreen/widgets/drawer_items.dart';
 import 'package:money_manager/Stats/widgets/income_stats.dart';
 import 'package:money_manager/Transactions/widgets/edit_transaction.dart';
 import 'package:money_manager/Transactions/widgets/transaction_details.dart';
 
 // ignore: must_be_immutable
 class HomeScreen extends StatefulWidget {
-  HomeScreen({super.key});
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  // ignore: prefer_typing_uninitialized_variables
   var size,height,width;
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +26,8 @@ class _HomeScreenState extends State<HomeScreen> {
     height = size.height;
     width = size.width;
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 232, 235, 235),
-      appBar: HomeAppBar(),
+      backgroundColor: const Color.fromARGB(255, 232, 235, 235),
+      appBar: const HomeAppBar(),
       // floatingActionButton: FloatingActionButton(
       //   backgroundColor: Colors.black,
       //   onPressed: () {
@@ -35,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
       //   },
       //   child: FaIcon(FontAwesomeIcons.arrowUp),
       // ),
-      drawer: SafeArea(
+      drawer: const SafeArea(
         child: Drawer(
           child: DrawerItems(),
         ),
@@ -49,10 +50,10 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 width: double.infinity,
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(0, 60, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(0, 60, 0, 0),
                   child: Column(
                     children: [
-                      Text(
+                      const Text(
                         '₹ 12,356.50',
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
@@ -60,17 +61,17 @@ class _HomeScreenState extends State<HomeScreen> {
                           fontFamily: 'texgyreadventor-regular',
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
-                      Text(
+                      const Text(
                         'Total Balance',
                         style: TextStyle(
                             fontFamily: 'texgyreadventor-regular',
                             fontSize: 20,
                             color: Colors.grey),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 30,
                       ),
                       Row(
@@ -84,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: InkWell(
                               onLongPress: (){
                                 showDialog(context: context, builder: (ctx){
-                                  return IncomeStats();
+                                  return const IncomeStats();
                                 });
                               },
                               child: Container(
@@ -92,12 +93,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                 height: 120,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
-                                    color: Color.fromARGB(255, 53, 198, 140)),
-                                child: Column(
+                                    color: const Color.fromARGB(255, 53, 198, 140)),
+                                child: const Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsets.all(18.0),
+                                      padding: EdgeInsets.all(18.0),
                                       child: Text(
                                         'Income',
                                         style: TextStyle(
@@ -109,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                     Padding(
                                       padding:
-                                          const EdgeInsets.fromLTRB(18, 0, 0, 0),
+                                          EdgeInsets.fromLTRB(18, 0, 0, 0),
                                       child: Text(
                                         '₹ 15123.50',
                                         style: TextStyle(
@@ -134,12 +135,12 @@ class _HomeScreenState extends State<HomeScreen> {
                               height: 120,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
-                                  color: Color.fromARGB(255, 178, 83, 83)),
-                              child: Column(
+                                  color: const Color.fromARGB(255, 178, 83, 83)),
+                              child: const Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.all(18.0),
+                                    padding: EdgeInsets.all(18.0),
                                     child: Text(
                                       'Expense',
                                       style: TextStyle(
@@ -151,7 +152,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(18, 0, 0, 0),
+                                        EdgeInsets.fromLTRB(18, 0, 0, 0),
                                     child: Text(
                                       '₹ 2345.50',
                                       style: TextStyle(
@@ -167,8 +168,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(30, 25, 0, 10),
+                      const Padding(
+                        padding: EdgeInsets.fromLTRB(30, 25, 0, 10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -204,7 +205,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: Slidable(
                                     key: Key('$index'),
                                     startActionPane: ActionPane(
-                                        motion: BehindMotion(),
+                                        motion: const BehindMotion(),
                                         children: [
                                           SlidableAction(
                                             onPressed: (ctx) {},
@@ -217,19 +218,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                           )
                                         ]),
                                     endActionPane: ActionPane(
-                                        motion: BehindMotion(),
+                                        motion: const BehindMotion(),
                                         children: [
                                           SlidableAction(
                                             onPressed: (ctx) {
                                               Navigator.of(context).push(
                                                   MaterialPageRoute(
                                                       builder: (ctx) {
-                                                return EditTransaction();
+                                                return const EditTransaction();
                                               }));
                                             },
                                             icon: FontAwesomeIcons.penToSquare,
                                             autoClose: true,
-                                            padding: EdgeInsets.fromLTRB(
+                                            padding: const EdgeInsets.fromLTRB(
                                                 20, 5, 20, 5),
                                             borderRadius:
                                                 BorderRadius.circular(10),
@@ -269,7 +270,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     width: 70,
                                                     height: 70,
                                                     decoration: BoxDecoration(
-                                                        color: Color.fromARGB(
+                                                        color: const Color.fromARGB(
                                                             255, 232, 235, 235),
                                                         borderRadius:
                                                             BorderRadius
@@ -283,7 +284,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               .center,
                                                       children: [
                                                         Text('${index + 10}',
-                                                            style: TextStyle(
+                                                            style: const TextStyle(
                                                                 fontSize: 18,
                                                                 fontFamily:
                                                                     'texgyreadventor-regular',
@@ -296,7 +297,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                         2,
                                                                         39,
                                                                         71))),
-                                                        Text('Sept',
+                                                        const Text('Sept',
                                                             style: TextStyle(
                                                                 fontSize: 18,
                                                                 fontFamily:
@@ -314,7 +315,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     ),
                                                   ),
                                                 ),
-                                                SizedBox(
+                                                const SizedBox(
                                                   width: 10,
                                                 ),
                                                 Expanded(
@@ -327,7 +328,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             .start,
                                                     children: [
                                                       Text('Lunch${index + 1}',
-                                                          style: TextStyle(
+                                                          style: const TextStyle(
                                                               fontSize: 25,
                                                               fontFamily:
                                                                   'texgyreadventor-regular',
@@ -340,10 +341,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                       2,
                                                                       39,
                                                                       71))),
-                                                      SizedBox(
+                                                      const SizedBox(
                                                         height: 10,
                                                       ),
-                                                      Text('Food',
+                                                      const Text('Food',
                                                           style: TextStyle(
                                                               fontSize: 18,
                                                               fontFamily:
@@ -370,7 +371,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         color: index % 2 == 0
                                                             ? Colors.green
                                                             : Colors.red)),
-                                                SizedBox(
+                                                const SizedBox(
                                                   width: 20,
                                                 )
                                               ],
@@ -383,14 +384,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                 );
                               },
                               separatorBuilder: (context, index) {
-                                return SizedBox(
+                                return const SizedBox(
                                   height: 10,
                                 );
                               },
                               itemCount: 10),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 100,
                       )
                     ],
@@ -406,10 +407,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: IconButton(
                     onPressed: () {
                       _scrollController.animateTo(0.0,
-                          duration: Duration(milliseconds: 500),
+                          duration: const Duration(milliseconds: 500),
                           curve: Curves.easeInOut);
                     },
-                    icon: FaIcon(FontAwesomeIcons.arrowUp)),
+                    icon: const FaIcon(FontAwesomeIcons.arrowUp)),
               ))
         ],
       ),

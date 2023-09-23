@@ -7,6 +7,7 @@ class IncomeStatModel{
 }
 
 getIncomeStats(){
+  // ignore: non_constant_identifier_names
   List<IncomeStatModel>IncomeStatList=[
     IncomeStatModel("Salary", 40000.00),
     IncomeStatModel("Asset Income", 14000.00),
@@ -27,6 +28,7 @@ class ExpenseStatModel{
 }
 
 getExpenseStats(){
+  // ignore: non_constant_identifier_names
   List<ExpenseStatModel>IncomeStatList=[
     ExpenseStatModel("Travel", 8000.00),
     ExpenseStatModel("Food", 10000.00),

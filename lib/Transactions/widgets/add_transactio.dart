@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,6 +12,7 @@ class AddTransactions extends StatefulWidget {
 
 class _AddTransactionsState extends State<AddTransactions> {
   List<DropdownMenuItem<Object>>? dropList;
+  // ignore: prefer_typing_uninitialized_variables
   late var _selectedImage;
   File? _finalImage;
   DateTime? _selectedDate;
@@ -28,7 +28,7 @@ class _AddTransactionsState extends State<AddTransactions> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              icon: FaIcon(
+              icon: const FaIcon(
                 FontAwesomeIcons.arrowLeft,
                 color: Colors.black,
               )),
@@ -226,19 +226,19 @@ class _AddTransactionsState extends State<AddTransactions> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text('Select Category',
+                  const Text('Select Category',
                       style: TextStyle(
                           fontSize: 20, fontFamily: 'texgyreadventor-regular')),
                   DropdownButton(items: dropList, onChanged: (string) {}),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ElevatedButton(onPressed: (){}, child: Text('Add',
+                  ElevatedButton(onPressed: (){}, child: const Text('Add',
                           style: TextStyle(
                               fontSize: 20,
                               fontFamily: 'texgyreadventor-regular')))

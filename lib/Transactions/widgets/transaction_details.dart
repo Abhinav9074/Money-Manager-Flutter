@@ -22,13 +22,13 @@ class TransactionDetails extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            icon: FaIcon(
+            icon: const FaIcon(
               FontAwesomeIcons.arrowLeft,
               color: Colors.black,
             )),
-        backgroundColor: Color.fromARGB(255, 232, 235, 235),
+        backgroundColor: const Color.fromARGB(255, 232, 235, 235),
         elevation: 0,
-        title: Text('Transaction Details',
+        title: const Text('Transaction Details',
             style: TextStyle(
                 fontSize: 25,
                 fontFamily: 'texgyreadventor-regular',
@@ -36,9 +36,9 @@ class TransactionDetails extends StatelessWidget {
                 fontWeight: FontWeight.w900)),
         centerTitle: true,
       ),
-      backgroundColor: Color.fromARGB(255, 232, 235, 235),
+      backgroundColor: const Color.fromARGB(255, 232, 235, 235),
       body: SafeArea(
-          child: Container(
+          child: SizedBox(
         width: double.infinity,
         child: Column(
           children: [
@@ -48,7 +48,7 @@ class TransactionDetails extends StatelessWidget {
                 width: double.infinity,
                 height: 350,
                 decoration: BoxDecoration(
-                    color: Color.fromARGB(255, 4, 37, 112),
+                    color: const Color.fromARGB(255, 4, 37, 112),
                     borderRadius: BorderRadius.circular(30)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -56,64 +56,64 @@ class TransactionDetails extends StatelessWidget {
                   children: [
                     Text(
                       '₹$price.00',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 40,
                         fontWeight: FontWeight.w500,
                         color: Colors.red,
                         fontFamily: 'texgyreadventor-regular',
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Text(
                       purpose,
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.w900,
-                          color: const Color.fromARGB(255, 255, 255, 255),
+                          color: Color.fromARGB(255, 255, 255, 255),
                           fontFamily: 'Raleway-VariableFont_wght'),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     Text(
                       subcategory,
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.w700,
-                          color: const Color.fromARGB(255, 255, 255, 255),
+                          color: Color.fromARGB(255, 255, 255, 255),
                           fontFamily: 'Raleway-VariableFont_wght'),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
-                    Text(
+                    const Text(
                       '12-09-2023',
                       style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.w700,
-                          color: const Color.fromARGB(255, 255, 255, 255),
+                          color: Color.fromARGB(255, 255, 255, 255),
                           fontFamily: 'Raleway-VariableFont_wght'),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
-                    Text(
+                    const Text(
                       '12:34 PM',
                       style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.w700,
-                          color: const Color.fromARGB(255, 255, 255, 255),
+                          color: Color.fromARGB(255, 255, 255, 255),
                           fontFamily: 'Raleway-VariableFont_wght'),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     ElevatedButton.icon(
                         onPressed: () {},
-                        icon: FaIcon(FontAwesomeIcons.image),
-                        label: Text('View Receipt'))
+                        icon: const FaIcon(FontAwesomeIcons.image),
+                        label: const Text('View Receipt'))
                   ],
                 ),
               ),
@@ -123,7 +123,7 @@ class TransactionDetails extends StatelessWidget {
               child: Text(
                 'Other Expenses In $subcategory',
                 textAlign: TextAlign.left,
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 25,
                     fontFamily: 'texgyreadventor-regular',
                     fontWeight: FontWeight.w900,
@@ -148,7 +148,7 @@ class TransactionDetails extends StatelessWidget {
                             child: Slidable(
                               key: Key('$index'),
                               startActionPane:
-                                  ActionPane(motion: BehindMotion(), children: [
+                                  ActionPane(motion: const BehindMotion(), children: [
                                 SlidableAction(
                                   onPressed: (ctx) {},
                                   icon: FontAwesomeIcons.trash,
@@ -159,17 +159,17 @@ class TransactionDetails extends StatelessWidget {
                                 )
                               ]),
                               endActionPane:
-                                  ActionPane(motion: BehindMotion(), children: [
+                                  ActionPane(motion: const BehindMotion(), children: [
                                 SlidableAction(
                                   onPressed: (ctx) {
                                     Navigator.of(context)
                                         .push(MaterialPageRoute(builder: (ctx) {
-                                      return EditTransaction();
+                                      return const EditTransaction();
                                     }));
                                   },
                                   icon: FontAwesomeIcons.penToSquare,
                                   autoClose: true,
-                                  padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
+                                  padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
                                   borderRadius: BorderRadius.circular(10),
                                   backgroundColor: Colors.blue,
                                   label: 'Edit',
@@ -206,7 +206,7 @@ class TransactionDetails extends StatelessWidget {
                                               width: 70,
                                               height: 70,
                                               decoration: BoxDecoration(
-                                                  color: Color.fromARGB(
+                                                  color: const Color.fromARGB(
                                                       255, 232, 235, 235),
                                                   borderRadius:
                                                       BorderRadius.circular(
@@ -218,7 +218,7 @@ class TransactionDetails extends StatelessWidget {
                                                     CrossAxisAlignment.center,
                                                 children: [
                                                   Text('${index + 10}',
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                           fontSize: 18,
                                                           fontFamily:
                                                               'texgyreadventor-regular',
@@ -226,7 +226,7 @@ class TransactionDetails extends StatelessWidget {
                                                               FontWeight.w900,
                                                           color: Color.fromARGB(
                                                               255, 2, 39, 71))),
-                                                  Text('Sept',
+                                                  const Text('Sept',
                                                       style: TextStyle(
                                                           fontSize: 18,
                                                           fontFamily:
@@ -239,7 +239,7 @@ class TransactionDetails extends StatelessWidget {
                                               ),
                                             ),
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             width: 10,
                                           ),
                                           Expanded(
@@ -250,7 +250,7 @@ class TransactionDetails extends StatelessWidget {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text('Lunch${index + 1}',
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                         fontSize: 25,
                                                         fontFamily:
                                                             'texgyreadventor-regular',
@@ -258,10 +258,10 @@ class TransactionDetails extends StatelessWidget {
                                                             FontWeight.w900,
                                                         color: Color.fromARGB(
                                                             255, 2, 39, 71))),
-                                                SizedBox(
+                                                const SizedBox(
                                                   height: 10,
                                                 ),
-                                                Text('Food',
+                                                const Text('Food',
                                                     style: TextStyle(
                                                         fontSize: 18,
                                                         fontFamily:
@@ -285,7 +285,7 @@ class TransactionDetails extends StatelessWidget {
                                                   color: index % 2 == 0
                                                       ? Colors.green
                                                       : Colors.red)),
-                                          SizedBox(
+                                          const SizedBox(
                                             width: 20,
                                           )
                                         ],
@@ -298,7 +298,7 @@ class TransactionDetails extends StatelessWidget {
                           );
                         },
                         separatorBuilder: (context, index) {
-                          return SizedBox(
+                          return const SizedBox(
                             height: 10,
                           );
                         },

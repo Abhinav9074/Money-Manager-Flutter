@@ -27,14 +27,14 @@ class SettingsScreen extends StatelessWidget {
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
+          const SizedBox(
             height: 50,
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(30, 5, 0, 5),
             child: TextButton(
                 onPressed: () {},
-                child: Text(
+                child: const Text(
                   'About',
                   style: TextStyle(
                       fontSize: 25,
@@ -49,7 +49,7 @@ class SettingsScreen extends StatelessWidget {
                 onPressed: () {
                   _launchUrl();
                 },
-                child: Text(
+                child: const Text(
                   'Contact Us',
                   style: TextStyle(
                       fontSize: 25,
@@ -74,17 +74,17 @@ class SettingsScreen extends StatelessWidget {
                                   onPressed: (){
                                     Navigator.of(context).pop();
                                   }, 
-                                  icon: FaIcon(FontAwesomeIcons.x,color: Colors.red,)),
+                                  icon: const FaIcon(FontAwesomeIcons.x,color: Colors.red,)),
                                 IconButton(
                                   onPressed: (){
                                     Navigator.of(context).pop();
-                                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('App Reset Completed') ));
+                                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('App Reset Completed') ));
                                   }, 
-                                  icon: FaIcon(FontAwesomeIcons.check,color: Colors.green,))
+                                  icon: const FaIcon(FontAwesomeIcons.check,color: Colors.green,))
                               ],
                             )
                             ],
-                          title: Text(
+                          title: const Text(
                             'Are You Sure',
                             style: TextStyle(
                                 fontSize: 25,
@@ -92,7 +92,7 @@ class SettingsScreen extends StatelessWidget {
                                 color: Colors.black,
                                 fontWeight: FontWeight.w900),
                           ),
-                          content: Text(
+                          content: const Text(
                             'The App Will Be Reset',
                             style: TextStyle(
                                 fontSize: 15,
@@ -103,12 +103,12 @@ class SettingsScreen extends StatelessWidget {
                         );
                       });
                 },
-                child: Text(
+                child: const Text(
                   'Clear App Data',
                   style: TextStyle(
                       fontSize: 25,
                       fontFamily: 'texgyreadventor-regular',
-                      color: const Color.fromARGB(255, 255, 0, 0),
+                      color: Color.fromARGB(255, 255, 0, 0),
                       fontWeight: FontWeight.w900),
                 )),
           )

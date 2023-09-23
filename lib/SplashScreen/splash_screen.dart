@@ -1,7 +1,6 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:money_manager/Home%20Screen/widgets/custom_navigation_bar.dart';
+import 'package:money_manager/HomeScreen/widgets/custom_navigation_bar.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -14,16 +13,17 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 5), () {
+    Timer(const Duration(seconds: 5), () {
       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx) {
-        return CustomNavigationBar();
+        return const CustomNavigationBar();
       }));
     });
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      body: SizedBox(
         width: double.infinity,
         height: double.infinity,
         child: Column(
@@ -31,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.asset('assets/images/loading.gif'),
-            Text(
+            const Text(
               'Money Manager',
               style: TextStyle(
                   fontSize: 25,

@@ -10,6 +10,7 @@ class FilterWidget extends StatefulWidget {
 
 class _FilterWidgetState extends State<FilterWidget> {
   DateTime? startDate;
+  // ignore: non_constant_identifier_names
   DateTime? EndDate;
 
   @override
@@ -20,10 +21,10 @@ class _FilterWidgetState extends State<FilterWidget> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SizedBox(
+        const SizedBox(
           height: 20,
         ),
-        Text(
+        const Text(
           'Filter By Date',
           style: TextStyle(
             fontWeight: FontWeight.w700,
@@ -39,16 +40,16 @@ class _FilterWidgetState extends State<FilterWidget> {
                   startDate = await showDatePicker(
                       context: context,
                       initialDate: DateTime.now(),
-                      firstDate: DateTime.now().subtract(Duration(days: 30)),
+                      firstDate: DateTime.now().subtract(const Duration(days: 30)),
                       lastDate: DateTime.now());
                   setState(() {});
                 },
-                icon: FaIcon(FontAwesomeIcons.calendar),
+                icon: const FaIcon(FontAwesomeIcons.calendar),
                 label: startDate == null
-                    ? Text('Pick Start Date')
-                    : Text('${startDate.toString().substring(0, 10)}')),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    ? const Text('Pick Start Date')
+                    : Text(startDate.toString().substring(0, 10))),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
               child: Text(
                 'To',
                 style: TextStyle(
@@ -63,18 +64,18 @@ class _FilterWidgetState extends State<FilterWidget> {
                   EndDate = await showDatePicker(
                       context: context,
                       initialDate: DateTime.now(),
-                      firstDate: DateTime.now().subtract(Duration(days: 30)),
+                      firstDate: DateTime.now().subtract(const Duration(days: 30)),
                       lastDate: DateTime.now());
                   setState(() {});
                 },
-                icon: FaIcon(FontAwesomeIcons.calendar),
+                icon: const FaIcon(FontAwesomeIcons.calendar),
                 label: EndDate == null
-                    ? Text('Pick End Date')
-                    : Text('${EndDate.toString().substring(0, 10)}'))
+                    ? const Text('Pick End Date')
+                    : Text(EndDate.toString().substring(0, 10)))
           ],
         ),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+        const Padding(
+          padding: EdgeInsets.fromLTRB(0, 20, 0, 0),
           child: Text(
             'Filter By Category',
             style: TextStyle(
@@ -101,9 +102,9 @@ class _FilterWidgetState extends State<FilterWidget> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton(onPressed: (){}, child: Text('Filter')),
-            SizedBox(width: 10,),
-            ElevatedButton(onPressed: (){}, child: Text('Clear')),
+            ElevatedButton(onPressed: (){}, child: const Text('Filter')),
+            const SizedBox(width: 10,),
+            ElevatedButton(onPressed: (){}, child: const Text('Clear')),
           ],
         )
       ],

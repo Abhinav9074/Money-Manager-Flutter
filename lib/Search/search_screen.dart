@@ -16,7 +16,7 @@ class SearchingBar extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            icon: FaIcon(
+            icon: const FaIcon(
               FontAwesomeIcons.arrowLeft,
               color: Colors.black,
             )),
@@ -31,7 +31,7 @@ class SearchingBar extends StatelessWidget {
             padding: const EdgeInsets.all(15.0),
             child: TextFormField(
               decoration: InputDecoration(
-                label: Text('Enter the Purpose of Transaction'),
+                label: const Text('Enter the Purpose of Transaction'),
                 border:
                     OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
               ),
@@ -42,12 +42,12 @@ class SearchingBar extends StatelessWidget {
             children: [
               ElevatedButton.icon(
                   onPressed: () {},
-                  icon: FaIcon(FontAwesomeIcons.magnifyingGlass),
-                  label: Text('Search')),
+                  icon: const FaIcon(FontAwesomeIcons.magnifyingGlass),
+                  label: const Text('Search')),
               ElevatedButton.icon(
                   onPressed: () {},
-                  icon: FaIcon(FontAwesomeIcons.x),
-                  label: Text('Clear')),
+                  icon: const FaIcon(FontAwesomeIcons.x),
+                  label: const Text('Clear')),
             ],
           ),
           Expanded(
@@ -68,7 +68,7 @@ class SearchingBar extends StatelessWidget {
                       child: Slidable(
                         key: Key('$index'),
                         startActionPane:
-                            ActionPane(motion: BehindMotion(), children: [
+                            ActionPane(motion: const BehindMotion(), children: [
                           SlidableAction(
                             onPressed: (ctx) {},
                             icon: FontAwesomeIcons.trash,
@@ -79,17 +79,17 @@ class SearchingBar extends StatelessWidget {
                           )
                         ]),
                         endActionPane:
-                            ActionPane(motion: BehindMotion(), children: [
+                            ActionPane(motion: const BehindMotion(), children: [
                           SlidableAction(
                             onPressed: (ctx) {
                               Navigator.of(context)
                                   .push(MaterialPageRoute(builder: (ctx) {
-                                return EditTransaction();
+                                return const EditTransaction();
                               }));
                             },
                             icon: FontAwesomeIcons.penToSquare,
                             autoClose: true,
-                            padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
+                            padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
                             borderRadius: BorderRadius.circular(10),
                             backgroundColor: Colors.blue,
                             label: 'Edit',
@@ -122,7 +122,7 @@ class SearchingBar extends StatelessWidget {
                                         width: 70,
                                         height: 70,
                                         decoration: BoxDecoration(
-                                            color: Color.fromARGB(
+                                            color: const Color.fromARGB(
                                                 255, 232, 235, 235),
                                             borderRadius:
                                                 BorderRadius.circular(10)),
@@ -133,14 +133,14 @@ class SearchingBar extends StatelessWidget {
                                               CrossAxisAlignment.center,
                                           children: [
                                             Text('${index + 10}',
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     fontSize: 18,
                                                     fontFamily:
                                                         'texgyreadventor-regular',
                                                     fontWeight: FontWeight.w900,
                                                     color: Color.fromARGB(
                                                         255, 2, 39, 71))),
-                                            Text('Sept',
+                                            const Text('Sept',
                                                 style: TextStyle(
                                                     fontSize: 18,
                                                     fontFamily:
@@ -152,7 +152,7 @@ class SearchingBar extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 10,
                                     ),
                                     Expanded(
@@ -163,17 +163,17 @@ class SearchingBar extends StatelessWidget {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text('Lunch${index + 1}',
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   fontSize: 25,
                                                   fontFamily:
                                                       'texgyreadventor-regular',
                                                   fontWeight: FontWeight.w900,
                                                   color: Color.fromARGB(
                                                       255, 2, 39, 71))),
-                                          SizedBox(
+                                          const SizedBox(
                                             height: 10,
                                           ),
-                                          Text('Food',
+                                          const Text('Food',
                                               style: TextStyle(
                                                   fontSize: 18,
                                                   fontFamily:
@@ -193,7 +193,7 @@ class SearchingBar extends StatelessWidget {
                                             color: index % 2 == 0
                                                 ? Colors.green
                                                 : Colors.red)),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 20,
                                     )
                                   ],
@@ -206,7 +206,7 @@ class SearchingBar extends StatelessWidget {
                     );
                   },
                   separatorBuilder: (context, index) {
-                    return SizedBox(
+                    return const SizedBox(
                       height: 10,
                     );
                   },

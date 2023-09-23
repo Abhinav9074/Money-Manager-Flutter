@@ -16,14 +16,12 @@ class _StatsScreenState extends State<StatsScreen>
   late TabController _tabController;
   @override
   void initState() {
-    // TODO: implement initState
     _tabController = TabController(length: 2, vsync: this);
     super.initState();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _tabController.dispose();
     super.dispose();
   }
@@ -31,9 +29,9 @@ class _StatsScreenState extends State<StatsScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color.fromARGB(255, 232, 235, 235),
+        backgroundColor: const Color.fromARGB(255, 232, 235, 235),
         appBar: AppBar(
-          title: Text(
+          title: const Text(
             'Statistics',
             style: TextStyle(
                 fontSize: 25,
@@ -42,7 +40,7 @@ class _StatsScreenState extends State<StatsScreen>
                 fontWeight: FontWeight.w900),
           ),
           centerTitle: true,
-          backgroundColor: Color.fromARGB(255, 232, 235, 235),
+          backgroundColor: const Color.fromARGB(255, 232, 235, 235),
           elevation: 0,
         ),
         body: SafeArea(
@@ -52,11 +50,11 @@ class _StatsScreenState extends State<StatsScreen>
                 children: [
                   TabBar(
                       labelColor: Colors.black,
-                      labelStyle: TextStyle(
+                      labelStyle: const TextStyle(
                           fontSize: 20, fontFamily: 'texgyreadventor-regular'),
                       unselectedLabelColor: Colors.grey,
                       controller: _tabController,
-                      tabs: [
+                      tabs: const [
                         Tab(
                           text: 'Income',
                         ),
@@ -67,7 +65,7 @@ class _StatsScreenState extends State<StatsScreen>
                   Expanded(
                     child: TabBarView(
                         controller: _tabController,
-                        children: [IncomeStats(), ExpenseStats()]),
+                        children: const [IncomeStats(), ExpenseStats()]),
                   )
                 ],
               ),
@@ -83,8 +81,8 @@ class _StatsScreenState extends State<StatsScreen>
                         onPressed: () {
                           ShowStatFilterSheet(context);
                         },
-                        icon: FaIcon(FontAwesomeIcons.filter),
-                        label: Text('Filter')),
+                        icon: const FaIcon(FontAwesomeIcons.filter),
+                        label: const Text('Filter')),
                   ],
                 ),
               )

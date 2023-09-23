@@ -22,7 +22,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            icon: FaIcon(
+            icon: const FaIcon(
               FontAwesomeIcons.arrowLeft,
               color: Colors.black,
             )),
@@ -60,9 +60,9 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
               onPressed: () {
                 AddImage();
               },
-              icon: FaIcon(FontAwesomeIcons.penToSquare),
-              label: Text('Add Image')),
-              SizedBox(height: 30,),
+              icon: const FaIcon(FontAwesomeIcons.penToSquare),
+              label: const Text('Add Image')),
+              const SizedBox(height: 30,),
           Padding(
             padding: const EdgeInsets.fromLTRB(10, 5, 10, 10),
             child: ClipRRect(
@@ -81,12 +81,13 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
               ),
             ),
           ),
-          ElevatedButton.icon(onPressed: (){}, icon: FaIcon(FontAwesomeIcons.check), label: Text('Update'))
+          ElevatedButton.icon(onPressed: (){}, icon: const FaIcon(FontAwesomeIcons.check), label: const Text('Update'))
         ],
       ),
     );
   }
 
+  // ignore: non_constant_identifier_names
   Future<void> AddImage() async {
     final img = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (img != null) {

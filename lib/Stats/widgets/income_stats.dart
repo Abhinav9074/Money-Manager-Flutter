@@ -9,16 +9,16 @@ class IncomeStats extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       children: [
-        SizedBox(
+        const SizedBox(
           height: 40,
         ),
-        Container(
+        SizedBox(
           height: 750,
           child: SfCartesianChart(
             title: ChartTitle(
                 text:
                     'Income stats from 27-08-23 to 27-09-23',
-                textStyle: TextStyle(
+                textStyle: const TextStyle(
                     fontSize: 20,
                     fontFamily: 'texgyreadventor-regular',
                     color: Colors.black,
@@ -29,14 +29,14 @@ class IncomeStats extends StatelessWidget {
             primaryYAxis: NumericAxis(
               title: AxisTitle(text: "Amount In Rupees")
             ),
-            legend: Legend(isVisible: true),
+            legend: const Legend(isVisible: true),
             series: <ChartSeries>[
               ColumnSeries<IncomeStatModel, String>(
                 name: "Income",
                   dataSource: getIncomeStats(),
                   xValueMapper: (IncomeStatModel stats, _) => stats.x,
                   yValueMapper: (IncomeStatModel stats, _) => stats.y,
-                  dataLabelSettings: DataLabelSettings(isVisible: true)),
+                  dataLabelSettings: const DataLabelSettings(isVisible: true)),
             ],
           ),
         ),

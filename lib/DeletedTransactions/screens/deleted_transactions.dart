@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:money_manager/Transactions/widgets/edit_transaction.dart';
 import 'package:money_manager/Transactions/widgets/transaction_details.dart';
 
 class DeletedTransactions extends StatelessWidget {
@@ -15,7 +14,7 @@ class DeletedTransactions extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            icon: FaIcon(
+            icon: const FaIcon(
               FontAwesomeIcons.arrowLeft,
               color: Colors.black,
             )),
@@ -53,7 +52,7 @@ class DeletedTransactions extends StatelessWidget {
                         Slidable(
                           key: Key('$index'),
                           startActionPane:
-                              ActionPane(motion: BehindMotion(), children: [
+                              ActionPane(motion: const BehindMotion(), children: [
                             SlidableAction(
                               onPressed: (ctx) {},
                               icon: FontAwesomeIcons.trash,
@@ -64,14 +63,14 @@ class DeletedTransactions extends StatelessWidget {
                             )
                           ]),
                           endActionPane:
-                                  ActionPane(motion: BehindMotion(), children: [
+                                  ActionPane(motion: const BehindMotion(), children: [
                                 SlidableAction(
                                   onPressed: (ctx) {
                                    
                                   },
                                   icon: FontAwesomeIcons.arrowRotateLeft,
                                   autoClose: true,
-                                  padding: EdgeInsets.fromLTRB(20, 5, 20, 5),
+                                  padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
                                   borderRadius: BorderRadius.circular(10),
                                   backgroundColor: Colors.blue,
                                   label: 'Restore',
@@ -106,7 +105,7 @@ class DeletedTransactions extends StatelessWidget {
                                           width: 70,
                                           height: 70,
                                           decoration: BoxDecoration(
-                                              color: Color.fromARGB(
+                                              color: const Color.fromARGB(
                                                   255, 232, 235, 235),
                                               borderRadius:
                                                   BorderRadius.circular(10)),
@@ -117,7 +116,7 @@ class DeletedTransactions extends StatelessWidget {
                                                 CrossAxisAlignment.center,
                                             children: [
                                               Text('${index + 10}',
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       fontSize: 18,
                                                       fontFamily:
                                                           'texgyreadventor-regular',
@@ -125,7 +124,7 @@ class DeletedTransactions extends StatelessWidget {
                                                           FontWeight.w900,
                                                       color: Color.fromARGB(
                                                           255, 2, 39, 71))),
-                                              Text('Sept',
+                                              const Text('Sept',
                                                   style: TextStyle(
                                                       fontSize: 18,
                                                       fontFamily:
@@ -138,7 +137,7 @@ class DeletedTransactions extends StatelessWidget {
                                           ),
                                         ),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 10,
                                       ),
                                       Expanded(
@@ -149,17 +148,17 @@ class DeletedTransactions extends StatelessWidget {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text('Lunch${index + 1}',
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     fontSize: 25,
                                                     fontFamily:
                                                         'texgyreadventor-regular',
                                                     fontWeight: FontWeight.w900,
                                                     color: Color.fromARGB(
                                                         255, 2, 39, 71))),
-                                            SizedBox(
+                                            const SizedBox(
                                               height: 10,
                                             ),
-                                            Text('Food',
+                                            const Text('Food',
                                                 style: TextStyle(
                                                     fontSize: 18,
                                                     fontFamily:
@@ -179,7 +178,7 @@ class DeletedTransactions extends StatelessWidget {
                                               color: index % 2 == 0
                                                   ? Colors.green
                                                   : Colors.red)),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 20,
                                       )
                                     ],
@@ -199,7 +198,7 @@ class DeletedTransactions extends StatelessWidget {
           Container(
             color: Colors.transparent,
             height: 80,
-            child: Center(
+            child: const Center(
               child: Text(
                 'All Transactions Will Be Deleted\nWithin 30 Days From The Date of Deletion',textAlign: TextAlign.center,
                 style: TextStyle(

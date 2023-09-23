@@ -15,7 +15,7 @@ class CategoryAddScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              icon: FaIcon(
+              icon: const FaIcon(
                 FontAwesomeIcons.arrowLeft,
                 color: Colors.black,
               )),
@@ -97,7 +97,7 @@ class CategoryAddScreen extends StatelessWidget {
                 ],
               ),
 
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Row(
@@ -105,7 +105,7 @@ class CategoryAddScreen extends StatelessWidget {
                 children: [
                   ElevatedButton(
                       onPressed: () {},
-                      child: Text('Add',
+                      child: const Text('Add',
                           style: TextStyle(
                               fontSize: 20,
                               fontFamily: 'texgyreadventor-regular')))

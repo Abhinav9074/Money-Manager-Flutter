@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:money_manager/Search/search_screen.dart';
 import 'package:money_manager/Transactions/widgets/add_transactio.dart';
 import 'package:money_manager/Transactions/widgets/all_transaction.dart';
 import 'package:money_manager/Transactions/widgets/expense_transactions.dart';
@@ -17,7 +18,6 @@ class TransactionsScreen extends StatefulWidget {
 class _TransactionsScreenState extends State<TransactionsScreen>
     with TickerProviderStateMixin {
   late TabController _tabController;
-
 
   @override
   void initState() {
@@ -40,9 +40,9 @@ class _TransactionsScreenState extends State<TransactionsScreen>
       //   onPressed: () {},
       //   child: FaIcon(FontAwesomeIcons.plus),
       // ),
-      backgroundColor: Color.fromARGB(255, 232, 235, 235),
+      backgroundColor: const Color.fromARGB(255, 232, 235, 235),
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Transactions',
           style: TextStyle(
               fontSize: 25,
@@ -51,8 +51,24 @@ class _TransactionsScreenState extends State<TransactionsScreen>
               fontWeight: FontWeight.w900),
         ),
         centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 232, 235, 235),
+        backgroundColor: const Color.fromARGB(255, 232, 235, 235),
         elevation: 0,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+            child: IconButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
+                    return const SearchingBar();
+                  }));
+                },
+                icon: const FaIcon(
+                  FontAwesomeIcons.magnifyingGlass,
+                  color: Colors.black,
+                  size: 30,
+                )),
+          ),
+        ],
       ),
       body: Stack(
         children: [
@@ -60,11 +76,11 @@ class _TransactionsScreenState extends State<TransactionsScreen>
             children: [
               TabBar(
                   labelColor: Colors.black,
-                  labelStyle: TextStyle(
+                  labelStyle: const TextStyle(
                       fontSize: 20, fontFamily: 'texgyreadventor-regular'),
                   unselectedLabelColor: Colors.grey,
                   controller: _tabController,
-                  tabs: [
+                  tabs: const [
                     Tab(
                       text: 'All',
                     ),
@@ -76,7 +92,7 @@ class _TransactionsScreenState extends State<TransactionsScreen>
                     ),
                   ]),
               Expanded(
-                child: TabBarView(controller: _tabController, children: [
+                child: TabBarView(controller: _tabController, children: const [
                   AllTransactions(),
                   IncomeTransactions(),
                   ExpenseTransaction(),
@@ -94,10 +110,10 @@ class _TransactionsScreenState extends State<TransactionsScreen>
                   onPressed: () {
                     Navigator.of(context)
                         .push(MaterialPageRoute(builder: (ctx) {
-                      return AddTransactions();
+                      return const AddTransactions();
                     }));
                   },
-                  icon: FaIcon(FontAwesomeIcons.plus)),
+                  icon: const FaIcon(FontAwesomeIcons.plus)),
             ),
           ),
           Positioned(
@@ -112,15 +128,14 @@ class _TransactionsScreenState extends State<TransactionsScreen>
                     onPressed: () {
                       ShowSortSheet(context);
                     },
-                    icon: FaIcon(FontAwesomeIcons.sort),
-                    label: Text('Sort')),
+                    icon: const FaIcon(FontAwesomeIcons.sort),
+                    label: const Text('Sort')),
                 ElevatedButton.icon(
                     onPressed: () {
-                      
                       ShowFilterSheet(context);
                     },
-                    icon: FaIcon(FontAwesomeIcons.filter),
-                    label: Text('Filter'))
+                    icon: const FaIcon(FontAwesomeIcons.filter),
+                    label: const Text('Filter'))
               ],
             ),
           )
@@ -128,8 +143,4 @@ class _TransactionsScreenState extends State<TransactionsScreen>
       ),
     );
   }
-
- 
-
-  
 }
