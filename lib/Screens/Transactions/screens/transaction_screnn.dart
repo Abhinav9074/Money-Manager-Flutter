@@ -7,6 +7,8 @@ import 'package:money_manager/Screens/Transactions/widgets/expense_transactions.
 import 'package:money_manager/Screens/Transactions/widgets/filter_sheet.dart';
 import 'package:money_manager/Screens/Transactions/widgets/income_transactions.dart';
 import 'package:money_manager/Screens/Transactions/widgets/sort_sheet.dart';
+import 'package:money_manager/db/category/category_db.dart';
+import 'package:money_manager/db/transactions/transaction_db.dart';
 
 class TransactionsScreen extends StatefulWidget {
   const TransactionsScreen({super.key});
@@ -22,6 +24,8 @@ class _TransactionsScreenState extends State<TransactionsScreen>
   @override
   void initState() {
     _tabController = TabController(length: 3, vsync: this);
+    CategoryDb().refreshUI();
+    TransactionDb().refreshUI();
     super.initState();
   }
 

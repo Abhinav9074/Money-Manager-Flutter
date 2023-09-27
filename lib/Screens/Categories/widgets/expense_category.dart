@@ -20,13 +20,15 @@ class ExpenseCategoryScreen extends StatelessWidget {
                   final data = expenseList[index];
                   return Column(
                     children: [
+                      if(!data.isDeleted)
                       Slidable(
                         key: Key('$index'),
                         startActionPane:
                             ActionPane(motion: const BehindMotion(), children: [
                           SlidableAction(
                             onPressed: (ctx) {
-                              CategoryDb.instance.deleteCategory(data.id);
+                              final deleteData = CategoryModel(id: data.id, categoryName: data.categoryName, type: data.type,isDeleted: true);
+                              CategoryDb.instance.insertCategory(deleteData);
                             },
                             icon: FontAwesomeIcons.trash,
                             autoClose: true,
@@ -41,8 +43,7 @@ class ExpenseCategoryScreen extends StatelessWidget {
                             onPressed: (ctx) {
                               Navigator.of(context)
                                   .push(MaterialPageRoute(builder: (ctx) {
-                                return CategoryEditScreen(
-                                    categoryName: data.categoryName);
+                                return CategoryEditScreen(categoryName: data.categoryName, categoryType: data.type, CategoryId: data.id);
                               }));
                             },
                             icon: FontAwesomeIcons.penToSquare,

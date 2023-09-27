@@ -17,15 +17,18 @@ class IncomeCategoryScreen extends StatelessWidget {
             child: ListView.separated(
                 itemBuilder: (context, index) {
                   final data = incomeList[index];
+                  
                   return Column(
                     children: [
+                      if(!data.isDeleted)
                       Slidable(
                         key: Key('$index'),
                         startActionPane:
                             ActionPane(motion: const BehindMotion(), children: [
                           SlidableAction(
                             onPressed: (ctx) {
-                              CategoryDb.instance.deleteCategory(data.id);
+                              final deleteData = CategoryModel(id: data.id, categoryName: data.categoryName, type: data.type,isDeleted: true);
+                              CategoryDb.instance.insertCategory(deleteData);
                             },
                             icon: FontAwesomeIcons.trash,
                             autoClose: true,
@@ -40,8 +43,7 @@ class IncomeCategoryScreen extends StatelessWidget {
                             onPressed: (ctx) {
                               Navigator.of(context)
                                   .push(MaterialPageRoute(builder: (ctx) {
-                                return CategoryEditScreen(
-                                    categoryName: data.categoryName);
+                                return CategoryEditScreen(categoryName: data.categoryName, categoryType: data.type, CategoryId: data.id);
                               }));
                             },
                             icon: FontAwesomeIcons.penToSquare,
@@ -86,8 +88,7 @@ class IncomeCategoryScreen extends StatelessWidget {
                                                   fontFamily:
                                                       'texgyreadventor-regular',
                                                   fontWeight: FontWeight.w900,
-                                                  color: Color.fromARGB(
-                                                      255, 34, 194, 77))),
+                                                  color: Color.fromARGB(1000,0,128,0))),
                                           const SizedBox(
                                             height: 10,
                                           ),

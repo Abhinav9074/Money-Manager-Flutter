@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:money_manager/Screens/HomeScreen/widgets/app_bar.dart';
 import 'package:money_manager/Screens/HomeScreen/widgets/drawer_items.dart';
 import 'package:money_manager/Screens/Stats/widgets/income_stats.dart';
-import 'package:money_manager/Screens/Transactions/widgets/edit_transaction.dart';
-import 'package:money_manager/Screens/Transactions/widgets/transaction_details.dart';
+import 'package:money_manager/db/transactions/transaction_db.dart';
+import 'package:money_manager/models/category_model.dart';
+import 'package:money_manager/models/transactions_model.dart';
 
 // ignore: must_be_immutable
 class HomeScreen extends StatefulWidget {
@@ -17,8 +18,15 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   // ignore: prefer_typing_uninitialized_variables
-  var size,height,width;
+  var size, height, width;
   final ScrollController _scrollController = ScrollController();
+  
+  @override
+  void initState() {
+    // TODO: implement initState
+    TransactionDb().refreshUI();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +36,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 232, 235, 235),
       appBar: const HomeAppBar(),
-      // floatingActionButton: FloatingActionButton(
-      //   backgroundColor: Colors.black,
-      //   onPressed: () {
-      //     _scrollController.animateTo(0.0,
-      //         duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
-      //   },
-      //   child: FaIcon(FontAwesomeIcons.arrowUp),
-      // ),
       drawer: const SafeArea(
         child: Drawer(
           child: DrawerItems(),
@@ -83,17 +83,20 @@ class _HomeScreenState extends State<HomeScreen> {
                             borderRadius: BorderRadius.circular(40),
                             elevation: 8.0,
                             child: InkWell(
-                              onLongPress: (){
-                                showDialog(context: context, builder: (ctx){
-                                  return const IncomeStats();
-                                });
+                              onLongPress: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (ctx) {
+                                      return const IncomeStats();
+                                    });
                               },
                               child: Container(
-                                width: width/2.2,
+                                width: width / 2.2,
                                 height: 120,
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
-                                    color: const Color.fromARGB(255, 53, 198, 140)),
+                                    color: const Color.fromARGB(
+                                        255, 53, 198, 140)),
                                 child: const Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -109,14 +112,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     ),
                                     Padding(
-                                      padding:
-                                          EdgeInsets.fromLTRB(18, 0, 0, 0),
+                                      padding: EdgeInsets.fromLTRB(18, 0, 0, 0),
                                       child: Text(
                                         '₹ 15123.50',
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 25,
-                                            fontFamily: 'texgyreadventor-regular',
+                                            fontFamily:
+                                                'texgyreadventor-regular',
                                             fontWeight: FontWeight.w700),
                                       ),
                                     )
@@ -131,11 +134,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             borderRadius: BorderRadius.circular(40),
                             elevation: 8.0,
                             child: Container(
-                              width: width/2.2,
+                              width: width / 2.2,
                               height: 120,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
-                                  color: const Color.fromARGB(255, 178, 83, 83)),
+                                  color:
+                                      const Color.fromARGB(255, 178, 83, 83)),
                               child: const Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -151,8 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                   Padding(
-                                    padding:
-                                        EdgeInsets.fromLTRB(18, 0, 0, 0),
+                                    padding: EdgeInsets.fromLTRB(18, 0, 0, 0),
                                     child: Text(
                                       '₹ 2345.50',
                                       style: TextStyle(
@@ -187,64 +190,33 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       SizedBox(
                         height: 700,
-                        child: SlidableAutoCloseBehavior(
-                          child: ListView.separated(
-                              controller: _scrollController,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return InkWell(
-                                  onTap: () {
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(builder: (ctx) {
-                                      return TransactionDetails(
-                                          price: 112,
-                                          purpose: 'Lunch${index + 1}',
-                                          subcategory: 'Food');
-                                    }));
-                                  },
-                                  child: Slidable(
-                                    key: Key('$index'),
-                                    startActionPane: ActionPane(
-                                        motion: const BehindMotion(),
-                                        children: [
-                                          SlidableAction(
-                                            onPressed: (ctx) {},
-                                            icon: FontAwesomeIcons.trash,
-                                            autoClose: true,
-                                            backgroundColor: Colors.red,
-                                            label: 'Delete',
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          )
-                                        ]),
-                                    endActionPane: ActionPane(
-                                        motion: const BehindMotion(),
-                                        children: [
-                                          SlidableAction(
-                                            onPressed: (ctx) {
-                                              Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                      builder: (ctx) {
-                                                return const EditTransaction();
-                                              }));
-                                            },
-                                            icon: FontAwesomeIcons.penToSquare,
-                                            autoClose: true,
-                                            padding: const EdgeInsets.fromLTRB(
-                                                20, 5, 20, 5),
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            backgroundColor: Colors.blue,
-                                            label: 'Edit',
-                                          )
-                                        ]),
+                        child: ValueListenableBuilder(
+                          valueListenable: TransactionDb().allTransactionsList,
+                          builder: (BuildContext context,
+                              List<TransactionModel> newList, Widget? _) {
+                            return ListView.separated(
+                                controller: _scrollController,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  final data = newList[index];
+                                  return InkWell(
+                                    // onTap: () {
+                                    //   Navigator.of(context)
+                                    //       .push(MaterialPageRoute(builder: (ctx) {
+                                    //     return TransactionDetails(
+                                    //         price: 112,
+                                    //         purpose: 'Lunch${index + 1}',
+                                    //         subcategory: 'Food');
+                                    //   }));
+                                    // },
                                     child: Padding(
                                       padding: const EdgeInsets.fromLTRB(
                                           20, 5, 20, 5),
                                       child: PhysicalModel(
                                         color: Colors.black,
                                         shape: BoxShape.rectangle,
-                                        borderRadius: BorderRadius.circular(40),
+                                        borderRadius:
+                                            BorderRadius.circular(40),
                                         elevation: 6.0,
                                         child: Container(
                                           width: double.infinity,
@@ -254,8 +226,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   BorderRadius.circular(20),
                                               color: Colors.white),
                                           child: Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                20, 0, 0, 0),
+                                            padding:
+                                                const EdgeInsets.fromLTRB(
+                                                    20, 0, 0, 0),
                                             child: Row(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.center,
@@ -264,17 +237,20 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   color: Colors.black,
                                                   shape: BoxShape.rectangle,
                                                   borderRadius:
-                                                      BorderRadius.circular(10),
+                                                      BorderRadius.circular(
+                                                          10),
                                                   elevation: 4.0,
                                                   child: Container(
                                                     width: 70,
                                                     height: 70,
                                                     decoration: BoxDecoration(
-                                                        color: const Color.fromARGB(
-                                                            255, 232, 235, 235),
+                                                        color: const Color
+                                                            .fromARGB(255,
+                                                            232, 235, 235),
                                                         borderRadius:
                                                             BorderRadius
-                                                                .circular(10)),
+                                                                .circular(
+                                                                    10)),
                                                     child: Column(
                                                       mainAxisAlignment:
                                                           MainAxisAlignment
@@ -283,34 +259,26 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           CrossAxisAlignment
                                                               .center,
                                                       children: [
-                                                        Text('${index + 10}',
-                                                            style: const TextStyle(
-                                                                fontSize: 18,
-                                                                fontFamily:
-                                                                    'texgyreadventor-regular',
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w900,
-                                                                color: Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        2,
-                                                                        39,
-                                                                        71))),
-                                                        const Text('Sept',
-                                                            style: TextStyle(
-                                                                fontSize: 18,
-                                                                fontFamily:
-                                                                    'texgyreadventor-regular',
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w900,
-                                                                color: Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        2,
-                                                                        39,
-                                                                        71)))
+                                                        Text(
+                                                          parseDate(
+                                                              data.date),
+                                                          textAlign:
+                                                              TextAlign
+                                                                  .center,
+                                                          style: TextStyle(
+                                                              fontSize: 18,
+                                                              fontFamily:
+                                                                  'texgyreadventor-regular',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w900,
+                                                              color: Color
+                                                                  .fromARGB(
+                                                                      255,
+                                                                      2,
+                                                                      39,
+                                                                      71)),
+                                                        )
                                                       ],
                                                     ),
                                                   ),
@@ -327,7 +295,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         CrossAxisAlignment
                                                             .start,
                                                     children: [
-                                                      Text('Lunch${index + 1}',
+                                                      Text(data.purpose,
                                                           style: const TextStyle(
                                                               fontSize: 25,
                                                               fontFamily:
@@ -344,31 +312,53 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       const SizedBox(
                                                         height: 10,
                                                       ),
-                                                      const Text('Food',
-                                                          style: TextStyle(
-                                                              fontSize: 18,
-                                                              fontFamily:
-                                                                  'texgyreadventor-regular',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w900,
-                                                              color: Color
-                                                                  .fromARGB(
+                                                      data
+                                                                  .type ==
+                                                              CategoryType
+                                                                  .income
+                                                          ? Text(data.categorySubType,
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      18,
+                                                                  fontFamily:
+                                                                      'texgyreadventor-regular',
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w900,
+                                                                  color: Color.fromARGB(
                                                                       255,
-                                                                      149,
-                                                                      151,
-                                                                      152))),
+                                                                      33,
+                                                                      165,
+                                                                      6)))
+                                                          : Text(
+                                                              data
+                                                                  .categorySubType,
+                                                              style: TextStyle(
+                                                                  fontSize:
+                                                                      18,
+                                                                  fontFamily:
+                                                                      'texgyreadventor-regular',
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w900,
+                                                                  color: Color.fromARGB(
+                                                                      255,
+                                                                      255,
+                                                                      0,
+                                                                      0))),
                                                     ],
                                                   ),
                                                 ),
-                                                Text('₹112.00',
+                                                Text('₹${data.amount}',
                                                     style: TextStyle(
                                                         fontSize: 30,
                                                         fontFamily:
                                                             'texgyreadventor-regular',
                                                         fontWeight:
                                                             FontWeight.w600,
-                                                        color: index % 2 == 0
+                                                        color: data.type ==
+                                                                CategoryType
+                                                                    .income
                                                             ? Colors.green
                                                             : Colors.red)),
                                                 const SizedBox(
@@ -380,15 +370,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              },
-                              separatorBuilder: (context, index) {
-                                return const SizedBox(
-                                  height: 10,
-                                );
-                              },
-                              itemCount: 10),
+                                  );
+                                },
+                                separatorBuilder: (context, index) {
+                                  return const SizedBox(
+                                    height: 10,
+                                  );
+                                },
+                                itemCount: newList.length);
+                          },
                         ),
                       ),
                       const SizedBox(
@@ -415,5 +405,11 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
+  }
+
+  String parseDate(DateTime date) {
+    final _date = DateFormat.MMMd().format(date);
+    final _splitDate = _date.split(' ');
+    return '${_splitDate[1]}\n${_splitDate[0]}';
   }
 }

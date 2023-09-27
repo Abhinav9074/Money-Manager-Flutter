@@ -1,14 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:money_manager/db/category/category_db.dart';
+import 'package:money_manager/models/category_model.dart';
 
-
-class CategoryEditScreen extends StatelessWidget {
+class CategoryEditScreen extends StatefulWidget {
   final String categoryName;
+  final CategoryType categoryType;
+  final String CategoryId;
+
+  const CategoryEditScreen({super.key, required this.categoryName, required this.categoryType, required this.CategoryId});
+
   
 
-  CategoryEditScreen({super.key, required this.categoryName});
+  @override
+  State<CategoryEditScreen> createState() => _CategoryEditScreenState();
+}
+
+class _CategoryEditScreenState extends State<CategoryEditScreen> {
   final TextEditingController _nameCont = TextEditingController();
-  
+  late  CategoryType _selectedCategory;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _selectedCategory = widget.categoryType;
+    _nameCont.text=widget.categoryName;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,17 +89,62 @@ class CategoryEditScreen extends StatelessWidget {
                   ),
                 ),
               ),
-             
 
               const SizedBox(
                 height: 20,
+              ),
+
+              //Category selector
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Row(
+                    children: [
+                      Radio(
+                          value: CategoryType.income,
+                          groupValue: _selectedCategory,
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedCategory = CategoryType.income;
+                            });
+                          }),
+                      const Text(
+                        'Income',
+                        style: TextStyle(
+                            fontFamily: 'Raleway-VariableFont_wght',
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600),
+                      )
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Radio(
+                          value: CategoryType.expense,
+                          groupValue: _selectedCategory,
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedCategory = CategoryType.expense;
+                            });
+                          }),
+                      const Text(
+                        'Expense',
+                        style: TextStyle(
+                            fontFamily: 'Raleway-VariableFont_wght',
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600),
+                      )
+                    ],
+                  )
+                ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
-                      onPressed: () {
-
+                      onPressed: () async{
+                        await onUpdate();
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Data Updated')));
                       },
                       child: const Text('Update',
                           style: TextStyle(
@@ -94,5 +157,9 @@ class CategoryEditScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+  Future<void>onUpdate()async{
+    final updateCategory = await CategoryModel(id: widget.CategoryId, categoryName: _nameCont.text, type: _selectedCategory);
+    await CategoryDb().insertCategory(updateCategory);
   }
 }

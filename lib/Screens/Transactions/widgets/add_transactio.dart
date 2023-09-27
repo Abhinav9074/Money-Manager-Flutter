@@ -2,6 +2,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:money_manager/db/category/category_db.dart';
+import 'package:money_manager/db/transactions/transaction_db.dart';
+import 'package:money_manager/models/category_model.dart';
+import 'package:money_manager/models/transactions_model.dart';
 
 class AddTransactions extends StatefulWidget {
   const AddTransactions({super.key});
@@ -11,12 +15,28 @@ class AddTransactions extends StatefulWidget {
 }
 
 class _AddTransactionsState extends State<AddTransactions> {
-  List<DropdownMenuItem<Object>>? dropList;
+  bool isDateVisible = false;
+  bool isCategoryVisible = false;
+  final _formKey = GlobalKey<FormState>();
+  TextEditingController _purposeController = TextEditingController();
+  TextEditingController _amountController = TextEditingController();
+
   // ignore: prefer_typing_uninitialized_variables
   late var _selectedImage;
-  File? _finalImage;
+  late final DateTime _finalDate;
+  String? _finalImage;
   DateTime? _selectedDate;
   String? finalDate;
+  CategoryType? _selectedCategory;
+  String? selectedDropownValue;
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    _selectedCategory = CategoryType.income;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,78 +69,118 @@ class _AddTransactionsState extends State<AddTransactions> {
         child: SizedBox(
           width: double.infinity,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(
                 height: 20,
               ),
 
-              //Purpose field
+              Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      //Purpose field
 
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10, 5, 10, 10),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: TextFormField(
-                    decoration: const InputDecoration(
-                      label: Text(
-                        'Purpose',
-                        style: TextStyle(
-                            fontFamily: 'Raleway-VariableFont_wght',
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 5, 10, 10),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: TextFormField(
+                            controller: _purposeController,
+                            decoration: const InputDecoration(
+                              label: Text(
+                                'Purpose',
+                                style: TextStyle(
+                                    fontFamily: 'Raleway-VariableFont_wght',
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              fillColor: Colors.white,
+                              filled: true,
+                              border: InputBorder.none,
+                            ),
+                            validator: (value) {
+                              if (!RegExp(r'^\S+(?!\d+$)').hasMatch(value ?? '')) {
+                                return 'Please enter a valid purpose.';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
                       ),
-                      fillColor: Colors.white,
-                      filled: true,
-                      border: InputBorder.none,
-                    ),
-                  ),
-                ),
-              ),
 
-              //Amount Field
+                      //Amount Field
 
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10, 5, 10, 10),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: TextFormField(
-                    keyboardType: const TextInputType.numberWithOptions(),
-                    decoration: const InputDecoration(
-                      label: Text('Amount',
-                          style: TextStyle(
-                              fontFamily: 'Raleway-VariableFont_wght',
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600)),
-                      fillColor: Colors.white,
-                      filled: true,
-                      border: InputBorder.none,
-                    ),
-                  ),
-                ),
-              ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 5, 10, 10),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: TextFormField(
+                              controller: _amountController,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(),
+                              decoration: const InputDecoration(
+                                label: Text('Amount',
+                                    style: TextStyle(
+                                        fontFamily: 'Raleway-VariableFont_wght',
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600)),
+                                fillColor: Colors.white,
+                                filled: true,
+                                border: InputBorder.none,
+                              ),
+                              validator: (value) {
+                                if (!RegExp(r'^\d+\S*$')
+                                    .hasMatch(value ?? '')) {
+                                  return 'Please enter a valid amount.';
+                                }
+                                return null;
+                              }),
+                        ),
+                      ),
+                    ],
+                  )),
 
               //Date Picker
 
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10, 5, 10, 10),
-                child: ElevatedButton.icon(
-                    onPressed: () async {
-                      final tempDate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate:
-                              DateTime.now().subtract(const Duration(days: 30)),
-                          lastDate: DateTime.now());
-                      setState(() {
-                        _selectedDate = tempDate;
-                        finalDate = _selectedDate.toString();
-                      });
-                    },
-                    icon: const FaIcon(FontAwesomeIcons.calendar),
-                    label: _selectedDate == null
-                        ? const Text('Select Date')
-                        : Text(finalDate!.substring(0, 10))),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 5, 10, 10),
+                    child: ElevatedButton.icon(
+                        onPressed: () async {
+                          final tempDate = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime.now()
+                                  .subtract(const Duration(days: 30)),
+                              lastDate: DateTime.now());
+                          setState(() {
+                            _selectedDate = tempDate;
+                            finalDate = _selectedDate.toString();
+                          });
+                        },
+                        icon: const FaIcon(FontAwesomeIcons.calendar),
+                        label: _selectedDate == null
+                            ? const Text('Select Date')
+                            : Text(finalDate!.substring(0, 10))),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Visibility(
+                      visible: isDateVisible,
+                      child: Text(
+                        'Please Pick a Date',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontFamily: 'texgyreadventor-regular',
+                            color: Colors.red),
+                      )),
+                ],
               ),
 
               //Receipt image
@@ -130,7 +190,7 @@ class _AddTransactionsState extends State<AddTransactions> {
                 child: Text(
                   'Receipt (optional)',
                   style: TextStyle(
-                      fontSize: 20, fontFamily: 'texgyreadventor-regular'),
+                      fontSize: 25, fontFamily: 'texgyreadventor-regular'),
                 ),
               ),
 
@@ -184,7 +244,7 @@ class _AddTransactionsState extends State<AddTransactions> {
                           ),
                         )
                       : Image.file(
-                          _finalImage!,
+                          File(_finalImage!),
                           fit: BoxFit.cover,
                         ),
                 ),
@@ -198,9 +258,14 @@ class _AddTransactionsState extends State<AddTransactions> {
                   Row(
                     children: [
                       Radio(
-                          value: 'value1',
-                          groupValue: 'Value1',
-                          onChanged: (val) {}),
+                          value: CategoryType.income,
+                          groupValue: _selectedCategory,
+                          onChanged: (val) {
+                            setState(() {
+                              _selectedCategory = CategoryType.income;
+                              selectedDropownValue = null;
+                            });
+                          }),
                       const Text('Income',
                           style: TextStyle(
                               fontSize: 20,
@@ -210,9 +275,14 @@ class _AddTransactionsState extends State<AddTransactions> {
                   Row(
                     children: [
                       Radio(
-                          value: 'value2',
-                          groupValue: 'radioValue',
-                          onChanged: (val) {}),
+                          value: CategoryType.expense,
+                          groupValue: _selectedCategory,
+                          onChanged: (val) {
+                            setState(() {
+                              _selectedCategory = CategoryType.expense;
+                              selectedDropownValue = null;
+                            });
+                          }),
                       const Text('Expense',
                           style: TextStyle(
                               fontSize: 20,
@@ -221,24 +291,91 @@ class _AddTransactionsState extends State<AddTransactions> {
                   ),
                 ],
               ),
+
               //Select Category
 
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('Select Category',
-                      style: TextStyle(
-                          fontSize: 20, fontFamily: 'texgyreadventor-regular')),
-                  DropdownButton(items: dropList, onChanged: (string) {}),
+                  DropdownButton(
+                      hint: Text(
+                        'Select Category',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontFamily: 'texgyreadventor-regular'),
+                      ),
+                      value: selectedDropownValue,
+                      items: (_selectedCategory == CategoryType.income
+                              ? CategoryDb().incomeCategoryList
+                              : CategoryDb().expenseCategoryList)
+                          .value
+                          .map((e) {
+                        return DropdownMenuItem(
+                            enabled: !e.isDeleted,
+                            value: e.categoryName,
+                            child: e.isDeleted != true
+                                ? Text(e.categoryName,
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontFamily: 'texgyreadventor-regular'))
+                                : Text(
+                                    e.categoryName,
+                                    style: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 20,
+                                        fontFamily: 'texgyreadventor-regular'),
+                                  ));
+                      }).toList(),
+                      onChanged: (selectedValue) {
+                        setState(() {
+                          selectedDropownValue = selectedValue;
+                        });
+                      }),
                 ],
               ),
+              Visibility(
+                  visible: isCategoryVisible,
+                  child: Text(
+                    'Please Pick a Category',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontFamily: 'texgyreadventor-regular',
+                        color: Colors.red),
+                  )),
               const SizedBox(
                 height: 20,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ElevatedButton(onPressed: (){}, child: const Text('Add',
+                  ElevatedButton(
+                      onPressed: () async {
+                        if (selectedDropownValue == null) {
+                          setState(() {
+                            isCategoryVisible = true;
+                          });
+                        }
+                        if (_selectedDate == null) {
+                          setState(() {
+                            isDateVisible = true;
+                          });
+                        }
+                        if (_formKey.currentState!.validate() &&
+                            _selectedDate != null &&
+                            selectedDropownValue != null) {
+                          await onAdd();
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Added to transactions')));
+                          setState(() {
+                            selectedDropownValue = null;
+                            _amountController.clear();
+                            _purposeController.clear();
+                            _selectedDate = null;
+                            _finalImage = null;
+
+                          });
+                        }
+                      },
+                      child: const Text('Add',
                           style: TextStyle(
                               fontSize: 20,
                               fontFamily: 'texgyreadventor-regular')))
@@ -255,7 +392,7 @@ class _AddTransactionsState extends State<AddTransactions> {
   Future<void> PickImageFromGallery() async {
     _selectedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (_selectedImage != null) {
-      File imageFile = File(_selectedImage.path);
+      String imageFile = _selectedImage.path;
       setState(() {
         _finalImage = imageFile;
       });
@@ -266,10 +403,31 @@ class _AddTransactionsState extends State<AddTransactions> {
   Future<void> PickImageFromCamera() async {
     _selectedImage = await ImagePicker().pickImage(source: ImageSource.camera);
     if (_selectedImage != null) {
-      File imageFile = File(_selectedImage.path);
+      String imageFile = _selectedImage.path;
       setState(() {
         _finalImage = imageFile;
       });
     }
+  }
+
+  Future<void> onAdd() async {
+    String year = finalDate!.substring(0, 4);
+    String month = finalDate!.substring(5, 7);
+    String day = finalDate!.substring(8, 10);
+    String dateSum = year + month + day;
+    int dateSu = int.parse(dateSum);
+    if (_selectedDate != null) {
+      _finalDate = _selectedDate!;
+    }
+    final transactionData = TransactionModel(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        purpose: _purposeController.text,
+        amount: _amountController.text,
+        date: _finalDate,
+        dateSum: dateSu,
+        recieptImage: _finalImage!,
+        type: _selectedCategory!,
+        categorySubType: selectedDropownValue!);
+    TransactionDb().addTransactions(transactionData);
   }
 }

@@ -47,7 +47,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
           ),
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked, 
       bottomNavigationBar: BottomAppBar(
         child: SizedBox(
           height: 80,

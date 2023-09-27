@@ -1,15 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:money_manager/Screens/Categories/widgets/widget_radio.dart';
 import 'package:money_manager/db/category/category_db.dart';
 import 'package:money_manager/models/category_model.dart';
 
-ValueNotifier<CategoryType> selectedCategory =
-    ValueNotifier(CategoryType.income);
 
-class CategoryAddScreen extends StatelessWidget {
-  final TextEditingController _nameCont = TextEditingController();
+class CategoryAddScreen extends StatefulWidget {
+
   CategoryAddScreen({super.key});
+
+  @override
+  State<CategoryAddScreen> createState() => _CategoryAddScreenState();
+}
+
+class _CategoryAddScreenState extends State<CategoryAddScreen> {
+  final TextEditingController _nameCont = TextEditingController();
+  CategoryType? _selectedCategory;
+
+  @override
+  void initState() {
+    _selectedCategory=CategoryType.income;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +55,7 @@ class CategoryAddScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(
+              const SizedBox( 
                 height: 20,
               ),
 
@@ -77,8 +87,32 @@ class CategoryAddScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  RadioButton(title: 'Income', type: CategoryType.income),
-                  RadioButton(title: 'Expense', type: CategoryType.expense),
+                  Row(
+                    children: [
+                      Radio(value: CategoryType.income, groupValue: _selectedCategory, onChanged: (value){
+                        setState(() {
+                          _selectedCategory= CategoryType.income;
+                        });
+                      }),
+                      const Text('Income',style: TextStyle(
+                            fontFamily: 'Raleway-VariableFont_wght',
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600),)
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Radio(value: CategoryType.expense, groupValue: _selectedCategory, onChanged: (value){
+                        setState(() {
+                          _selectedCategory= CategoryType.expense;
+                        });
+                      }),
+                      const Text('Expense',style: TextStyle(
+                            fontFamily: 'Raleway-VariableFont_wght',
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600),)
+                    ],
+                  )
                 ],
               ),
 
@@ -91,7 +125,7 @@ class CategoryAddScreen extends StatelessWidget {
                   ElevatedButton(
                       onPressed: () async {
                         await AddCategory(_nameCont.text);
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Category Added')));
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Category Added')));
                       },
                       child: const Text('Add',
                           style: TextStyle(
@@ -99,7 +133,7 @@ class CategoryAddScreen extends StatelessWidget {
                               fontFamily: 'texgyreadventor-regular')))
                 ],
               )
-            ],
+            ],  
           ),
         ),
       ),
@@ -110,7 +144,7 @@ class CategoryAddScreen extends StatelessWidget {
     final Data = await CategoryModel(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
         categoryName: name,
-        type: selectedCategory.value);
+        type: _selectedCategory!);
         await CategoryDb().insertCategory(Data);
         
   }

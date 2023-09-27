@@ -37,7 +37,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                     width: 20,
                   ),
                   const Text(
-                    'Hi User',
+                    'Hi  ',
                     style: TextStyle(
                         fontSize: 25,
                         fontFamily: 'Raleway-VariableFont_wght',
