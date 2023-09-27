@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:money_manager/Screens/Search/search_screen.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HomeAppBar({super.key});
@@ -45,17 +44,6 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                   )
                 ],
               ),
-              IconButton(
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (ctx){
-                      return const SearchingBar();
-                    }));
-                  },
-                  icon: const FaIcon(
-                    FontAwesomeIcons.magnifyingGlass,
-                    color: Colors.black,
-                    size: 30,
-                  )),
             ],
           ),
         ),

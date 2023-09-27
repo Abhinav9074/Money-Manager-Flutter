@@ -29,5 +29,5 @@ class TransactionModel{
   @HiveField(7)
   final String categorySubType;
 
-  TransactionModel({required this.id, required this.purpose, required this.amount, required this.date, required this.dateSum, this.recieptImage, required this.type, required this.categorySubType}); 
+  TransactionModel({required this.id, required this.purpose, required this.amount, required this.date, required this.dateSum, this.recieptImage='', required this.type, required this.categorySubType}); 
 }

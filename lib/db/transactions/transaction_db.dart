@@ -58,6 +58,33 @@ class TransactionDb implements TransactionDetails {
     incomeTransactionsList.notifyListeners();
     allTransactionsList.notifyListeners();
   }
+
+
+  Future<void>searchTransactions(String text)async{
+    final _allTransactions = await  getTransactions();
+    expenseTransactionsList.value.clear();
+    incomeTransactionsList.value.clear();
+    allTransactionsList.value.clear();
+    await Future.forEach(_allTransactions, (TransactionModel transactions){
+      String searchText =transactions.purpose;
+      searchText.toLowerCase();
+      text.toLowerCase();
+      if(transactions.type==CategoryType.income&&transactions.purpose.toLowerCase().contains(text)){
+        incomeTransactionsList.value.add(transactions);
+        allTransactionsList.value.add(transactions);
+      }else if((transactions.type==CategoryType.expense&&transactions.purpose.toLowerCase().contains(text))){
+        expenseTransactionsList.value.add(transactions);
+        allTransactionsList.value.add(transactions);
+      }
+      
+    });
+    expenseTransactionsList.value.sort((first,second)=> second.date.compareTo(first.date));
+    incomeTransactionsList.value.sort((first,second)=> second.date.compareTo(first.date));
+    allTransactionsList.value.sort((first,second)=> second.date.compareTo(first.date));
+    expenseTransactionsList.notifyListeners();
+    incomeTransactionsList.notifyListeners();
+    allTransactionsList.notifyListeners();
+  }
   
   @override
   Future<void> deleteTransaction(value) async{

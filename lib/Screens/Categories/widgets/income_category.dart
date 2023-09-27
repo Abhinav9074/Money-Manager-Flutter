@@ -17,7 +17,6 @@ class IncomeCategoryScreen extends StatelessWidget {
             child: ListView.separated(
                 itemBuilder: (context, index) {
                   final data = incomeList[index];
-                  
                   return Column(
                     children: [
                       if(!data.isDeleted)
@@ -27,8 +26,7 @@ class IncomeCategoryScreen extends StatelessWidget {
                             ActionPane(motion: const BehindMotion(), children: [
                           SlidableAction(
                             onPressed: (ctx) {
-                              final deleteData = CategoryModel(id: data.id, categoryName: data.categoryName, type: data.type,isDeleted: true);
-                              CategoryDb.instance.insertCategory(deleteData);
+                              CategoryDb.instance.deleteCategory(data.id);
                             },
                             icon: FontAwesomeIcons.trash,
                             autoClose: true,
@@ -95,6 +93,7 @@ class IncomeCategoryScreen extends StatelessWidget {
                                         ],
                                       ),
                                     ),
+                                     
                                   ],
                                 ),
                               ),

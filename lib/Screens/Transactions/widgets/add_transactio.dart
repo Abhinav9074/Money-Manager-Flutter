@@ -360,19 +360,12 @@ class _AddTransactionsState extends State<AddTransactions> {
                             isDateVisible = true;
                           });
                         }
-                        if (_formKey.currentState!.validate() &&
+                        if(_formKey.currentState!.validate() &&
                             _selectedDate != null &&
                             selectedDropownValue != null) {
                           await onAdd();
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Added to transactions')));
-                          setState(() {
-                            selectedDropownValue = null;
-                            _amountController.clear();
-                            _purposeController.clear();
-                            _selectedDate = null;
-                            _finalImage = null;
-
-                          });
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Added to transactions') ));
+                          Navigator.of(context).pop();
                         }
                       },
                       child: const Text('Add',
@@ -418,6 +411,9 @@ class _AddTransactionsState extends State<AddTransactions> {
     int dateSu = int.parse(dateSum);
     if (_selectedDate != null) {
       _finalDate = _selectedDate!;
+    }
+    if(_finalImage==null){
+      _finalImage = '';
     }
     final transactionData = TransactionModel(
         id: DateTime.now().millisecondsSinceEpoch.toString(),

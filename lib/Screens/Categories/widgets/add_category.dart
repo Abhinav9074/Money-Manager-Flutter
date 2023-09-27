@@ -125,7 +125,8 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
                   ElevatedButton(
                       onPressed: () async {
                         await AddCategory(_nameCont.text);
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Category Added')));
+                        Navigator.of(context).pop();
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Category Added'),margin: EdgeInsets.all(8),));
                       },
                       child: const Text('Add',
                           style: TextStyle(
