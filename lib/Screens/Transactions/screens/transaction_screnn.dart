@@ -73,10 +73,18 @@ class _TransactionsScreenState extends State<TransactionsScreen>
                         if (val.isEmpty) {
                           TransactionDb().refreshUI();
                         } else {
-                          TransactionDb().searchTransactions(val);
+                          TransactionDb().searchTransactions(val.trim());
                         }
                       },
                       decoration: InputDecoration(
+                          suffixIcon: IconButton(
+                            icon: Icon(Icons.close),
+                            onPressed: () {
+                             searchText.clear();
+                             TransactionDb().refreshUI();
+                            },
+                          ),
+                          prefixIcon: Icon(Icons.search),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10)),
                           label: Text(

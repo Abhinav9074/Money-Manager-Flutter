@@ -100,7 +100,8 @@ class _AddTransactionsState extends State<AddTransactions> {
                               border: InputBorder.none,
                             ),
                             validator: (value) {
-                              if (!RegExp(r'^\S+(?!\d+$)').hasMatch(value ?? '')) {
+                              if (!RegExp(r'^\S+(?!\d+$)')
+                                  .hasMatch(value ?? '')) {
                                 return 'Please enter a valid purpose.';
                               }
                               return null;
@@ -360,11 +361,11 @@ class _AddTransactionsState extends State<AddTransactions> {
                             isDateVisible = true;
                           });
                         }
-                        if(_formKey.currentState!.validate() &&
+                        if (_formKey.currentState!.validate() &&
                             _selectedDate != null &&
                             selectedDropownValue != null) {
                           await onAdd();
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Added to transactions') ));
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Data Added Successfully',style: TextStyle(fontSize: 15),),behavior: SnackBarBehavior.floating,padding: EdgeInsets.all(20),));
                           Navigator.of(context).pop();
                         }
                       },
@@ -412,7 +413,7 @@ class _AddTransactionsState extends State<AddTransactions> {
     if (_selectedDate != null) {
       _finalDate = _selectedDate!;
     }
-    if(_finalImage==null){
+    if (_finalImage == null) {
       _finalImage = '';
     }
     final transactionData = TransactionModel(

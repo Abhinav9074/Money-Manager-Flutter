@@ -57,7 +57,7 @@ class ExpenseTransaction extends StatelessWidget {
                                     onPressed: (ctx) {
                                       Navigator.of(context).push(
                                           MaterialPageRoute(builder: (ctx) {
-                                        return const EditTransaction();
+                                        return EditTransaction(purpose: data.purpose,amount: data.amount,date: data.date,category: data.type,id: data.id,subType: data.categorySubType,dateSum: data.dateSum,image: data.recieptImage!,);
                                       }));
                                     },
                                     icon: FontAwesomeIcons.penToSquare,

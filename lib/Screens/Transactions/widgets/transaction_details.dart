@@ -162,10 +162,10 @@ class TransactionDetails extends StatelessWidget {
                                   ActionPane(motion: const BehindMotion(), children: [
                                 SlidableAction(
                                   onPressed: (ctx) {
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(builder: (ctx) {
-                                      return const EditTransaction();
-                                    }));
+                                    // Navigator.of(context)
+                                    //     .push(MaterialPageRoute(builder: (ctx) {
+                                    //   return const EditTransaction();
+                                    // }));
                                   },
                                   icon: FontAwesomeIcons.penToSquare,
                                   autoClose: true,
