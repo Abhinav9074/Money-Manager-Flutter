@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -6,6 +8,7 @@ import 'package:money_manager/db/category/category_db.dart';
 import 'package:money_manager/db/transactions/transaction_db.dart';
 import 'package:money_manager/models/category_model.dart';
 import 'package:money_manager/models/transactions_model.dart';
+import 'package:recase/recase.dart';
 
 class EditTransaction extends StatefulWidget {
   final String purpose;
@@ -30,8 +33,8 @@ class _AddTransactionsState extends State<EditTransaction> {
   bool isDateVisible = false;
   bool isCategoryVisible = false;
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _purposeController = TextEditingController();
-  TextEditingController _amountController = TextEditingController();
+  final TextEditingController _purposeController = TextEditingController();
+  final TextEditingController _amountController = TextEditingController();
 
   // ignore: prefer_typing_uninitialized_variables
   late var _selectedImage;
@@ -43,8 +46,7 @@ class _AddTransactionsState extends State<EditTransaction> {
   String? selectedDropownValue;
   @override
   void initState() {
-    // TODO: implement initState
-
+  
     _selectedCategory = widget.category;
     _purposeController.text=widget.purpose;
     _amountController.text=widget.amount;
@@ -187,7 +189,7 @@ class _AddTransactionsState extends State<EditTransaction> {
                 children: [
                   Visibility(
                       visible: isDateVisible,
-                      child: Text(
+                      child: const Text(
                         'Please Pick a Date',
                         style: TextStyle(
                             fontSize: 20,
@@ -316,7 +318,7 @@ class _AddTransactionsState extends State<EditTransaction> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   DropdownButton(
-                      hint: Text(
+                      hint: const Text(
                         'Select Category',
                         style: TextStyle(
                             fontSize: 20,
@@ -333,12 +335,12 @@ class _AddTransactionsState extends State<EditTransaction> {
                             value: e.categoryName,
                             child: e.isDeleted != true
                                 ? Text(e.categoryName,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 20,
                                         fontFamily: 'texgyreadventor-regular'))
                                 : Text(
                                     e.categoryName,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: Colors.grey,
                                         fontSize: 20,
                                         fontFamily: 'texgyreadventor-regular'),
@@ -353,7 +355,7 @@ class _AddTransactionsState extends State<EditTransaction> {
               ),
               Visibility(
                   visible: isCategoryVisible,
-                  child: Text(
+                  child: const Text(
                     'Please Pick a Category',
                     style: TextStyle(
                         fontSize: 20,
@@ -382,7 +384,7 @@ class _AddTransactionsState extends State<EditTransaction> {
                             _selectedDate != null &&
                             selectedDropownValue != null) {
                           await onAdd();
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Data Updated Successfully',style: TextStyle(fontSize: 15),),behavior: SnackBarBehavior.floating,padding: EdgeInsets.all(20),));
+                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Data Updated Successfully',style: TextStyle(fontSize: 15),),behavior: SnackBarBehavior.floating,padding: EdgeInsets.all(20),));
                           Navigator.of(context).pop();
                         }
                       },
@@ -433,7 +435,7 @@ class _AddTransactionsState extends State<EditTransaction> {
     }
     final transactionData = TransactionModel(
         id: widget.id,
-        purpose: _purposeController.text,
+        purpose: _purposeController.text.titleCase ,
         amount: _amountController.text,
         date: _finalDate,
         dateSum: widget.dateSum,

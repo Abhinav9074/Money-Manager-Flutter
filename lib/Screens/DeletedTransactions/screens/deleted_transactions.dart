@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:money_manager/Screens/Transactions/widgets/transaction_details.dart';
 
 class DeletedTransactions extends StatelessWidget {
   const DeletedTransactions({super.key});
@@ -39,13 +38,13 @@ class DeletedTransactions extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (ctx) {
-                        return TransactionDetails(
-                            price: 112,
-                            purpose: 'Lunch${index + 1}',
-                            subcategory: 'Food');
-                      }));
+                      // Navigator.of(context)
+                      //     .push(MaterialPageRoute(builder: (ctx) {
+                      //   return TransactionDetailsScreen(
+                      //       price: '112',
+                      //       purpose: 'Lunch${index + 1}',
+                      //       subcategory: 'Food');
+                      // }));
                     },
                     child: Column(
                       children: [

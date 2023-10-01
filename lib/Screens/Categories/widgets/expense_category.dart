@@ -27,8 +27,58 @@ class ExpenseCategoryScreen extends StatelessWidget {
                             ActionPane(motion: const BehindMotion(), children: [
                           SlidableAction(
                             onPressed: (ctx) {
-                              final deleteData = CategoryModel(id: data.id, categoryName: data.categoryName, type: data.type,isDeleted: true);
-                              CategoryDb.instance.insertCategory(deleteData);
+                              showDialog(
+                                            context: context,
+                                            builder: (ctx) {
+                                              return AlertDialog(
+                                                content: const Text(
+                                                    'The Data Will Be Deleted'),
+                                                title: const Text('Are You Sure'),
+                                                actions: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.end,
+                                                    children: [
+                                                      IconButton(
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          icon: const Icon(
+                                                              Icons.close)),
+                                                      IconButton(
+                                                        onPressed: () async {
+                                                          CategoryDb().deleteCategory(data.id);
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                                  const SnackBar(
+                                                            content: Text(
+                                                              'Deleted Successfully',
+                                                              style: TextStyle(
+                                                                  fontSize: 15),
+                                                            ),
+                                                            behavior:
+                                                                SnackBarBehavior
+                                                                    .floating,
+                                                            padding:
+                                                                EdgeInsets.all(
+                                                                    20),
+                                                          ));
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                        icon: const Icon(Icons.check),
+                                                      )
+                                                    ],
+                                                  )
+                                                ],
+                                              );
+                                            });
                             },
                             icon: FontAwesomeIcons.trash,
                             autoClose: true,

@@ -2,6 +2,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:money_manager/models/category_model.dart';
 import 'package:money_manager/models/transactions_model.dart';
 
+// ignore: non_constant_identifier_names
 Future<void>InitDb()async{
   await Hive.initFlutter();
 

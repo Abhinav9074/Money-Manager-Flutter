@@ -28,23 +28,22 @@ class CategoryDb implements CategoryDbFunctions{
 
   @override
   Future<void> insertCategory(CategoryModel value) async{
-    final _categoryDb = await Hive.openBox<CategoryModel>(CATEGORY_DB_NAME);
-    print(value.categoryName);
-    await _categoryDb.put(value.id,value);
+    final categoryDb = await Hive.openBox<CategoryModel>(CATEGORY_DB_NAME);
+    await categoryDb.put(value.id,value);
     refreshUI();     
   }
   
   @override
   Future<List<CategoryModel>> getCategories() async{
-    final _categoryDb = await Hive.openBox<CategoryModel>(CATEGORY_DB_NAME);
-    return _categoryDb.values.toList();
+    final categoryDb = await Hive.openBox<CategoryModel>(CATEGORY_DB_NAME);
+    return categoryDb.values.toList();
   }
 
   Future<void>refreshUI()async{
-    final _allCategories = await getCategories();
+    final allCategories = await getCategories();
     incomeCategoryList.value.clear();
     expenseCategoryList.value.clear();
-    await Future.forEach(_allCategories, (CategoryModel category){
+    await Future.forEach(allCategories, (CategoryModel category){
       if(category.type == CategoryType.income){
         incomeCategoryList.value.add(category);
       }else{
@@ -58,8 +57,8 @@ class CategoryDb implements CategoryDbFunctions{
   
   @override
   Future<void> deleteCategory(String value) async{
-    final _categoryDb = await Hive.openBox<CategoryModel>(CATEGORY_DB_NAME);
-    await _categoryDb.delete(value);
+    final categoryDb = await Hive.openBox<CategoryModel>(CATEGORY_DB_NAME);
+    await categoryDb.delete(value);
     refreshUI();
   }
 }

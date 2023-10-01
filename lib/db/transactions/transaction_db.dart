@@ -3,12 +3,14 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:money_manager/models/category_model.dart';
 import 'package:money_manager/models/transactions_model.dart';
 
+// ignore: constant_identifier_names
 const TRANSACTION_DB_NAME = 'transaction-database';
 
 abstract class TransactionDetails {
   Future<void> addTransactions(TransactionModel values);
   Future<List<TransactionModel>> getTransactions();
   Future<void>deleteTransaction(value);
+  Future<void>findSpeciificTransaction(value,String id);
 }
 
 class TransactionDb implements TransactionDetails {
@@ -23,27 +25,28 @@ class TransactionDb implements TransactionDetails {
   ValueNotifier<List<TransactionModel>> incomeTransactionsList= ValueNotifier([]);
   ValueNotifier<List<TransactionModel>> expenseTransactionsList= ValueNotifier([]);
   ValueNotifier<List<TransactionModel>> allTransactionsList= ValueNotifier([]);
+  ValueNotifier<List<TransactionModel>> specificTransactionsList= ValueNotifier([]);
 
   @override
   Future<void> addTransactions(TransactionModel values) async {
-    final _transactionDb =
+    final transactionDb =
         await Hive.openBox<TransactionModel>(TRANSACTION_DB_NAME);
-    await _transactionDb.put(values.id, values);
+    await transactionDb.put(values.id, values);
     refreshUI();
   }
 
   @override
   Future<List<TransactionModel>> getTransactions() async{
-    final _transactionDb = await Hive.openBox<TransactionModel>(TRANSACTION_DB_NAME);
-    return _transactionDb.values.toList();
+    final transactionDb = await Hive.openBox<TransactionModel>(TRANSACTION_DB_NAME);
+    return transactionDb.values.toList();
   }
 
   Future<void>refreshUI()async{
-    final _allTransactions = await  getTransactions();
+    final allTransactions = await  getTransactions();
     expenseTransactionsList.value.clear();
     incomeTransactionsList.value.clear();
     allTransactionsList.value.clear();
-    await Future.forEach(_allTransactions, (TransactionModel transactions){
+    await Future.forEach(allTransactions, (TransactionModel transactions){
       if(transactions.type==CategoryType.income){
         incomeTransactionsList.value.add(transactions);
       }else{
@@ -61,11 +64,11 @@ class TransactionDb implements TransactionDetails {
 
 
   Future<void>searchTransactions(String text)async{
-    final _allTransactions = await  getTransactions();
+    final allTransactions = await  getTransactions();
     expenseTransactionsList.value.clear();
     incomeTransactionsList.value.clear();
     allTransactionsList.value.clear();
-    await Future.forEach(_allTransactions, (TransactionModel transactions){
+    await Future.forEach(allTransactions, (TransactionModel transactions){
       String searchText =transactions.purpose;
       searchText.toLowerCase();
       text.toLowerCase();
@@ -85,11 +88,30 @@ class TransactionDb implements TransactionDetails {
     incomeTransactionsList.notifyListeners();
     allTransactionsList.notifyListeners();
   }
+
+ @override
+  Future<void> findSpeciificTransaction(value ,String id) async{
+    final specificTransactions = await getTransactions();
+    specificTransactionsList.value.clear();
+
+    await Future.forEach(specificTransactions, (TransactionModel transactions){
+      if(transactions.categorySubType==value&&transactions.id!=id){
+        specificTransactionsList.value.add(transactions);
+      }
+    });
+    specificTransactionsList.value.sort((first,second)=> second.date.compareTo(first.date));
+    specificTransactionsList.notifyListeners();
+
+    
+  }
+
   
   @override
   Future<void> deleteTransaction(value) async{
-    final _transactionDb = await  Hive.openBox<TransactionModel>(TRANSACTION_DB_NAME);
-    await _transactionDb.delete(value);
+    final transactionDb = await  Hive.openBox<TransactionModel>(TRANSACTION_DB_NAME);
+    await transactionDb.delete(value);
     refreshUI();
   }
+  
+ 
 }

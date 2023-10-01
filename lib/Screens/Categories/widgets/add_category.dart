@@ -1,11 +1,13 @@
+// ignore_for_file: non_constant_identifier_names, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:money_manager/db/category/category_db.dart';
 import 'package:money_manager/models/category_model.dart';
-
+import 'package:recase/recase.dart';
 
 class CategoryAddScreen extends StatefulWidget {
-
+  // ignore: prefer_const_constructors_in_immutables
   CategoryAddScreen({super.key});
 
   @override
@@ -18,11 +20,13 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
 
   @override
   void initState() {
-    _selectedCategory=CategoryType.income;
+    super.initState();
+    _selectedCategory = CategoryType.income;
   }
 
   @override
   Widget build(BuildContext context) {
+    final _formKey = GlobalKey<FormState>();
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 232, 235, 235),
       appBar: AppBar(
@@ -55,7 +59,7 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox( 
+              const SizedBox(
                 height: 20,
               ),
 
@@ -65,19 +69,29 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
                 padding: const EdgeInsets.fromLTRB(10, 5, 10, 10),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child: TextFormField(
-                    controller: _nameCont,
-                    decoration: const InputDecoration(
-                      label: Text(
-                        'Category Name',
-                        style: TextStyle(
-                            fontFamily: 'Raleway-VariableFont_wght',
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600),
+                  child: Form(
+                    key: _formKey,
+                    child: TextFormField(
+                      validator: (value) {
+                              if (!RegExp(r'^\S+(?!\d+$)')
+                                  .hasMatch(value ?? '')) {
+                                return 'Please enter a valid purpose.';
+                              }
+                              return null;
+                            },
+                      controller: _nameCont,
+                      decoration: const InputDecoration(
+                        label: Text(
+                          'Category Name',
+                          style: TextStyle(
+                              fontFamily: 'Raleway-VariableFont_wght',
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        fillColor: Colors.white,
+                        filled: true,
+                        border: InputBorder.none,
                       ),
-                      fillColor: Colors.white,
-                      filled: true,
-                      border: InputBorder.none,
                     ),
                   ),
                 ),
@@ -89,28 +103,40 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
                 children: [
                   Row(
                     children: [
-                      Radio(value: CategoryType.income, groupValue: _selectedCategory, onChanged: (value){
-                        setState(() {
-                          _selectedCategory= CategoryType.income;
-                        });
-                      }),
-                      const Text('Income',style: TextStyle(
+                      Radio(
+                          value: CategoryType.income,
+                          groupValue: _selectedCategory,
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedCategory = CategoryType.income;
+                            });
+                          }),
+                      const Text(
+                        'Income',
+                        style: TextStyle(
                             fontFamily: 'Raleway-VariableFont_wght',
                             fontSize: 20,
-                            fontWeight: FontWeight.w600),)
+                            fontWeight: FontWeight.w600),
+                      )
                     ],
                   ),
                   Row(
                     children: [
-                      Radio(value: CategoryType.expense, groupValue: _selectedCategory, onChanged: (value){
-                        setState(() {
-                          _selectedCategory= CategoryType.expense;
-                        });
-                      }),
-                      const Text('Expense',style: TextStyle(
+                      Radio(
+                          value: CategoryType.expense,
+                          groupValue: _selectedCategory,
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedCategory = CategoryType.expense;
+                            });
+                          }),
+                      const Text(
+                        'Expense',
+                        style: TextStyle(
                             fontFamily: 'Raleway-VariableFont_wght',
                             fontSize: 20,
-                            fontWeight: FontWeight.w600),)
+                            fontWeight: FontWeight.w600),
+                      )
                     ],
                   )
                 ],
@@ -124,9 +150,18 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
                 children: [
                   ElevatedButton(
                       onPressed: () async {
-                        await AddCategory(_nameCont.text);
-                        Navigator.of(context).pop();
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Category Added'),margin: EdgeInsets.all(8),));
+                        if (_formKey.currentState!.validate()) {
+                          await AddCategory(_nameCont.text);
+                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                            content: Text(
+                              'Category Added',
+                              style: TextStyle(fontSize: 15),
+                            ),
+                            behavior: SnackBarBehavior.floating,
+                            padding: EdgeInsets.all(20),
+                          ));
+                          Navigator.of(context).pop();
+                        }
                       },
                       child: const Text('Add',
                           style: TextStyle(
@@ -134,7 +169,7 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
                               fontFamily: 'texgyreadventor-regular')))
                 ],
               )
-            ],  
+            ],
           ),
         ),
       ),
@@ -142,11 +177,10 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
   }
 
   Future<void> AddCategory(String name) async {
-    final Data = await CategoryModel(
+    final Data = CategoryModel(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
-        categoryName: name,
+        categoryName: name.titleCase,
         type: _selectedCategory!);
-        await CategoryDb().insertCategory(Data);
-        
+    await CategoryDb().insertCategory(Data);
   }
 }

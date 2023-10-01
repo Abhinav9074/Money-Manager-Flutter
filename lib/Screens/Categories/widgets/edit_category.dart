@@ -1,30 +1,35 @@
+// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:money_manager/db/category/category_db.dart';
 import 'package:money_manager/models/category_model.dart';
+import 'package:recase/recase.dart';
 
 class CategoryEditScreen extends StatefulWidget {
   final String categoryName;
   final CategoryType categoryType;
   final String CategoryId;
 
-  const CategoryEditScreen({super.key, required this.categoryName, required this.categoryType, required this.CategoryId});
-
-  
+  const CategoryEditScreen(
+      {super.key,
+      required this.categoryName,
+      required this.categoryType,
+      required this.CategoryId});
 
   @override
   State<CategoryEditScreen> createState() => _CategoryEditScreenState();
 }
 
 class _CategoryEditScreenState extends State<CategoryEditScreen> {
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameCont = TextEditingController();
-  late  CategoryType _selectedCategory;
+  late CategoryType _selectedCategory;
 
   @override
   void initState() {
-    // TODO: implement initState
     _selectedCategory = widget.categoryType;
-    _nameCont.text=widget.categoryName;
+    _nameCont.text = widget.categoryName;
     super.initState();
   }
 
@@ -66,25 +71,32 @@ class _CategoryEditScreenState extends State<CategoryEditScreen> {
                 height: 20,
               ),
 
-              //Purpose field
-
               Padding(
                 padding: const EdgeInsets.fromLTRB(10, 5, 10, 10),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child: TextFormField(
-                    controller: _nameCont,
-                    decoration: const InputDecoration(
-                      label: Text(
-                        'Category Name',
-                        style: TextStyle(
-                            fontFamily: 'Raleway-VariableFont_wght',
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600),
+                  child: Form(
+                    key: _formKey,
+                    child: TextFormField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'This field cannot be empty.';
+                        }
+                        return null;
+                      },
+                      controller: _nameCont,
+                      decoration: const InputDecoration(
+                        label: Text(
+                          'Category Name',
+                          style: TextStyle(
+                              fontFamily: 'Raleway-VariableFont_wght',
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        fillColor: Colors.white,
+                        filled: true,
+                        border: InputBorder.none,
                       ),
-                      fillColor: Colors.white,
-                      filled: true,
-                      border: InputBorder.none,
                     ),
                   ),
                 ),
@@ -142,9 +154,19 @@ class _CategoryEditScreenState extends State<CategoryEditScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
-                      onPressed: () async{
-                        await onUpdate();
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Data Updated')));
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          await onUpdate();
+                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                            content: Text(
+                              'Category Updated',
+                              style: TextStyle(fontSize: 15),
+                            ),
+                            behavior: SnackBarBehavior.floating,
+                            padding: EdgeInsets.all(20),
+                          ));
+                          Navigator.of(context).pop();
+                        }
                       },
                       child: const Text('Update',
                           style: TextStyle(
@@ -158,8 +180,12 @@ class _CategoryEditScreenState extends State<CategoryEditScreen> {
       ),
     );
   }
-  Future<void>onUpdate()async{
-    final updateCategory = await CategoryModel(id: widget.CategoryId, categoryName: _nameCont.text, type: _selectedCategory);
+
+  Future<void> onUpdate() async {
+    final updateCategory = CategoryModel(
+        id: widget.CategoryId,
+        categoryName: _nameCont.text.titleCase,
+        type: _selectedCategory);
     await CategoryDb().insertCategory(updateCategory);
   }
 }

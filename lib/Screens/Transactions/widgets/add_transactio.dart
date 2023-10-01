@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -6,6 +8,7 @@ import 'package:money_manager/db/category/category_db.dart';
 import 'package:money_manager/db/transactions/transaction_db.dart';
 import 'package:money_manager/models/category_model.dart';
 import 'package:money_manager/models/transactions_model.dart';
+import 'package:recase/recase.dart';
 
 class AddTransactions extends StatefulWidget {
   const AddTransactions({super.key});
@@ -18,8 +21,8 @@ class _AddTransactionsState extends State<AddTransactions> {
   bool isDateVisible = false;
   bool isCategoryVisible = false;
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _purposeController = TextEditingController();
-  TextEditingController _amountController = TextEditingController();
+  final TextEditingController _purposeController = TextEditingController();
+  final TextEditingController _amountController = TextEditingController();
 
   // ignore: prefer_typing_uninitialized_variables
   late var _selectedImage;
@@ -31,7 +34,6 @@ class _AddTransactionsState extends State<AddTransactions> {
   String? selectedDropownValue;
   @override
   void initState() {
-    // TODO: implement initState
 
     _selectedCategory = CategoryType.income;
     super.initState();
@@ -39,6 +41,8 @@ class _AddTransactionsState extends State<AddTransactions> {
 
   @override
   Widget build(BuildContext context) {
+    final mq = MediaQuery.of(context);
+    final screenHeight = mq.size.height;
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 232, 235, 235),
       appBar: AppBar(
@@ -68,11 +72,12 @@ class _AddTransactionsState extends State<AddTransactions> {
       body: SingleChildScrollView(
         child: SizedBox(
           width: double.infinity,
+          height: screenHeight,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(
-                height: 20,
+          SizedBox(
+                height: screenHeight/8,
               ),
 
               Form(
@@ -82,7 +87,7 @@ class _AddTransactionsState extends State<AddTransactions> {
                       //Purpose field
 
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 5, 10, 10),
+                        padding: const EdgeInsets.fromLTRB(30, 5, 30, 10),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: TextFormField(
@@ -109,11 +114,9 @@ class _AddTransactionsState extends State<AddTransactions> {
                           ),
                         ),
                       ),
-
                       //Amount Field
-
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 5, 10, 10),
+                        padding: const EdgeInsets.fromLTRB(150, 5, 150, 10),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: TextFormField(
@@ -174,7 +177,7 @@ class _AddTransactionsState extends State<AddTransactions> {
                 children: [
                   Visibility(
                       visible: isDateVisible,
-                      child: Text(
+                      child: const Text(
                         'Please Pick a Date',
                         style: TextStyle(
                             fontSize: 20,
@@ -299,7 +302,7 @@ class _AddTransactionsState extends State<AddTransactions> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   DropdownButton(
-                      hint: Text(
+                      hint: const Text(
                         'Select Category',
                         style: TextStyle(
                             fontSize: 20,
@@ -316,12 +319,12 @@ class _AddTransactionsState extends State<AddTransactions> {
                             value: e.categoryName,
                             child: e.isDeleted != true
                                 ? Text(e.categoryName,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 20,
                                         fontFamily: 'texgyreadventor-regular'))
                                 : Text(
                                     e.categoryName,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: Colors.grey,
                                         fontSize: 20,
                                         fontFamily: 'texgyreadventor-regular'),
@@ -336,7 +339,7 @@ class _AddTransactionsState extends State<AddTransactions> {
               ),
               Visibility(
                   visible: isCategoryVisible,
-                  child: Text(
+                  child: const Text(
                     'Please Pick a Category',
                     style: TextStyle(
                         fontSize: 20,
@@ -365,7 +368,7 @@ class _AddTransactionsState extends State<AddTransactions> {
                             _selectedDate != null &&
                             selectedDropownValue != null) {
                           await onAdd();
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Data Added Successfully',style: TextStyle(fontSize: 15),),behavior: SnackBarBehavior.floating,padding: EdgeInsets.all(20),));
+                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Data Added Successfully',style: TextStyle(fontSize: 15),),behavior: SnackBarBehavior.floating,padding: EdgeInsets.all(20),));
                           Navigator.of(context).pop();
                         }
                       },
@@ -413,12 +416,13 @@ class _AddTransactionsState extends State<AddTransactions> {
     if (_selectedDate != null) {
       _finalDate = _selectedDate!;
     }
+    // ignore: prefer_conditional_assignment
     if (_finalImage == null) {
       _finalImage = '';
     }
     final transactionData = TransactionModel(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
-        purpose: _purposeController.text,
+        purpose: _purposeController.text.titleCase,
         amount: _amountController.text,
         date: _finalDate,
         dateSum: dateSu,

@@ -18,15 +18,15 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
   final List<Widget> screens = [
     const TransactionsScreen(),
     const StatsScreen(),
-     HomeScreen(),
+    const HomeScreen(),
     const CategoryScreen(),
-     SettingsScreen()
+    SettingsScreen()
   ];
 
   final PageStorageBucket bucket = PageStorageBucket();
-  Widget currentScreen =  HomeScreen();
+  Widget currentScreen = const HomeScreen();
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     return Scaffold(
       body: PageStorage(
         bucket: bucket,
@@ -39,7 +39,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
           child: FloatingActionButton(
             onPressed: () {
               setState(() {
-                currentScreen =  HomeScreen();
+                currentScreen = const HomeScreen();
                 currentTab = null;
               });
             },
@@ -47,7 +47,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
           ),
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked, 
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         child: SizedBox(
           height: 80,
@@ -72,8 +72,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                     Text(
                       'Transactions',
                       style: TextStyle(
-                        color:
-                            currentTab == 0 ? Colors.blue : Colors.black,
+                        color: currentTab == 0 ? Colors.blue : Colors.black,
                       ),
                     )
                   ],
@@ -97,8 +96,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                     Text(
                       'Stats',
                       style: TextStyle(
-                        color:
-                            currentTab == 1 ? Colors.blue : Colors.black,
+                        color: currentTab == 1 ? Colors.blue : Colors.black,
                       ),
                     )
                   ],
@@ -122,8 +120,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                     Text(
                       'Categories',
                       style: TextStyle(
-                        color:
-                            currentTab == 2 ? Colors.blue : Colors.black,
+                        color: currentTab == 2 ? Colors.blue : Colors.black,
                       ),
                     )
                   ],
@@ -133,7 +130,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                 minWidth: 40,
                 onPressed: () {
                   setState(() {
-                    currentScreen =  SettingsScreen();
+                    currentScreen = SettingsScreen();
                     currentTab = 3;
                   });
                 },
@@ -147,8 +144,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                     Text(
                       'Settings',
                       style: TextStyle(
-                        color:
-                            currentTab == 3 ? Colors.blue : Colors.black,
+                        color: currentTab == 3 ? Colors.blue : Colors.black,
                       ),
                     )
                   ],
@@ -159,5 +155,5 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
         ),
       ),
     );
-  }
+  }  
 }

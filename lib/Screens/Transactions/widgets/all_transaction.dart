@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_unnecessary_containers
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -24,15 +26,22 @@ class AllTransactions extends StatelessWidget {
                 child: ListView.separated(
                     itemBuilder: (context, index) {
                       final data = newList[index];
-                      return InkWell(
+                      return TransactionDb().allTransactionsList.value.isEmpty?
+                      const Text('Empty'):
+                      InkWell(
                         onTap: () {
-                          // Navigator.of(context)
-                          //     .push(MaterialPageRoute(builder: (ctx) {
-                          //   return TransactionDetails(
-                          //       price: 112,
-                          //       purpose: 'Lunch${index + 1}',
-                          //       subcategory: 'Food');
-                          // }));
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (ctx) {
+                            return TransactionDetailsScreen(
+                              price: data.amount,
+                              purpose: data.purpose,
+                              subcategory: data.categorySubType,
+                              date: data.date,
+                              image: data.recieptImage!,
+                              category: data.type,
+                              id: data.id,
+                            );
+                          }));
                         },
                         child: Column(
                           children: [
@@ -42,9 +51,61 @@ class AllTransactions extends StatelessWidget {
                                   motion: const BehindMotion(),
                                   children: [
                                     SlidableAction(
-                                      onPressed: (ctx) async {
-                                        await TransactionDb()
-                                            .deleteTransaction(data.id);
+                                      onPressed: (ctx) {
+                                        showDialog(
+                                            context: context,
+                                            builder: (ctx) {
+                                              return AlertDialog(
+                                                content: const Text(
+                                                    'The Data Will Be Deleted'),
+                                                title: const Text('Are You Sure'),
+                                                actions: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.end,
+                                                    children: [
+                                                      IconButton(
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          icon: const Icon(
+                                                              Icons.close)),
+                                                      IconButton(
+                                                        onPressed: () async {
+                                                          TransactionDb()
+                                                              .deleteTransaction(
+                                                                  data.id);
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                                  const SnackBar(
+                                                            content: Text(
+                                                              'Deleted Successfully',
+                                                              style: TextStyle(
+                                                                  fontSize: 15),
+                                                            ),
+                                                            behavior:
+                                                                SnackBarBehavior
+                                                                    .floating,
+                                                            padding:
+                                                                EdgeInsets.all(
+                                                                    20),
+                                                          ));
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                        icon: const Icon(Icons.check),
+                                                      )
+                                                    ],
+                                                  )
+                                                ],
+                                              );
+                                            });
                                       },
                                       icon: FontAwesomeIcons.trash,
                                       autoClose: true,
@@ -60,7 +121,16 @@ class AllTransactions extends StatelessWidget {
                                       onPressed: (ctx) {
                                         Navigator.of(context).push(
                                             MaterialPageRoute(builder: (ctx) {
-                                          return EditTransaction(purpose: data.purpose,amount: data.amount,date: data.date,category: data.type,id: data.id,subType: data.categorySubType,dateSum: data.dateSum,image: data.recieptImage!,);
+                                          return EditTransaction(
+                                            purpose: data.purpose,
+                                            amount: data.amount,
+                                            date: data.date,
+                                            category: data.type,
+                                            id: data.id,
+                                            subType: data.categorySubType,
+                                            dateSum: data.dateSum,
+                                            image: data.recieptImage!,
+                                          );
                                         }));
                                       },
                                       icon: FontAwesomeIcons.penToSquare,
@@ -119,7 +189,7 @@ class AllTransactions extends StatelessWidget {
                                                       parseDate(data.date),
                                                       textAlign:
                                                           TextAlign.center,
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                           fontSize: 18,
                                                           fontFamily:
                                                               'texgyreadventor-regular',
@@ -157,16 +227,20 @@ class AllTransactions extends StatelessWidget {
                                                 ),
                                                 data.type == CategoryType.income
                                                     ? Text(data.categorySubType,
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                             fontSize: 18,
                                                             fontFamily:
                                                                 'texgyreadventor-regular',
                                                             fontWeight:
                                                                 FontWeight.w900,
                                                             color:
-                                                                Color.fromARGB(255, 33, 165, 6)))
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    33,
+                                                                    165,
+                                                                    6)))
                                                     : Text(data.categorySubType,
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                             fontSize: 18,
                                                             fontFamily:
                                                                 'texgyreadventor-regular',
@@ -206,7 +280,7 @@ class AllTransactions extends StatelessWidget {
                       );
                     },
                     separatorBuilder: (context, index) {
-                      return SizedBox(
+                      return const SizedBox(
                         height: 5,
                       );
                     },
@@ -224,8 +298,8 @@ class AllTransactions extends StatelessWidget {
   }
 
   String parseDate(DateTime date) {
-    final _date = DateFormat.MMMd().format(date);
-    final _splitDate = _date.split(' ');
-    return '${_splitDate[1]}\n${_splitDate[0]}';
+    final date0 = DateFormat.MMMd().format(date);
+    final splitDate = date0.split(' ');
+    return '${splitDate[1]}\n${splitDate[0]}';
   }
 }

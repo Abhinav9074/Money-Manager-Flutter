@@ -62,6 +62,7 @@ class _TransactionsScreenState extends State<TransactionsScreen>
         children: [
           Column(
             children: [
+              // ignore: sized_box_for_whitespace
               Container(
                   width: double.infinity,
                   height: 50,
@@ -78,16 +79,16 @@ class _TransactionsScreenState extends State<TransactionsScreen>
                       },
                       decoration: InputDecoration(
                           suffixIcon: IconButton(
-                            icon: Icon(Icons.close),
+                            icon: const Icon(Icons.close),
                             onPressed: () {
                              searchText.clear();
                              TransactionDb().refreshUI();
                             },
                           ),
-                          prefixIcon: Icon(Icons.search),
+                          prefixIcon: const Icon(Icons.search),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10)),
-                          label: Text(
+                          label: const Text(
                             'Search Transactions',
                             style: TextStyle(
                                 fontSize: 20,
