@@ -5,8 +5,7 @@ import 'package:money_manager/db/transactions/transaction_db.dart';
 class FilterWidget extends StatefulWidget {
   final int index;
 
-   FilterWidget({super.key, required this.index});
- 
+  FilterWidget({super.key, required this.index});
 
   @override
   State<FilterWidget> createState() => _FilterWidgetState();
@@ -21,7 +20,7 @@ class _FilterWidgetState extends State<FilterWidget> {
 
   @override
   void initState() {
-    first_index=TransactionDb().allTransactionsList.value.length-1;
+    first_index = TransactionDb().allTransactionsList.value.length - 1;
     indexValue = TransactionDb().allTransactionsList.value[first_index];
     print(indexValue.date);
     super.initState();
@@ -29,7 +28,7 @@ class _FilterWidgetState extends State<FilterWidget> {
 
   @override
   Widget build(BuildContext context) {
-    List<String> items = ['select','Food', 'Travel', 'Miscellaneous', 'Fees'];
+    List<String> items = ['select', 'Food', 'Travel', 'Miscellaneous', 'Fees'];
     String dropdownValue = items[0];
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -78,7 +77,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                   EndDate = await showDatePicker(
                       context: context,
                       initialDate: DateTime.now(),
-                      firstDate: indexValue.date ,
+                      firstDate: indexValue.date,
                       lastDate: DateTime.now());
                   setState(() {});
                 },
@@ -113,18 +112,33 @@ class _FilterWidgetState extends State<FilterWidget> {
             });
           },
         ),
-        SizedBox(height: 40,),
+        SizedBox(
+          height: 40,
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton(onPressed: (){
-              TransactionDb().FilterByDate(startDate!, EndDate!);
-            }, child: const Text('Filter')),
-            const SizedBox(width: 10,),
-            ElevatedButton(onPressed: (){}, child: const Text('Clear')),
+            ElevatedButton(
+                onPressed: () async {
+                  if (startDate != null && EndDate != null) {
+                    await FilterPress();
+                  }
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Filter')),
+            const SizedBox(
+              width: 10,
+            ),
+            ElevatedButton(onPressed: () {}, child: const Text('Clear')),
           ],
         )
       ],
     );
+  }
+
+
+  Future<void> FilterPress() async {
+    
+    TransactionDb().FilterByDate(startDate!, EndDate!);
   }
 }

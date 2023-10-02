@@ -408,11 +408,10 @@ class _AddTransactionsState extends State<AddTransactions> {
   }
 
   Future<void> onAdd() async {
-    String year = finalDate!.substring(0, 4);
-    String month = finalDate!.substring(5, 7);
-    String day = finalDate!.substring(8, 10);
-    String dateSum = year + month + day;
-    int dateSu = int.parse(dateSum);
+    int year = int.parse(finalDate!.substring(0, 4));
+    int month = int.parse(finalDate!.substring(5, 7));
+    int day = int.parse(finalDate!.substring(8, 10));
+    int dateSum = year + month + day;
     if (_selectedDate != null) {
       _finalDate = _selectedDate!;
     }
@@ -425,7 +424,7 @@ class _AddTransactionsState extends State<AddTransactions> {
         purpose: _purposeController.text.titleCase,
         amount: _amountController.text,
         date: _finalDate,
-        dateSum: dateSu,
+        dateSum: dateSum,
         recieptImage: _finalImage!,
         type: _selectedCategory!,
         categorySubType: selectedDropownValue!);

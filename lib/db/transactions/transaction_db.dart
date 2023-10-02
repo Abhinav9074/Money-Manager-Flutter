@@ -125,27 +125,35 @@ class TransactionDb implements TransactionDetails {
 
   @override
   Future<void> FilterByDate(DateTime start, DateTime end) async {
-    print(start);
-    print(end);
     final allTransactions = await getTransactions();
     expenseTransactionsList.value.clear();
     incomeTransactionsList.value.clear();
     allTransactionsList.value.clear();
 
     await Future.forEach(allTransactions, (TransactionModel transactions) {
-      if (transactions.type == CategoryType.income &&
-          transactions.date.compareTo(start) <= 0 &&
-          transactions.date.compareTo(end) >= 0) {
+      if (transactions.type == CategoryType.income&&transactions.date.isAfter(start)&&transactions.date.isBefore(end)) {
         incomeTransactionsList.value.add(transactions);
-      } else if ((transactions.type == CategoryType.expense &&
-          transactions.date.compareTo(start) <= 0 &&
-          transactions.date.compareTo(end) >= 0)) {
+        
+        
+      } else if(transactions.type == CategoryType.expense&&transactions.date.isAfter(start)&&transactions.date.isBefore(end)) {
         expenseTransactionsList.value.add(transactions);
+        
       }
-      if (transactions.date.compareTo(start) <= 0 &&
-          transactions.date.compareTo(end) >= 0) {
-        allTransactionsList.value.add(transactions);
-      }
+
+        if(transactions.date.isAfter(start)&&transactions.date.isBefore(end)){
+          allTransactionsList.value.add(transactions);
+
+        }
+
+        if(transactions.type == CategoryType.expense&&transactions.date==start||transactions.date==end){
+          expenseTransactionsList.value.add(transactions);
+        }
+        if(transactions.type == CategoryType.income&&transactions.date==start||transactions.date==end){
+          incomeTransactionsList.value.add(transactions);
+        } 
+        if(transactions.date==start||transactions.date==end){
+          allTransactionsList.value.add(transactions);
+        }
     });
 
     expenseTransactionsList.value
