@@ -33,8 +33,8 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
         child: currentScreen,
       ),
       floatingActionButton: SizedBox(
-        height: 75,
-        width: 75,
+        height: 55,
+        width: 55,
         child: FittedBox(
           child: FloatingActionButton(
             onPressed: () {
@@ -50,12 +50,12 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         child: SizedBox(
-          height: 80,
+          height: 60,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               MaterialButton(
-                minWidth: 40,
+                minWidth: 20,
                 onPressed: () {
                   setState(() {
                     currentScreen = const TransactionsScreen();
@@ -68,18 +68,21 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                     FaIcon(
                       FontAwesomeIcons.indianRupeeSign,
                       color: currentTab == 0 ? Colors.blue : Colors.black,
+                      size: 15,
                     ),
                     Text(
                       'Transactions',
                       style: TextStyle(
                         color: currentTab == 0 ? Colors.blue : Colors.black,
+                        fontSize: 10
+                        
                       ),
                     )
                   ],
                 ),
               ),
               MaterialButton(
-                minWidth: 40,
+                minWidth: 20,
                 onPressed: () {
                   setState(() {
                     currentScreen = const StatsScreen();
@@ -91,19 +94,21 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                   children: [
                     FaIcon(
                       FontAwesomeIcons.chartPie,
+                      size: 15,
                       color: currentTab == 1 ? Colors.blue : Colors.black,
                     ),
                     Text(
                       'Stats',
                       style: TextStyle(
                         color: currentTab == 1 ? Colors.blue : Colors.black,
+                        fontSize: 10
                       ),
                     )
                   ],
                 ),
               ),
               MaterialButton(
-                minWidth: 40,
+                minWidth: 20,
                 onPressed: () {
                   setState(() {
                     currentScreen = const CategoryScreen();
@@ -115,19 +120,21 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                   children: [
                     FaIcon(
                       FontAwesomeIcons.boxesStacked,
+                      size: 15,
                       color: currentTab == 2 ? Colors.blue : Colors.black,
                     ),
                     Text(
                       'Categories',
                       style: TextStyle(
                         color: currentTab == 2 ? Colors.blue : Colors.black,
+                        fontSize: 10
                       ),
                     )
                   ],
                 ),
               ),
               MaterialButton(
-                minWidth: 40,
+                minWidth: 20,
                 onPressed: () {
                   setState(() {
                     currentScreen = SettingsScreen();
@@ -139,12 +146,14 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                   children: [
                     FaIcon(
                       FontAwesomeIcons.gear,
+                      size: 15,
                       color: currentTab == 3 ? Colors.blue : Colors.black,
                     ),
                     Text(
                       'Settings',
                       style: TextStyle(
                         color: currentTab == 3 ? Colors.blue : Colors.black,
+                        fontSize: 10
                       ),
                     )
                   ],

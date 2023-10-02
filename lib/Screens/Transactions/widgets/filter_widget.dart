@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:money_manager/db/transactions/transaction_db.dart';
 
 class FilterWidget extends StatefulWidget {
-  const FilterWidget({super.key});
+  final int index;
+
+   FilterWidget({super.key, required this.index});
+ 
 
   @override
   State<FilterWidget> createState() => _FilterWidgetState();
@@ -12,6 +16,16 @@ class _FilterWidgetState extends State<FilterWidget> {
   DateTime? startDate;
   // ignore: non_constant_identifier_names
   DateTime? EndDate;
+  late final first_index;
+  late final indexValue;
+
+  @override
+  void initState() {
+    first_index=TransactionDb().allTransactionsList.value.length-1;
+    indexValue = TransactionDb().allTransactionsList.value[first_index];
+    print(indexValue.date);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +54,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                   startDate = await showDatePicker(
                       context: context,
                       initialDate: DateTime.now(),
-                      firstDate: DateTime.now().subtract(const Duration(days: 30)),
+                      firstDate: indexValue.date,
                       lastDate: DateTime.now());
                   setState(() {});
                 },
@@ -64,7 +78,7 @@ class _FilterWidgetState extends State<FilterWidget> {
                   EndDate = await showDatePicker(
                       context: context,
                       initialDate: DateTime.now(),
-                      firstDate: DateTime.now().subtract(const Duration(days: 30)),
+                      firstDate: indexValue.date ,
                       lastDate: DateTime.now());
                   setState(() {});
                 },
@@ -99,10 +113,13 @@ class _FilterWidgetState extends State<FilterWidget> {
             });
           },
         ),
+        SizedBox(height: 40,),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton(onPressed: (){}, child: const Text('Filter')),
+            ElevatedButton(onPressed: (){
+              TransactionDb().FilterByDate(startDate!, EndDate!);
+            }, child: const Text('Filter')),
             const SizedBox(width: 10,),
             ElevatedButton(onPressed: (){}, child: const Text('Clear')),
           ],

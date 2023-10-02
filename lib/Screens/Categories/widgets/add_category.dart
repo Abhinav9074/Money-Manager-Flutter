@@ -26,7 +26,7 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
+    final formKey = GlobalKey<FormState>();
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 232, 235, 235),
       appBar: AppBar(
@@ -70,11 +70,12 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Form(
-                    key: _formKey,
+                    key: formKey,
                     child: TextFormField(
+                      autofocus: true,
                       validator: (value) {
                               if (!RegExp(r'^\S+(?!\d+$)')
-                                  .hasMatch(value ?? '')) {
+                                  .hasMatch(value ?? ' ')) {
                                 return 'Please enter a valid purpose.';
                               }
                               return null;
@@ -150,7 +151,7 @@ class _CategoryAddScreenState extends State<CategoryAddScreen> {
                 children: [
                   ElevatedButton(
                       onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
+                        if (formKey.currentState!.validate()) {
                           await AddCategory(_nameCont.text);
                           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                             content: Text(

@@ -14,9 +14,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var textHeightPortrait = MediaQuery.of(context).size.width*0.047;
+    var textHeightLandscape = MediaQuery.of(context).size.height*0.05;
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.blueGrey),
+      theme: ThemeData(primarySwatch: Colors.blueGrey,
+      textTheme: TextTheme(
+        bodyMedium: TextStyle(
+          fontSize: MediaQuery.of(context).orientation==Orientation.portrait?textHeightPortrait:textHeightLandscape,
+        ),
+      )
+      ),
       home: const SplashScreen()
     );
   }

@@ -18,6 +18,7 @@ class TransactionsScreen extends StatefulWidget {
 
 class _TransactionsScreenState extends State<TransactionsScreen>
     with TickerProviderStateMixin {
+      var size, height;
   TextEditingController searchText = TextEditingController();
   late TabController _tabController;
 
@@ -38,6 +39,8 @@ class _TransactionsScreenState extends State<TransactionsScreen>
 
   @override
   Widget build(BuildContext context) {
+    size = MediaQuery.of(context).size;
+    height = size.height;
     return Scaffold(
       // floatingActionButton: FloatingActionButton(
       //   backgroundColor: Colors.black,
@@ -126,7 +129,8 @@ class _TransactionsScreenState extends State<TransactionsScreen>
             bottom: 20,
             right: 20,
             child: CircleAvatar(
-              minRadius: 30,
+              minRadius: 15,
+              maxRadius: 20,
               backgroundColor: Colors.black,
               child: IconButton(
                   onPressed: () {
@@ -154,7 +158,7 @@ class _TransactionsScreenState extends State<TransactionsScreen>
                     label: const Text('Sort')),
                 ElevatedButton.icon(
                     onPressed: () {
-                      ShowFilterSheet(context);
+                      ShowFilterSheet(context,_tabController.index,height);
                     },
                     icon: const FaIcon(FontAwesomeIcons.filter),
                     label: const Text('Filter'))

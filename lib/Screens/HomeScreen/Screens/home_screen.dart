@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:intl/intl.dart';
 import 'package:money_manager/Screens/HomeScreen/widgets/app_bar.dart';
 import 'package:money_manager/Screens/HomeScreen/widgets/drawer_items.dart';
-import 'package:money_manager/Screens/Stats/widgets/income_stats.dart';
+import 'package:money_manager/Screens/HomeScreen/widgets/income_expense_tile.dart';
+import 'package:money_manager/Screens/HomeScreen/widgets/recent_transactions.dart';
 import 'package:money_manager/db/transactions/transaction_db.dart';
-import 'package:money_manager/models/category_model.dart';
-import 'package:money_manager/models/transactions_model.dart';
+
 
 // ignore: must_be_immutable
 class HomeScreen extends StatefulWidget {
@@ -19,16 +18,23 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   // ignore: prefer_typing_uninitialized_variables
   var size, height, width;
+  String? notify;
   final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
-    TransactionDb().refreshUI();
+      TransactionDb().refreshUI();
+    
     super.initState();
   }
 
+  
+
   @override
   Widget build(BuildContext context) {
+    TransactionDb().refreshUI();
+      notify = TransactionDb().allTransactionsList.value.isEmpty?'No Data Added':'Recent Transactions';
+    
     size = MediaQuery.of(context).size;
     height = size.height;
     width = size.width;
@@ -49,14 +55,14 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 width: double.infinity,
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 60, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
                   child: Column(
                     children: [
                       const Text(
                         '₹ 12,356.50',
                         style: TextStyle(
                           fontWeight: FontWeight.w700,
-                          fontSize: 40,
+                          fontSize: 30,
                           fontFamily: 'texgyreadventor-regular',
                         ),
                       ),
@@ -67,119 +73,22 @@ class _HomeScreenState extends State<HomeScreen> {
                         'Total Balance',
                         style: TextStyle(
                             fontFamily: 'texgyreadventor-regular',
-                            fontSize: 20,
                             color: Colors.grey),
                       ),
                       const SizedBox(
                         height: 30,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          PhysicalModel(
-                            color: Colors.black,
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.circular(40),
-                            elevation: 8.0,
-                            child: InkWell(
-                              onLongPress: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (ctx) {
-                                      return const IncomeStats();
-                                    });
-                              },
-                              child: Container(
-                                width: width / 2.2,
-                                height: 120,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    color: const Color.fromARGB(
-                                        255, 53, 198, 140)),
-                                child: const Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: EdgeInsets.all(18.0),
-                                      child: Text(
-                                        'Income',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 25,
-                                            fontFamily:
-                                                'texgyreadventor-regular'),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.fromLTRB(18, 0, 0, 0),
-                                      child: Text(
-                                        '₹ 15123.50',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 25,
-                                            fontFamily:
-                                                'texgyreadventor-regular',
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          PhysicalModel(
-                            color: Colors.black,
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.circular(40),
-                            elevation: 8.0,
-                            child: Container(
-                              width: width / 2.2,
-                              height: 120,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color:
-                                      const Color.fromARGB(255, 178, 83, 83)),
-                              child: const Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.all(18.0),
-                                    child: Text(
-                                      'Expense',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 25,
-                                          fontFamily:
-                                              'texgyreadventor-regular'),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.fromLTRB(18, 0, 0, 0),
-                                    child: Text(
-                                      '₹ 2345.50',
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 25,
-                                          fontFamily: 'texgyreadventor-regular',
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      IncomeExpenseTile(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Padding(
                             padding: const EdgeInsets.fromLTRB(30, 25, 0, 10),
                             child: Text(
-                              TransactionDb().allTransactionsList.value.isEmpty?'No Data Added Yet':'Last Transactions',
+                              notify!=null?notify!:'no',
                               textAlign: TextAlign.left,
                               style: const TextStyle(
-                                  fontSize: 25,
+                                  fontSize: 18,
                                   fontFamily: 'texgyreadventor-regular',
                                   fontWeight: FontWeight.w900,
                                   color: Color.fromARGB(255, 2, 39, 71)),
@@ -188,179 +97,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         
                         ],
                       ),
-                      SizedBox(
-                        height: 700,
-                        child: ValueListenableBuilder(
-                          valueListenable: TransactionDb().allTransactionsList,
-                          builder: (BuildContext context,
-                              List<TransactionModel> newList, Widget? _) {
-                            return ListView.separated(
-                                controller: _scrollController,
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) {
-                                  final data = newList[index];
-                                  return Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        20, 5, 20, 5),
-                                    child: PhysicalModel(
-                                      color: Colors.black,
-                                      shape: BoxShape.rectangle,
-                                      borderRadius: BorderRadius.circular(40),
-                                      elevation: 6.0,
-                                      child: Container(
-                                        width: double.infinity,
-                                        height: 100,
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                            color: Colors.white),
-                                        child: Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              20, 0, 0, 0),
-                                          child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              PhysicalModel(
-                                                color: Colors.black,
-                                                shape: BoxShape.rectangle,
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                elevation: 4.0,
-                                                child: Container(
-                                                  width: 70,
-                                                  height: 70,
-                                                  decoration: BoxDecoration(
-                                                      color: const Color
-                                                          .fromARGB(
-                                                          255, 232, 235, 235),
-                                                      borderRadius:
-                                                          BorderRadius
-                                                              .circular(10)),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Text(
-                                                        parseDate(data.date),
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style: const TextStyle(
-                                                            fontSize: 18,
-                                                            fontFamily:
-                                                                'texgyreadventor-regular',
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w900,
-                                                            color: Color
-                                                                .fromARGB(
-                                                                    255,
-                                                                    2,
-                                                                    39,
-                                                                    71)),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              Expanded(
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment
-                                                          .start,
-                                                  children: [
-                                                    Text(data.purpose,
-                                                        style: const TextStyle(
-                                                            fontSize: 25,
-                                                            fontFamily:
-                                                                'texgyreadventor-regular',
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w900,
-                                                            color: Color
-                                                                .fromARGB(
-                                                                    255,
-                                                                    2,
-                                                                    39,
-                                                                    71))),
-                                                    const SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    data.type == CategoryType.income
-                                                        ? Text(data.categorySubType,
-                                                            style: const TextStyle(
-                                                                fontSize: 18,
-                                                                fontFamily:
-                                                                    'texgyreadventor-regular',
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w900,
-                                                                color: Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        33,
-                                                                        165,
-                                                                        6)))
-                                                        : Text(data.categorySubType,
-                                                            style: const TextStyle(
-                                                                fontSize: 18,
-                                                                fontFamily:
-                                                                    'texgyreadventor-regular',
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w900,
-                                                                color: Color
-                                                                    .fromARGB(
-                                                                        255,
-                                                                        255,
-                                                                        0,
-                                                                        0))),
-                                                  ],
-                                                ),
-                                              ),
-                                              Text('₹${data.amount}',
-                                                  style: TextStyle(
-                                                      fontSize: 30,
-                                                      fontFamily:
-                                                          'texgyreadventor-regular',
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      color: data.type ==
-                                                              CategoryType
-                                                                  .income
-                                                          ? Colors.green
-                                                          : Colors.red)),
-                                              const SizedBox(
-                                                width: 20,
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                                separatorBuilder: (context, index) {
-                                  return const SizedBox(
-                                    height: 10,
-                                  );
-                                },
-                                itemCount: newList.length);
-                          },
-                        ),
-                      ),
+                      RecentTransactions(scrollController: _scrollController),
                       const SizedBox(
-                        height: 100,
+                        height: 20,
                       )
                     ],
                   ),
@@ -385,9 +124,5 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  String parseDate(DateTime date) {
-    final date0 = DateFormat.MMMd().format(date);
-    final splitDate = date0.split(' ');
-    return '${splitDate[1]}\n${splitDate[0]}';
-  }
+  
 }

@@ -9,8 +9,9 @@ const TRANSACTION_DB_NAME = 'transaction-database';
 abstract class TransactionDetails {
   Future<void> addTransactions(TransactionModel values);
   Future<List<TransactionModel>> getTransactions();
-  Future<void>deleteTransaction(value);
-  Future<void>findSpeciificTransaction(value,String id);
+  Future<void> deleteTransaction(value);
+  Future<void> findSpeciificTransaction(value, String id);
+  Future<void> FilterByDate(DateTime start, DateTime end);
 }
 
 class TransactionDb implements TransactionDetails {
@@ -22,10 +23,13 @@ class TransactionDb implements TransactionDetails {
     return instance;
   }
 
-  ValueNotifier<List<TransactionModel>> incomeTransactionsList= ValueNotifier([]);
-  ValueNotifier<List<TransactionModel>> expenseTransactionsList= ValueNotifier([]);
-  ValueNotifier<List<TransactionModel>> allTransactionsList= ValueNotifier([]);
-  ValueNotifier<List<TransactionModel>> specificTransactionsList= ValueNotifier([]);
+  ValueNotifier<List<TransactionModel>> incomeTransactionsList =
+      ValueNotifier([]);
+  ValueNotifier<List<TransactionModel>> expenseTransactionsList =
+      ValueNotifier([]);
+  ValueNotifier<List<TransactionModel>> allTransactionsList = ValueNotifier([]);
+  ValueNotifier<List<TransactionModel>> specificTransactionsList =
+      ValueNotifier([]);
 
   @override
   Future<void> addTransactions(TransactionModel values) async {
@@ -36,82 +40,123 @@ class TransactionDb implements TransactionDetails {
   }
 
   @override
-  Future<List<TransactionModel>> getTransactions() async{
-    final transactionDb = await Hive.openBox<TransactionModel>(TRANSACTION_DB_NAME);
+  Future<List<TransactionModel>> getTransactions() async {
+    final transactionDb =
+        await Hive.openBox<TransactionModel>(TRANSACTION_DB_NAME);
     return transactionDb.values.toList();
   }
 
-  Future<void>refreshUI()async{
-    final allTransactions = await  getTransactions();
+  Future<void> refreshUI() async {
+    final allTransactions = await getTransactions();
     expenseTransactionsList.value.clear();
     incomeTransactionsList.value.clear();
     allTransactionsList.value.clear();
-    await Future.forEach(allTransactions, (TransactionModel transactions){
-      if(transactions.type==CategoryType.income){
+    await Future.forEach(allTransactions, (TransactionModel transactions) {
+      if (transactions.type == CategoryType.income) {
         incomeTransactionsList.value.add(transactions);
-      }else{
+      } else {
         expenseTransactionsList.value.add(transactions);
       }
       allTransactionsList.value.add(transactions);
     });
-    expenseTransactionsList.value.sort((first,second)=> second.date.compareTo(first.date));
-    incomeTransactionsList.value.sort((first,second)=> second.date.compareTo(first.date));
-    allTransactionsList.value.sort((first,second)=> second.date.compareTo(first.date));
+    expenseTransactionsList.value
+        .sort((first, second) => second.date.compareTo(first.date));
+    incomeTransactionsList.value
+        .sort((first, second) => second.date.compareTo(first.date));
+    allTransactionsList.value
+        .sort((first, second) => second.date.compareTo(first.date));
     expenseTransactionsList.notifyListeners();
     incomeTransactionsList.notifyListeners();
     allTransactionsList.notifyListeners();
   }
 
-
-  Future<void>searchTransactions(String text)async{
-    final allTransactions = await  getTransactions();
+  Future<void> searchTransactions(String text) async {
+    final allTransactions = await getTransactions();
     expenseTransactionsList.value.clear();
     incomeTransactionsList.value.clear();
     allTransactionsList.value.clear();
-    await Future.forEach(allTransactions, (TransactionModel transactions){
-      String searchText =transactions.purpose;
+    await Future.forEach(allTransactions, (TransactionModel transactions) {
+      String searchText = transactions.purpose;
       searchText.toLowerCase();
       text.toLowerCase();
-      if(transactions.type==CategoryType.income&&transactions.purpose.toLowerCase().contains(text)){
+      if (transactions.type == CategoryType.income &&
+          transactions.purpose.toLowerCase().contains(text)) {
         incomeTransactionsList.value.add(transactions);
         allTransactionsList.value.add(transactions);
-      }else if((transactions.type==CategoryType.expense&&transactions.purpose.toLowerCase().contains(text))){
+      } else if ((transactions.type == CategoryType.expense &&
+          transactions.purpose.toLowerCase().contains(text))) {
         expenseTransactionsList.value.add(transactions);
         allTransactionsList.value.add(transactions);
       }
-      
     });
-    expenseTransactionsList.value.sort((first,second)=> second.date.compareTo(first.date));
-    incomeTransactionsList.value.sort((first,second)=> second.date.compareTo(first.date));
-    allTransactionsList.value.sort((first,second)=> second.date.compareTo(first.date));
+    expenseTransactionsList.value
+        .sort((first, second) => second.date.compareTo(first.date));
+    incomeTransactionsList.value
+        .sort((first, second) => second.date.compareTo(first.date));
+    allTransactionsList.value
+        .sort((first, second) => second.date.compareTo(first.date));
     expenseTransactionsList.notifyListeners();
     incomeTransactionsList.notifyListeners();
     allTransactionsList.notifyListeners();
   }
 
- @override
-  Future<void> findSpeciificTransaction(value ,String id) async{
+  @override
+  Future<void> findSpeciificTransaction(value, String id) async {
     final specificTransactions = await getTransactions();
     specificTransactionsList.value.clear();
 
-    await Future.forEach(specificTransactions, (TransactionModel transactions){
-      if(transactions.categorySubType==value&&transactions.id!=id){
+    await Future.forEach(specificTransactions, (TransactionModel transactions) {
+      if (transactions.categorySubType == value && transactions.id != id) {
         specificTransactionsList.value.add(transactions);
       }
     });
-    specificTransactionsList.value.sort((first,second)=> second.date.compareTo(first.date));
+    specificTransactionsList.value
+        .sort((first, second) => second.date.compareTo(first.date));
     specificTransactionsList.notifyListeners();
-
-    
   }
 
-  
   @override
-  Future<void> deleteTransaction(value) async{
-    final transactionDb = await  Hive.openBox<TransactionModel>(TRANSACTION_DB_NAME);
+  Future<void> deleteTransaction(value) async {
+    final transactionDb =
+        await Hive.openBox<TransactionModel>(TRANSACTION_DB_NAME);
     await transactionDb.delete(value);
     refreshUI();
   }
-  
- 
+
+  @override
+  Future<void> FilterByDate(DateTime start, DateTime end) async {
+    print(start);
+    print(end);
+    final allTransactions = await getTransactions();
+    expenseTransactionsList.value.clear();
+    incomeTransactionsList.value.clear();
+    allTransactionsList.value.clear();
+
+    await Future.forEach(allTransactions, (TransactionModel transactions) {
+      if (transactions.type == CategoryType.income &&
+          transactions.date.compareTo(start) <= 0 &&
+          transactions.date.compareTo(end) >= 0) {
+        incomeTransactionsList.value.add(transactions);
+      } else if ((transactions.type == CategoryType.expense &&
+          transactions.date.compareTo(start) <= 0 &&
+          transactions.date.compareTo(end) >= 0)) {
+        expenseTransactionsList.value.add(transactions);
+      }
+      if (transactions.date.compareTo(start) <= 0 &&
+          transactions.date.compareTo(end) >= 0) {
+        allTransactionsList.value.add(transactions);
+      }
+    });
+
+    expenseTransactionsList.value
+        .sort((first, second) => second.date.compareTo(first.date));
+    incomeTransactionsList.value
+        .sort((first, second) => second.date.compareTo(first.date));
+    allTransactionsList.value
+        .sort((first, second) => second.date.compareTo(first.date));
+
+    expenseTransactionsList.notifyListeners();
+    incomeTransactionsList.notifyListeners();
+    allTransactionsList.notifyListeners();
+  }
 }

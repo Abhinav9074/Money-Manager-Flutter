@@ -13,6 +13,12 @@ class IncomeTransactions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var tileHeightPortrait = MediaQuery.of(context).size.height>800?MediaQuery.of(context).size.height*0.08:MediaQuery.of(context).size.height*0.1;
+    var tileHeightLandscape = MediaQuery.of(context).size.height*0.2;
+    var textHeightPortrait = MediaQuery.of(context).size.width*0.047;
+    var textHeightLandscape = MediaQuery.of(context).size.height*0.05;
+    var dateBoxSizePortrait = MediaQuery.of(context).size.height>800?MediaQuery.of(context).size.height*0.050:MediaQuery.of(context).size.height*0.057;
+    var dateBoxSizeLandscape = MediaQuery.of(context).size.height*0.12;
     return Column(
       children: [
         Expanded(
@@ -130,21 +136,21 @@ class IncomeTransactions extends StatelessWidget {
                                   )
                                 ]),
                             child: Padding(
-                              padding: const EdgeInsets.fromLTRB(20, 5, 20, 5),
+                              padding: const EdgeInsets.fromLTRB(9, 5, 9, 5),
                               child: PhysicalModel(
                                 color: Colors.black,
                                 shape: BoxShape.rectangle,
-                                borderRadius: BorderRadius.circular(40),
+                                borderRadius: BorderRadius.circular(10),
                                 elevation: 6.0,
                                 child: Container(
                                   width: double.infinity,
-                                  height: 100,
+                                  height: MediaQuery.of(context).orientation==Orientation.portrait?tileHeightPortrait:tileHeightLandscape,
                                   decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
+                                      borderRadius: BorderRadius.circular(10),
                                       color: Colors.white),
                                   child: Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                                        const EdgeInsets.fromLTRB(15, 0, 0, 0),
                                     child: Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
@@ -156,8 +162,8 @@ class IncomeTransactions extends StatelessWidget {
                                               BorderRadius.circular(10),
                                           elevation: 4.0,
                                           child: Container(
-                                            width: 70,
-                                            height: 70,
+                                            width: MediaQuery.of(context).orientation==Orientation.portrait?dateBoxSizePortrait:dateBoxSizeLandscape,
+                                              height: MediaQuery.of(context).orientation==Orientation.portrait?dateBoxSizePortrait:dateBoxSizeLandscape,
                                             decoration: BoxDecoration(
                                                 color: const Color.fromARGB(
                                                     255, 232, 235, 235),
@@ -173,7 +179,7 @@ class IncomeTransactions extends StatelessWidget {
                                                   parseDate(data.date),
                                                   textAlign: TextAlign.center,
                                                   style: const TextStyle(
-                                                      fontSize: 18,
+                                                      fontSize: 15,
                                                       fontFamily:
                                                           'texgyreadventor-regular',
                                                       fontWeight:
@@ -196,8 +202,8 @@ class IncomeTransactions extends StatelessWidget {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(data.purpose,
-                                                  style: const TextStyle(
-                                                      fontSize: 25,
+                                                  style:  TextStyle(
+                                                      fontSize: MediaQuery.of(context).orientation==Orientation.portrait?textHeightPortrait:textHeightLandscape,
                                                       fontFamily:
                                                           'texgyreadventor-regular',
                                                       fontWeight:
@@ -209,8 +215,8 @@ class IncomeTransactions extends StatelessWidget {
                                               ),
                                               data.type == CategoryType.income
                                                   ? Text(data.categorySubType,
-                                                      style: const TextStyle(
-                                                          fontSize: 18,
+                                                      style:  TextStyle(
+                                                          fontSize: MediaQuery.of(context).orientation==Orientation.portrait?textHeightPortrait-5:textHeightLandscape-5,
                                                           fontFamily:
                                                               'texgyreadventor-regular',
                                                           fontWeight:
@@ -218,8 +224,8 @@ class IncomeTransactions extends StatelessWidget {
                                                           color: Color.fromARGB(
                                                               255, 33, 165, 6)))
                                                   : Text(data.categorySubType,
-                                                      style: const TextStyle(
-                                                          fontSize: 18,
+                                                      style:  TextStyle(
+                                                          fontSize: MediaQuery.of(context).orientation==Orientation.portrait?textHeightPortrait-5:textHeightLandscape-5,
                                                           fontFamily:
                                                               'texgyreadventor-regular',
                                                           fontWeight:
@@ -231,7 +237,7 @@ class IncomeTransactions extends StatelessWidget {
                                         ),
                                         Text('₹${data.amount}',
                                             style: TextStyle(
-                                                fontSize: 30,
+                                                fontSize: MediaQuery.of(context).orientation==Orientation.portrait?textHeightPortrait+5:textHeightLandscape+5,
                                                 fontFamily:
                                                     'texgyreadventor-regular',
                                                 fontWeight: FontWeight.w600,
