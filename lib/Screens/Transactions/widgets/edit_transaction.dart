@@ -172,11 +172,12 @@ class _AddTransactionsState extends State<EditTransaction> {
                           final tempDate = await showDatePicker(
                               context: context,
                               initialDate: DateTime.now(),
-                              firstDate: DateTime.now()
-                                  .subtract(const Duration(days: 30)),
+                              firstDate: DateTime(2000),
                               lastDate: DateTime.now());
                           setState(() {
-                            _selectedDate = tempDate;
+                            if(tempDate!=null){
+                              _selectedDate = tempDate;
+                            }
                           });
                         },
                         icon: const FaIcon(FontAwesomeIcons.calendar),

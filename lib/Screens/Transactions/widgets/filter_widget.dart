@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:money_manager/db/category/category_db.dart';
 import 'package:money_manager/db/transactions/transaction_db.dart';
 
 class FilterWidget extends StatefulWidget {
   final int index;
+  dynamic startNotifier;
+  dynamic endNotifier;
+  dynamic categoryNotifier;
 
-  FilterWidget({super.key, required this.index});
+  FilterWidget(
+      {super.key,
+      required this.index,
+      required this.startNotifier,
+      required this.endNotifier,
+      required this.categoryNotifier});
 
   @override
   State<FilterWidget> createState() => _FilterWidgetState();
@@ -13,6 +22,7 @@ class FilterWidget extends StatefulWidget {
 
 class _FilterWidgetState extends State<FilterWidget> {
   DateTime? startDate;
+  String? selectedDropownValue;
   // ignore: non_constant_identifier_names
   DateTime? EndDate;
   late final first_index;
@@ -20,16 +30,18 @@ class _FilterWidgetState extends State<FilterWidget> {
 
   @override
   void initState() {
-    first_index = TransactionDb().allTransactionsList.value.length - 1;
-    indexValue = TransactionDb().allTransactionsList.value[first_index];
-    print(indexValue.date);
+    if (TransactionDb().allTransactionsList.value.isNotEmpty) {
+      first_index = TransactionDb().allTransactionsList.value.length - 1;
+      indexValue = TransactionDb().allTransactionsList.value[first_index];
+      print(indexValue.date);
+    } else {
+      indexValue = null;
+    }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    List<String> items = ['select', 'Food', 'Travel', 'Miscellaneous', 'Fees'];
-    String dropdownValue = items[0];
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -53,13 +65,18 @@ class _FilterWidgetState extends State<FilterWidget> {
                   startDate = await showDatePicker(
                       context: context,
                       initialDate: DateTime.now(),
-                      firstDate: indexValue.date,
+                      firstDate: TransactionDb().indexValue == null
+                          ? DateTime.now()
+                          : TransactionDb().indexValue.date,
                       lastDate: DateTime.now());
-                  setState(() {});
+                  setState(() {
+                    widget.startNotifier.value = startDate.toString().substring(0,10);
+                  });
                 },
                 icon: const FaIcon(FontAwesomeIcons.calendar),
                 label: startDate == null
-                    ? const Text('Pick Start Date')
+                    ? Text(
+                        widget.startNotifier.value.toString().substring(0, 10))
                     : Text(startDate.toString().substring(0, 10))),
             const Padding(
               padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
@@ -77,13 +94,17 @@ class _FilterWidgetState extends State<FilterWidget> {
                   EndDate = await showDatePicker(
                       context: context,
                       initialDate: DateTime.now(),
-                      firstDate: indexValue.date,
+                      firstDate:
+                          startDate == null ? DateTime.now() : startDate!,
                       lastDate: DateTime.now());
-                  setState(() {});
+                  setState(() {
+                    widget.endNotifier.value = EndDate.toString().substring(0,10);
+                  });
                 },
                 icon: const FaIcon(FontAwesomeIcons.calendar),
                 label: EndDate == null
-                    ? const Text('Pick End Date')
+                    ? Text(
+                        widget.startNotifier.value.toString().substring(0, 10))
                     : Text(EndDate.toString().substring(0, 10)))
           ],
         ),
@@ -99,16 +120,38 @@ class _FilterWidgetState extends State<FilterWidget> {
           ),
         ),
         DropdownButton(
-          value: dropdownValue,
-          items: items.map((String item) {
+          hint:  Text(
+            widget.categoryNotifier.value,
+            style:
+                TextStyle(fontSize: 20, fontFamily: 'texgyreadventor-regular'),
+          ),
+          value: selectedDropownValue,
+          items: (widget.index == 0
+                  ? CategoryDb().allCategoriesList
+                  : widget.index == 1
+                      ? CategoryDb().incomeCategoryList
+                      : CategoryDb().expenseCategoryList)
+              .value
+              .map((e) {
             return DropdownMenuItem(
-              value: item,
-              child: Text(item),
-            );
+                value: e.categoryName,
+                child: e.isDeleted != true
+                    ? Text(e.categoryName,
+                        style: const TextStyle(
+                            fontSize: 20,
+                            fontFamily: 'texgyreadventor-regular'))
+                    : Text(
+                        e.categoryName,
+                        style: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 20,
+                            fontFamily: 'texgyreadventor-regular'),
+                      ));
           }).toList(),
-          onChanged: (String? value) {
+          onChanged: (value) {
             setState(() {
-              dropdownValue = value!;
+              selectedDropownValue = value!;
+              widget.categoryNotifier.value=selectedDropownValue;
             });
           },
         ),
@@ -120,25 +163,37 @@ class _FilterWidgetState extends State<FilterWidget> {
           children: [
             ElevatedButton(
                 onPressed: () async {
-                  if (startDate != null && EndDate != null) {
-                    await FilterPress();
-                  }
+                  await FilterPress();
                   Navigator.of(context).pop();
                 },
                 child: const Text('Filter')),
             const SizedBox(
               width: 10,
             ),
-            ElevatedButton(onPressed: () {}, child: const Text('Clear')),
+            ElevatedButton(
+                onPressed: () {
+                  TransactionDb().refreshUI();
+                  Navigator.of(context).pop();
+                  widget.startNotifier.value=DateTime.now().toString().substring(0,10);
+                  widget.endNotifier.value=DateTime.now().toString().substring(0,10);
+                  widget.categoryNotifier.value = 'Select a Category';
+                },
+                child: const Text('Clear')),
           ],
         )
       ],
     );
   }
 
-
   Future<void> FilterPress() async {
-    
-    TransactionDb().FilterByDate(startDate!, EndDate!);
+    if (startDate != null && EndDate != null && selectedDropownValue != null) {
+      await TransactionDb().FilterByDate(startDate!, EndDate!);
+      await TransactionDb().FilterByCategory(selectedDropownValue!);
+    } else if (selectedDropownValue != null) {
+      await TransactionDb().FilterByCategory(selectedDropownValue!);
+    } else if (startDate != null && EndDate != null) {
+      await TransactionDb().FilterByDate(startDate!, EndDate!);
+    }
+    // print(TransactionDb().allTransactionsList.value);
   }
 }

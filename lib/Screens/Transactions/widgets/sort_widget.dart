@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:money_manager/db/transactions/transaction_db.dart';
 
 class SortWidget extends StatefulWidget {
-  const SortWidget({super.key});
+
+  final dynamic indexCount;
+
+  const SortWidget({super.key, required this.indexCount});
+
+  
 
   @override
   State<SortWidget> createState() => _SortWidgetState();
@@ -17,7 +23,7 @@ class _SortWidgetState extends State<SortWidget> {
       'Date (Ascending)',
       'Date (Descending)'
     ];
-    String dropdownValue = items[0];
+    String dropdownValue = items[widget.indexCount.value];
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -34,6 +40,7 @@ class _SortWidgetState extends State<SortWidget> {
           ),
         ),
         DropdownButton(
+          hint: Text('Select'),
           value: dropdownValue,
           items: items.map((String item) {
             return DropdownMenuItem(
@@ -41,13 +48,35 @@ class _SortWidgetState extends State<SortWidget> {
               child: Text(item),
             );
           }).toList(),
-          onChanged: (String? value) {
-            setState(() {
-              dropdownValue = value!;
-            });
+          onChanged: (value) async{
+            dropdownValue = value!;
+            if(dropdownValue=='Price (Low To High)'){
+              widget.indexCount.value=0;
+              await TransactionDb().Sorting(0);
+            }else if(dropdownValue=='Price (High To Low)'){
+              widget.indexCount.value=1;
+              await TransactionDb().Sorting(1);
+            }else if(dropdownValue=='Date (Ascending)'){
+              widget.indexCount.value=2;
+              await TransactionDb().Sorting(2);
+            }else{
+              widget.indexCount.value=3;
+              await TransactionDb().Sorting(3);
+            }
+            Navigator.of(context).pop();
           },
         ),
-        ElevatedButton.icon(onPressed: (){}, icon: const FaIcon(FontAwesomeIcons.sort), label: const Text('Sort'))
+        // Row(
+        //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        //   children: [
+        //     ElevatedButton.icon(
+        //         onPressed: () {
+        //           print(dropdownValue);
+        //         },
+        //         icon: const FaIcon(FontAwesomeIcons.sort),
+        //         label: const Text('Sort')),
+        //   ],
+        // )
       ],
     );
   }

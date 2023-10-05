@@ -19,14 +19,14 @@ class RecentTransactions extends StatelessWidget {
     return SizedBox(
                         height: 700,
                         child: ValueListenableBuilder(
-                          valueListenable: TransactionDb().allTransactionsList,
+                          valueListenable: TransactionDb().recentTransactionsList,
                           builder: (BuildContext context,
                               List<TransactionModel> newList, Widget? _) {
                             return ListView.separated(
                                 controller: scrollController,
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
-                                  final data = newList[index];
+                                  final data = newList[newList.length-index-1];
                                   return Padding(
                                     padding: const EdgeInsets.fromLTRB(
                                         9, 5, 9, 5),

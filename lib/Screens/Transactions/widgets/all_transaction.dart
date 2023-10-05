@@ -28,13 +28,12 @@ class AllTransactions extends StatelessWidget {
             valueListenable: TransactionDb().allTransactionsList,
             builder: (BuildContext context, List<TransactionModel> newList,
                 Widget? _) {
-              return SlidableAutoCloseBehavior(
+              return TransactionDb().allTransactionsList.value.isNotEmpty?
+              SlidableAutoCloseBehavior(
                 child: ListView.separated(
                     itemBuilder: (context, index) {
                       final data = newList[index];
-                      return TransactionDb().allTransactionsList.value.isEmpty?
-                      const Text('Empty'):
-                      InkWell(
+                      return InkWell(
                         onTap: () {
                           Navigator.of(context)
                               .push(MaterialPageRoute(builder: (ctx) {
@@ -291,7 +290,8 @@ class AllTransactions extends StatelessWidget {
                       );
                     },
                     itemCount: newList.length),
-              );
+              ):Center(child: Text('No Data'),)
+              ;
             },
           ),
         ),

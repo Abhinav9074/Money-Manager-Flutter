@@ -157,8 +157,7 @@ class _AddTransactionsState extends State<AddTransactions> {
                           final tempDate = await showDatePicker(
                               context: context,
                               initialDate: DateTime.now(),
-                              firstDate: DateTime.now()
-                                  .subtract(const Duration(days: 30)),
+                              firstDate: DateTime(2000),
                               lastDate: DateTime.now());
                           setState(() {
                             _selectedDate = tempDate;
@@ -315,7 +314,6 @@ class _AddTransactionsState extends State<AddTransactions> {
                           .value
                           .map((e) {
                         return DropdownMenuItem(
-                            enabled: !e.isDeleted,
                             value: e.categoryName,
                             child: e.isDeleted != true
                                 ? Text(e.categoryName,

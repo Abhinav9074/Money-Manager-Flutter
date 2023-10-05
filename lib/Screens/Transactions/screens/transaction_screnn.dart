@@ -8,6 +8,7 @@ import 'package:money_manager/Screens/Transactions/widgets/income_transactions.d
 import 'package:money_manager/Screens/Transactions/widgets/sort_sheet.dart';
 import 'package:money_manager/db/category/category_db.dart';
 import 'package:money_manager/db/transactions/transaction_db.dart';
+import 'package:money_manager/models/category_model.dart';
 
 class TransactionsScreen extends StatefulWidget {
   const TransactionsScreen({super.key});
@@ -21,6 +22,11 @@ class _TransactionsScreenState extends State<TransactionsScreen>
       var size, height;
   TextEditingController searchText = TextEditingController();
   late TabController _tabController;
+  ValueNotifier<int> sortIndex = ValueNotifier(2);
+  ValueNotifier<String> startDateNotifier = ValueNotifier(DateTime.now().toString().substring(0,10));
+  ValueNotifier<String> endDateNotifier = ValueNotifier(DateTime.now().toString().substring(0,10));
+  ValueNotifier<String> categoryNotifier = ValueNotifier('Select a category');
+  
 
   @override
   void initState() {
@@ -152,13 +158,13 @@ class _TransactionsScreenState extends State<TransactionsScreen>
               children: [
                 ElevatedButton.icon(
                     onPressed: () {
-                      ShowSortSheet(context);
+                      ShowSortSheet(context,sortIndex);
                     },
                     icon: const FaIcon(FontAwesomeIcons.sort),
                     label: const Text('Sort')),
                 ElevatedButton.icon(
                     onPressed: () {
-                      ShowFilterSheet(context,_tabController.index,height);
+                      ShowFilterSheet(context,_tabController.index,height,startDateNotifier,endDateNotifier,categoryNotifier);
                     },
                     icon: const FaIcon(FontAwesomeIcons.filter),
                     label: const Text('Filter'))

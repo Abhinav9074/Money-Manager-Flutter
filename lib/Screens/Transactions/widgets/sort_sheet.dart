@@ -2,7 +2,7 @@
 import 'package:money_manager/Screens/Transactions/widgets/sort_widget.dart';
 
 // ignore: non_constant_identifier_names
-Future<void> ShowSortSheet(BuildContext ctx) async {
+Future<void> ShowSortSheet(BuildContext ctx, dynamic sortIndex) async {
     showModalBottomSheet(
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
@@ -10,8 +10,8 @@ Future<void> ShowSortSheet(BuildContext ctx) async {
         ),
         context: ctx,
         builder: (ctx) {
-          return const Column(
-            children: [SortWidget()],
+          return  Column(
+            children: [SortWidget(indexCount: sortIndex,)],
           );
         });
   }
