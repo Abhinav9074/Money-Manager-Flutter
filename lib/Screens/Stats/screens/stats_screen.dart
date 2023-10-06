@@ -3,6 +3,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:money_manager/Screens/Stats/widgets/expense_stat.dart';
 import 'package:money_manager/Screens/Stats/widgets/income_stats.dart';
 import 'package:money_manager/Screens/Stats/widgets/stat_filter.dart';
+import 'package:money_manager/db/category/category_db.dart';
+import 'package:money_manager/db/transactions/transaction_db.dart';
 
 class StatsScreen extends StatefulWidget {
   const StatsScreen({super.key});
@@ -16,6 +18,8 @@ class _StatsScreenState extends State<StatsScreen>
   late TabController _tabController;
   @override
   void initState() {
+    CategoryDb().refreshUI();
+    TransactionDb().refreshUI();
     _tabController = TabController(length: 2, vsync: this);
     super.initState();
   }

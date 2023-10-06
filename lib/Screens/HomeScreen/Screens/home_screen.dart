@@ -4,6 +4,7 @@ import 'package:money_manager/Screens/HomeScreen/widgets/app_bar.dart';
 import 'package:money_manager/Screens/HomeScreen/widgets/drawer_items.dart';
 import 'package:money_manager/Screens/HomeScreen/widgets/income_expense_tile.dart';
 import 'package:money_manager/Screens/HomeScreen/widgets/recent_transactions.dart';
+import 'package:money_manager/db/category/category_db.dart';
 import 'package:money_manager/db/transactions/transaction_db.dart';
 
 
@@ -24,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
       TransactionDb().refreshUI();
-    
+      CategoryDb().refreshUI();
     super.initState();
   }
 

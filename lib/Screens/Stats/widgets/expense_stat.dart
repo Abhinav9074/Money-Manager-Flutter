@@ -1,41 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:money_manager/Screens/Stats/models/stat_models.dart';
+
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class ExpenseStats extends StatelessWidget {
+class ExpenseStats extends StatefulWidget {
   const ExpenseStats({super.key});
 
   @override
+  State<ExpenseStats> createState() => _ExpenseStatsState();
+}
+
+class _ExpenseStatsState extends State<ExpenseStats> {
+  late TooltipBehavior _tooltipBehavior;
+
+  @override
+  void initState() {
+    getExpenseChartData();
+    _tooltipBehavior = TooltipBehavior(enable: true);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        const SizedBox(
-          height: 40,
-        ),
-        SizedBox(
-          height: 750,
-          child: SfCartesianChart(
-            title: ChartTitle(
-                text: 'Expense stats from 27-08-23 to 27-09-23',
-                textStyle: const TextStyle(
-                    fontSize: 20,
-                    fontFamily: 'texgyreadventor-regular',
-                    color: Colors.black,
-                    fontWeight: FontWeight.w900)),
-            primaryXAxis: CategoryAxis(title: AxisTitle(text: "Expenses")),
-            primaryYAxis:
-                NumericAxis(title: AxisTitle(text: "Amount In Rupees")),
-            legend: const Legend(isVisible: true),
-            series: <ChartSeries>[
-              ColumnSeries<ExpenseStatModel, String>(
-                  name: "Expenses",
-                  dataSource: getExpenseStats(),
-                  xValueMapper: (ExpenseStatModel stats, _) => stats.x,
-                  yValueMapper: (ExpenseStatModel stats, _) => stats.y)
-            ],
-          ),
-        ),
-      ],
+    return ValueListenableBuilder(
+      valueListenable: ExpenseChartDataNotifier,
+      builder: (BuildContext context, List<ExpenseData> newList, Widget? _){
+        return Center(
+      child: SfCircularChart(
+        legend: Legend(
+            isVisible: true,
+            isResponsive: true,
+            overflowMode: LegendItemOverflowMode.wrap,
+            alignment: ChartAlignment.center,
+            position: LegendPosition.left,
+            iconHeight: 20,
+            iconWidth: 30,
+            textStyle: TextStyle(
+                fontFamily: 'texgyreadventor-regular',
+                fontWeight: FontWeight.w900,
+                color: Color.fromARGB(255, 2, 39, 71))),
+        tooltipBehavior: _tooltipBehavior,
+        series: <CircularSeries>[
+          DoughnutSeries<ExpenseData, String>(
+              dataSource: newList,
+              xValueMapper: (ExpenseData data, _) => data.expenseSource,
+              yValueMapper: (ExpenseData data, _) => data.amount,      
+              enableTooltip: true,
+              dataLabelSettings: DataLabelSettings(isVisible: true),
+              legendIconType: LegendIconType.seriesType),
+              
+        ],
+      ),
+    );
+      },
     );
   }
 }

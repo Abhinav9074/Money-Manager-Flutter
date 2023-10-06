@@ -2,45 +2,57 @@ import 'package:flutter/material.dart';
 import 'package:money_manager/Screens/Stats/models/stat_models.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-class IncomeStats extends StatelessWidget {
+class IncomeStats extends StatefulWidget {
   const IncomeStats({super.key});
 
   @override
+  State<IncomeStats> createState() => _IncomeStatsState();
+}
+
+class _IncomeStatsState extends State<IncomeStats> {
+  late TooltipBehavior _tooltipBehavior;
+
+  @override
+  void initState() {
+    getIncomeChartData();
+    _tooltipBehavior = TooltipBehavior(enable: true);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        const SizedBox(
-          height: 40,
-        ),
-        SizedBox(
-          height: 750,
-          child: SfCartesianChart(
-            title: ChartTitle(
-                text:
-                    'Income stats from 27-08-23 to 27-09-23',
-                textStyle: const TextStyle(
-                    fontSize: 20,
-                    fontFamily: 'texgyreadventor-regular',
-                    color: Colors.black,
-                    fontWeight: FontWeight.w900)),
-            primaryXAxis: CategoryAxis(
-              title: AxisTitle(text: "Income Sources")
-            ),
-            primaryYAxis: NumericAxis(
-              title: AxisTitle(text: "Amount In Rupees")
-            ),
-            legend: const Legend(isVisible: true),
-            series: <ChartSeries>[
-              ColumnSeries<IncomeStatModel, String>(
-                name: "Income",
-                  dataSource: getIncomeStats(),
-                  xValueMapper: (IncomeStatModel stats, _) => stats.x,
-                  yValueMapper: (IncomeStatModel stats, _) => stats.y,
-                  dataLabelSettings: const DataLabelSettings(isVisible: true)),
-            ],
-          ),
-        ),
-      ],
+    return ValueListenableBuilder(
+      valueListenable: IncomeChartDataNotifier,
+      builder: (BuildContext context, List<IncomeData> newList, Widget? _){
+        return Center(
+      child: SfCircularChart(
+        legend: Legend(
+            isVisible: true,
+            isResponsive: true,
+            overflowMode: LegendItemOverflowMode.wrap,
+            alignment: ChartAlignment.center,
+            position: LegendPosition.left,
+            iconHeight: 20,
+            iconWidth: 30,
+            textStyle: TextStyle(
+                fontFamily: 'texgyreadventor-regular',
+                fontWeight: FontWeight.w900,
+                color: Color.fromARGB(255, 2, 39, 71))),
+        tooltipBehavior: _tooltipBehavior,
+        series: <CircularSeries>[
+          DoughnutSeries<IncomeData, String>(
+              dataSource: newList,
+              xValueMapper: (IncomeData data, _) => data.incomeSource,
+              yValueMapper: (IncomeData data, _) => data.amount,      
+              enableTooltip: true,
+              dataLabelSettings: DataLabelSettings(isVisible: true),
+              legendIconType: LegendIconType.seriesType),
+              
+        ],
+      ),
+    );
+      },
     );
   }
+  
 }

@@ -167,7 +167,8 @@ class _TransactionsScreenState extends State<TransactionsScreen>
                       ShowFilterSheet(context,_tabController.index,height,startDateNotifier,endDateNotifier,categoryNotifier);
                     },
                     icon: const FaIcon(FontAwesomeIcons.filter),
-                    label: const Text('Filter'))
+                    label: const Text('Filter')),
+                   
               ],
             ),
           )

@@ -1,39 +1,57 @@
-class IncomeStatModel{
-  String x;
-  double y;
 
-  IncomeStatModel(this.x, this.y);
+import 'package:flutter/material.dart';
+import 'package:money_manager/db/category/category_db.dart';
+import 'package:money_manager/db/transactions/transaction_db.dart';
 
+class IncomeData{
+  final String incomeSource;
+  final int amount;
+
+  IncomeData({required this.incomeSource, required this.amount});
+}
+ValueNotifier<List<IncomeData>> IncomeChartDataNotifier = ValueNotifier([]);
+void getIncomeChartData(){
+  int i=0,sum=0;
+  IncomeChartDataNotifier.value.clear();
+  while(i<CategoryDb().incomeCategoryList.value.length){
+    sum=0;
+    TransactionDb().allTransactionsList.value.forEach((element) {
+      if(CategoryDb().incomeCategoryList.value[i].categoryName==element.categorySubType){
+        
+        sum=sum+int.parse(element.amount);
+      }
+    });
+    IncomeChartDataNotifier.value.add(IncomeData(incomeSource: CategoryDb().incomeCategoryList.value[i].categoryName, amount: sum));
+    i++;
+  }
 }
 
-getIncomeStats(){
-  // ignore: non_constant_identifier_names
-  List<IncomeStatModel>IncomeStatList=[
-    IncomeStatModel("Salary", 40000.00),
-    IncomeStatModel("Asset Income", 14000.00),
-    IncomeStatModel("Trading Profit", 7000.00),
-    IncomeStatModel("Miscellaneous Income", 1800.00),
-  ];
-  return IncomeStatList;
+
+
+
+
+
+
+class ExpenseData{
+  final String expenseSource;
+  final int amount;
+
+  ExpenseData({required this.expenseSource, required this.amount});
 }
 
-
-
-class ExpenseStatModel{
-  String x;
-  double y;
-
-  ExpenseStatModel(this.x, this.y);
-
-}
-
-getExpenseStats(){
-  // ignore: non_constant_identifier_names
-  List<ExpenseStatModel>IncomeStatList=[
-    ExpenseStatModel("Travel", 8000.00),
-    ExpenseStatModel("Food", 10000.00),
-    ExpenseStatModel("Shopping", 6000.00),
-    ExpenseStatModel("Miscellaneous", 2000.00),
-  ];
-  return IncomeStatList;
+ValueNotifier<List<ExpenseData>> ExpenseChartDataNotifier = ValueNotifier([]);
+void getExpenseChartData(){
+  int i=0,sum=0;
+  ExpenseChartDataNotifier.value.clear();
+  while(i<CategoryDb().expenseCategoryList.value.length){
+    sum=0;
+    TransactionDb().allTransactionsList.value.forEach((element) {
+      if(CategoryDb().expenseCategoryList.value[i].categoryName==element.categorySubType){
+        
+        sum=sum+int.parse(element.amount);
+      }
+    });
+    ExpenseChartDataNotifier.value.add(ExpenseData(expenseSource: CategoryDb().expenseCategoryList.value[i].categoryName, amount: sum));
+    i++;
+  }
 }
