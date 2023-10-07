@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:money_manager/Screens/Stats/models/stat_models.dart';
+import 'package:money_manager/Screens/stats/models/stat_models.dart';
+import 'package:money_manager/db/category/category_db.dart';
+import 'package:money_manager/db/transactions/transaction_db.dart';
 
 import 'package:syncfusion_flutter_charts/charts.dart';
 
@@ -15,6 +17,8 @@ class _ExpenseStatsState extends State<ExpenseStats> {
 
   @override
   void initState() {
+     CategoryDb().refreshUI();
+    TransactionDb().refreshUI();
     getExpenseChartData();
     _tooltipBehavior = TooltipBehavior(enable: true);
     super.initState();

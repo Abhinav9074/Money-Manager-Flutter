@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:money_manager/Screens/SplashScreen/splash_screen.dart';
+import 'package:money_manager/Screens/splashScreen/splash_screen.dart';
 import 'package:money_manager/db/main_db_functions/main_db_functions.dart';
 
 Future<void> main() async{

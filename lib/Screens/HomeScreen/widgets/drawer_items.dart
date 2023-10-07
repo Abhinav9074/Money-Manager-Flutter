@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:money_manager/Screens/DeletedTransactions/screens/deleted_transactions.dart';
-import 'package:money_manager/Screens/Faq/screens/faq_screen.dart';
+import 'package:money_manager/Screens/deletedTransactions/screens/deleted_transactions.dart';
+import 'package:money_manager/Screens/faq/screens/faq_screen.dart';
 import 'package:money_manager/Screens/PrivacyPolicy/privacy_policy_screen.dart';
 import 'package:money_manager/Screens/ProfileEditScreen/screens/profile_edit_screen.dart';
 import 'package:money_manager/Screens/TermsAndCondition/terms_and_conditions.dart';

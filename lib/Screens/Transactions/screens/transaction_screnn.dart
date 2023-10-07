@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:money_manager/Screens/Transactions/widgets/add_transactio.dart';
-import 'package:money_manager/Screens/Transactions/widgets/all_transaction.dart';
-import 'package:money_manager/Screens/Transactions/widgets/expense_transactions.dart';
-import 'package:money_manager/Screens/Transactions/widgets/filter_sheet.dart';
-import 'package:money_manager/Screens/Transactions/widgets/income_transactions.dart';
-import 'package:money_manager/Screens/Transactions/widgets/sort_sheet.dart';
+import 'package:money_manager/Screens/transactions/widgets/add_transactio.dart';
+import 'package:money_manager/Screens/transactions/widgets/all_transaction.dart';
+import 'package:money_manager/Screens/transactions/widgets/expense_transactions.dart';
+import 'package:money_manager/Screens/transactions/widgets/filter_sheet.dart';
+import 'package:money_manager/Screens/transactions/widgets/income_transactions.dart';
+import 'package:money_manager/Screens/transactions/widgets/sort_sheet.dart';
 import 'package:money_manager/db/category/category_db.dart';
 import 'package:money_manager/db/transactions/transaction_db.dart';
-import 'package:money_manager/models/category_model.dart';
 
 class TransactionsScreen extends StatefulWidget {
   const TransactionsScreen({super.key});
@@ -19,14 +18,15 @@ class TransactionsScreen extends StatefulWidget {
 
 class _TransactionsScreenState extends State<TransactionsScreen>
     with TickerProviderStateMixin {
-      var size, height;
+  var size, height;
   TextEditingController searchText = TextEditingController();
   late TabController _tabController;
   ValueNotifier<int> sortIndex = ValueNotifier(2);
-  ValueNotifier<String> startDateNotifier = ValueNotifier(DateTime.now().toString().substring(0,10));
-  ValueNotifier<String> endDateNotifier = ValueNotifier(DateTime.now().toString().substring(0,10));
+  ValueNotifier<String> startDateNotifier =
+      ValueNotifier(DateTime.now().toString().substring(0, 10));
+  ValueNotifier<String> endDateNotifier =
+      ValueNotifier(DateTime.now().toString().substring(0, 10));
   ValueNotifier<String> categoryNotifier = ValueNotifier('Select a category');
-  
 
   @override
   void initState() {
@@ -74,7 +74,7 @@ class _TransactionsScreenState extends State<TransactionsScreen>
               // ignore: sized_box_for_whitespace
               Container(
                   width: double.infinity,
-                  height: 50,
+                  height: 70,
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(15, 5, 15, 0),
                     child: TextFormField(
@@ -90,8 +90,8 @@ class _TransactionsScreenState extends State<TransactionsScreen>
                           suffixIcon: IconButton(
                             icon: const Icon(Icons.close),
                             onPressed: () {
-                             searchText.clear();
-                             TransactionDb().refreshUI();
+                              searchText.clear();
+                              TransactionDb().refreshUI();
                             },
                           ),
                           prefixIcon: const Icon(Icons.search),
@@ -106,6 +106,16 @@ class _TransactionsScreenState extends State<TransactionsScreen>
                     ),
                   )),
               TabBar(
+                  onTap: (value) async {
+                    await TransactionDb().refreshUI();
+                    startDateNotifier.value = 
+                        DateTime.now().toString().substring(0, 10);
+                    endDateNotifier.value = 
+                        DateTime.now().toString().substring(0, 10);
+                    categoryNotifier.value = 'Select a category';
+                    sortIndex.value = 2;
+                  },
+                  isScrollable: false,
                   labelColor: Colors.black,
                   labelStyle: const TextStyle(
                       fontSize: 20, fontFamily: 'texgyreadventor-regular'),
@@ -123,11 +133,14 @@ class _TransactionsScreenState extends State<TransactionsScreen>
                     ),
                   ]),
               Expanded(
-                child: TabBarView(controller: _tabController, children: const [
-                  AllTransactions(),
-                  IncomeTransactions(),
-                  ExpenseTransaction(),
-                ]),
+                child: TabBarView(
+                    physics: NeverScrollableScrollPhysics(),
+                    controller: _tabController,
+                    children: const [
+                      AllTransactions(),
+                      IncomeTransactions(),
+                      ExpenseTransaction(),
+                    ]),
               )
             ],
           ),
@@ -158,17 +171,17 @@ class _TransactionsScreenState extends State<TransactionsScreen>
               children: [
                 ElevatedButton.icon(
                     onPressed: () {
-                      ShowSortSheet(context,sortIndex);
+                      ShowSortSheet(context, sortIndex);
                     },
                     icon: const FaIcon(FontAwesomeIcons.sort),
                     label: const Text('Sort')),
                 ElevatedButton.icon(
                     onPressed: () {
-                      ShowFilterSheet(context,_tabController.index,height,startDateNotifier,endDateNotifier,categoryNotifier);
+                      ShowFilterSheet(context, _tabController.index, height,
+                          startDateNotifier, endDateNotifier, categoryNotifier);
                     },
                     icon: const FaIcon(FontAwesomeIcons.filter),
                     label: const Text('Filter')),
-                   
               ],
             ),
           )

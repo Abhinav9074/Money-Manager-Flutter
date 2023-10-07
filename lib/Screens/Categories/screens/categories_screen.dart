@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:money_manager/Screens/Categories/widgets/add_category.dart';
-import 'package:money_manager/Screens/Categories/widgets/expense_category.dart';
-import 'package:money_manager/Screens/Categories/widgets/income_category.dart';
+import 'package:money_manager/Screens/categories/widgets/add_category.dart';
+import 'package:money_manager/Screens/categories/widgets/expense_category.dart';
+import 'package:money_manager/Screens/categories/widgets/income_category.dart';
 import 'package:money_manager/db/category/category_db.dart';
 
 class CategoryScreen extends StatefulWidget {

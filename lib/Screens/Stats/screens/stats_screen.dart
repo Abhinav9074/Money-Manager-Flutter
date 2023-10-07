@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:money_manager/Screens/Stats/widgets/expense_stat.dart';
-import 'package:money_manager/Screens/Stats/widgets/income_stats.dart';
-import 'package:money_manager/Screens/Stats/widgets/stat_filter.dart';
+import 'package:money_manager/Screens/stats/models/stat_models.dart';
+import 'package:money_manager/Screens/stats/widgets/expense_stat.dart';
+import 'package:money_manager/Screens/stats/widgets/income_stats.dart';
+import 'package:money_manager/Screens/stats/widgets/stat_filter.dart';
 import 'package:money_manager/db/category/category_db.dart';
 import 'package:money_manager/db/transactions/transaction_db.dart';
 
@@ -18,10 +19,14 @@ class _StatsScreenState extends State<StatsScreen>
   late TabController _tabController;
   @override
   void initState() {
-    CategoryDb().refreshUI();
-    TransactionDb().refreshUI();
+    
+    
     _tabController = TabController(length: 2, vsync: this);
     super.initState();
+    CategoryDb().refreshUI();
+    TransactionDb().refreshUI();
+    getExpenseChartData();
+    getIncomeChartData();
   }
 
   @override
@@ -32,6 +37,7 @@ class _StatsScreenState extends State<StatsScreen>
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
         backgroundColor: const Color.fromARGB(255, 232, 235, 235),
         appBar: AppBar(
@@ -87,6 +93,14 @@ class _StatsScreenState extends State<StatsScreen>
                         },
                         icon: const FaIcon(FontAwesomeIcons.filter),
                         label: const Text('Filter')),
+                        ElevatedButton.icon(
+                        onPressed: () async{
+                          await TransactionDb().refreshUI();
+                          getExpenseChartData();
+                          getIncomeChartData();
+                        },
+                        icon: const FaIcon(FontAwesomeIcons.xmark),
+                        label: const Text('Clear')),
                   ],
                 ),
               )

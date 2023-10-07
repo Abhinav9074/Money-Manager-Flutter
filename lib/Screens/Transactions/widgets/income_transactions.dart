@@ -26,7 +26,7 @@ class IncomeTransactions extends StatelessWidget {
             valueListenable: TransactionDb().incomeTransactionsList,
             builder: (BuildContext context, List<TransactionModel> newList,
                 Widget? _) {
-              return SlidableAutoCloseBehavior(
+              return TransactionDb().incomeTransactionsList.value.isNotEmpty?SlidableAutoCloseBehavior(
                 child: ListView.builder(
                   itemCount: newList.length,
                   itemBuilder: (context, index) {
@@ -260,7 +260,19 @@ class IncomeTransactions extends StatelessWidget {
                     );
                   },
                 ),
-              );
+              ):Center(
+                    child: Text(
+                        'No Data',
+                        style: TextStyle(
+                          fontSize: MediaQuery.of(context).orientation ==
+                                  Orientation.portrait
+                              ? textHeightPortrait + 5
+                              : textHeightLandscape + 5,
+                          fontFamily: 'texgyreadventor-regular',
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                  );
             },
           ),
         ),

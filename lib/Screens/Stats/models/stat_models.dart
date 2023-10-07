@@ -24,6 +24,7 @@ void getIncomeChartData(){
     IncomeChartDataNotifier.value.add(IncomeData(incomeSource: CategoryDb().incomeCategoryList.value[i].categoryName, amount: sum));
     i++;
   }
+  IncomeChartDataNotifier.notifyListeners();
 }
 
 
@@ -54,4 +55,5 @@ void getExpenseChartData(){
     ExpenseChartDataNotifier.value.add(ExpenseData(expenseSource: CategoryDb().expenseCategoryList.value[i].categoryName, amount: sum));
     i++;
   }
+  ExpenseChartDataNotifier.notifyListeners();
 }

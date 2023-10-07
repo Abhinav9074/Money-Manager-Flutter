@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:money_manager/Screens/Categories/widgets/edit_category.dart';
+import 'package:money_manager/Screens/categories/widgets/edit_category.dart';
 import 'package:money_manager/db/category/category_db.dart';
 import 'package:money_manager/models/category_model.dart';
 

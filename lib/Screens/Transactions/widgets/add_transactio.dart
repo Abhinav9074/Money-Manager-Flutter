@@ -34,7 +34,6 @@ class _AddTransactionsState extends State<AddTransactions> {
   String? selectedDropownValue;
   @override
   void initState() {
-
     _selectedCategory = CategoryType.income;
     super.initState();
   }
@@ -75,19 +74,120 @@ class _AddTransactionsState extends State<AddTransactions> {
           height: screenHeight,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-          SizedBox(
-                height: screenHeight/8,
+              Column(
+                children: [
+                  SizedBox(
+                height: 20,
               ),
 
               Form(
                   key: _formKey,
                   child: Column(
                     children: [
+
+                      //Income or Expense Selector
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Row(
+                    children: [
+                      Radio(
+                          value: CategoryType.income,
+                          groupValue: _selectedCategory,
+                          onChanged: (val) {
+                            setState(() {
+                              _selectedCategory = CategoryType.income;
+                              selectedDropownValue = null;
+                            });
+                          }),
+                      const Text('Income',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontFamily: 'texgyreadventor-regular'))
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Radio(
+                          value: CategoryType.expense,
+                          groupValue: _selectedCategory,
+                          onChanged: (val) {
+                            setState(() {
+                              _selectedCategory = CategoryType.expense;
+                              selectedDropownValue = null;
+                            });
+                          }),
+                      const Text('Expense',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontFamily: 'texgyreadventor-regular'))
+                    ],
+                  ),
+                ],
+              ),
+
+              //Select Category
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  DropdownButton(
+                      hint: const Text(
+                        'Select Category',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontFamily: 'texgyreadventor-regular'),
+                      ),
+                      value: selectedDropownValue,
+                      items: (_selectedCategory == CategoryType.income
+                              ? CategoryDb().incomeCategoryList
+                              : CategoryDb().expenseCategoryList)
+                          .value
+                          .map((e) {
+                        return DropdownMenuItem(
+                            value: e.categoryName,
+                            child: e.isDeleted != true
+                                ? Text(e.categoryName,
+                                    style: const TextStyle(
+                                        fontSize: 20,
+                                        fontFamily: 'texgyreadventor-regular'))
+                                : Text(
+                                    e.categoryName,
+                                    style: const TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 20,
+                                        fontFamily: 'texgyreadventor-regular'),
+                                  ));
+                      }).toList(),
+                      onChanged: (selectedValue) {
+                        setState(() {
+                          selectedDropownValue = selectedValue;
+                        });
+                      }),
+                ],
+              ),
+              Visibility(
+                  visible: isCategoryVisible,
+                  child: const Text(
+                    'Please Pick a Category',
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontFamily: 'texgyreadventor-regular',
+                        color: Colors.red),
+                  )),
+              const SizedBox(
+                height: 20,
+              ),
+
+
+
                       //Purpose field
 
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(30, 5, 30, 10),
+                        padding: const EdgeInsets.fromLTRB(30, 5, 30, 30),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: TextFormField(
@@ -116,7 +216,7 @@ class _AddTransactionsState extends State<AddTransactions> {
                       ),
                       //Amount Field
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(150, 5, 150, 10),
+                        padding: const EdgeInsets.fromLTRB(30, 5, 30, 30),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: TextFormField(
@@ -237,144 +337,60 @@ class _AddTransactionsState extends State<AddTransactions> {
                   height: 150,
                   color: Colors.grey,
                   child: _finalImage == null
-                      ? const Center(
-                          child: Text(
-                            'No Image\nSelected',
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontFamily: 'texgyreadventor-regular'),
-                            textAlign: TextAlign.center,
-                          ),
-                        )
+                      ?  Image.asset('assets/images/receipt.jpg')
                       : Image.file(
                           File(_finalImage!),
                           fit: BoxFit.cover,
                         ),
                 ),
               ),
-
-              //Income or Expense Selector
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Row(
-                    children: [
-                      Radio(
-                          value: CategoryType.income,
-                          groupValue: _selectedCategory,
-                          onChanged: (val) {
-                            setState(() {
-                              _selectedCategory = CategoryType.income;
-                              selectedDropownValue = null;
-                            });
-                          }),
-                      const Text('Income',
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontFamily: 'texgyreadventor-regular'))
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Radio(
-                          value: CategoryType.expense,
-                          groupValue: _selectedCategory,
-                          onChanged: (val) {
-                            setState(() {
-                              _selectedCategory = CategoryType.expense;
-                              selectedDropownValue = null;
-                            });
-                          }),
-                      const Text('Expense',
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontFamily: 'texgyreadventor-regular'))
-                    ],
-                  ),
                 ],
               ),
 
-              //Select Category
-
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  DropdownButton(
-                      hint: const Text(
-                        'Select Category',
-                        style: TextStyle(
-                            fontSize: 20,
-                            fontFamily: 'texgyreadventor-regular'),
-                      ),
-                      value: selectedDropownValue,
-                      items: (_selectedCategory == CategoryType.income
-                              ? CategoryDb().incomeCategoryList
-                              : CategoryDb().expenseCategoryList)
-                          .value
-                          .map((e) {
-                        return DropdownMenuItem(
-                            value: e.categoryName,
-                            child: e.isDeleted != true
-                                ? Text(e.categoryName,
-                                    style: const TextStyle(
-                                        fontSize: 20,
-                                        fontFamily: 'texgyreadventor-regular'))
-                                : Text(
-                                    e.categoryName,
-                                    style: const TextStyle(
-                                        color: Colors.grey,
-                                        fontSize: 20,
-                                        fontFamily: 'texgyreadventor-regular'),
-                                  ));
-                      }).toList(),
-                      onChanged: (selectedValue) {
-                        setState(() {
-                          selectedDropownValue = selectedValue;
-                        });
-                      }),
-                ],
-              ),
-              Visibility(
-                  visible: isCategoryVisible,
-                  child: const Text(
-                    'Please Pick a Category',
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontFamily: 'texgyreadventor-regular',
-                        color: Colors.red),
-                  )),
-              const SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                      onPressed: () async {
-                        if (selectedDropownValue == null) {
-                          setState(() {
-                            isCategoryVisible = true;
-                          });
-                        }
-                        if (_selectedDate == null) {
-                          setState(() {
-                            isDateVisible = true;
-                          });
-                        }
-                        if (_formKey.currentState!.validate() &&
-                            _selectedDate != null &&
-                            selectedDropownValue != null) {
-                          await onAdd();
-                          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Data Added Successfully',style: TextStyle(fontSize: 15),),behavior: SnackBarBehavior.floating,padding: EdgeInsets.all(20),));
-                          Navigator.of(context).pop();
-                        }
-                      },
-                      child: const Text('Add',
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontFamily: 'texgyreadventor-regular')))
-                ],
+              
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 280),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 300,
+                      child: ElevatedButton(
+                        
+                          onPressed: () async {
+                            if (selectedDropownValue == null) {
+                              setState(() {
+                                isCategoryVisible = true;
+                              });
+                            }
+                            if (_selectedDate == null) {
+                              setState(() {
+                                isDateVisible = true;
+                              });
+                            }
+                            if (_formKey.currentState!.validate() &&
+                                _selectedDate != null &&
+                                selectedDropownValue != null) {
+                              await onAdd();
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                content: Text(
+                                  'Data Added Successfully',
+                                  style: TextStyle(fontSize: 15),
+                                ),
+                                behavior: SnackBarBehavior.floating,
+                                padding: EdgeInsets.all(20),
+                              ));
+                              Navigator.of(context).pop();
+                            }
+                          },
+                          child: const Text('Add Transaction',
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontFamily: 'texgyreadventor-regular'))),
+                    ),
+                  ],
+                ),
               )
             ],
           ),

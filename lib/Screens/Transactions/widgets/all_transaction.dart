@@ -290,7 +290,19 @@ class AllTransactions extends StatelessWidget {
                       );
                     },
                     itemCount: newList.length),
-              ):Center(child: Text('No Data'),)
+              ):Center(
+                    child: Text(
+                        'No Data',
+                        style: TextStyle(
+                          fontSize: MediaQuery.of(context).orientation ==
+                                  Orientation.portrait
+                              ? textHeightPortrait + 5
+                              : textHeightLandscape + 5,
+                          fontFamily: 'texgyreadventor-regular',
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                  )
               ;
             },
           ),
