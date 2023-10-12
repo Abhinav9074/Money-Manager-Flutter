@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_manager/Screens/Stats/widgets/income_stats.dart';
+import 'package:money_manager/db/transactions/transaction_db.dart';
 
 class IncomeExpenseTile extends StatelessWidget {
   const IncomeExpenseTile({super.key});
@@ -35,7 +36,7 @@ class IncomeExpenseTile extends StatelessWidget {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   color: const Color.fromARGB(255, 53, 198, 140)),
-              child: const Column(
+              child:  Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
@@ -49,12 +50,18 @@ class IncomeExpenseTile extends StatelessWidget {
                   ),
                   Padding(
                     padding: EdgeInsets.fromLTRB(18, 0, 0, 0),
-                    child: Text(
-                      '₹ 15123.50',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'texgyreadventor-regular',
-                          fontWeight: FontWeight.w700),
+                    child: ValueListenableBuilder(
+                      valueListenable: TransactionDb().income,
+                      builder: (BuildContext context, double income, Widget? _) {
+                        return Text(
+                          '₹${income}',
+                          style: TextStyle(
+                            letterSpacing: 1,
+                              color: Colors.white,
+                              fontFamily: 'texgyreadventor-regular',
+                              fontWeight: FontWeight.w700),
+                        );
+                      }
                     ),
                   )
                 ],
@@ -76,7 +83,7 @@ class IncomeExpenseTile extends StatelessWidget {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
                 color: const Color.fromARGB(255, 178, 83, 83)),
-            child: const Column(
+            child:  Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
@@ -90,12 +97,18 @@ class IncomeExpenseTile extends StatelessWidget {
                 ),
                 Padding(
                   padding: EdgeInsets.fromLTRB(18, 0, 0, 0),
-                  child: Text(
-                    '₹ 2345.50',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'texgyreadventor-regular',
-                        fontWeight: FontWeight.w700),
+                  child: ValueListenableBuilder(
+                    valueListenable: TransactionDb().expense,
+                    builder: (BuildContext context, double expense, Widget? _) {
+                      return Text(
+                        '₹${expense}',
+                        style: TextStyle(
+                          letterSpacing: 1,
+                            color: Colors.white,
+                            fontFamily: 'texgyreadventor-regular',
+                            fontWeight: FontWeight.w700),
+                      );
+                    }
                   ),
                 )
               ],

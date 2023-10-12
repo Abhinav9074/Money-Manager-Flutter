@@ -3,6 +3,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:money_manager/Screens/categories/widgets/edit_category.dart';
 import 'package:money_manager/db/category/category_db.dart';
+import 'package:money_manager/db/transactions/transaction_db.dart';
 import 'package:money_manager/models/category_model.dart';
 
 class IncomeCategoryScreen extends StatelessWidget {
@@ -26,59 +27,158 @@ class IncomeCategoryScreen extends StatelessWidget {
                               motion: const BehindMotion(),
                               children: [
                                 SlidableAction(
-                                  onPressed: (ctx) {
-                                    showDialog(
-                                        context: context,
-                                        builder: (ctx) {
-                                          return AlertDialog(
-                                            content: const Text(
-                                                'The Data Will Be Deleted'),
-                                            title: const Text('Are You Sure'),
-                                            actions: [
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.end,
+                                  onPressed: (ctx) async{
+                              if (TransactionDb()
+                                        .allTransactionsList
+                                        .value
+                                        .isNotEmpty) {
+                                      int count = await TransactionDb()
+                                          .CheckCategoryBeforeDelete(
+                                              data.categoryName);
+                                      print(count);
+                                      if (count == 0) {
+                                        showDialog(
+                                            context: context,
+                                            builder: (ctx) {
+                                              return AlertDialog(
+                                                content: const Text(
+                                                    'The Data Will Be Deleted'),
+                                                title:
+                                                    const Text('Are You Sure'),
+                                                actions: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment.end,
+                                                    children: [
+                                                      IconButton(
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          icon: const Icon(
+                                                              Icons.close)),
+                                                      IconButton(
+                                                        onPressed: () async {
+                                                          CategoryDb()
+                                                              .deleteCategory(
+                                                                  data.id);
+                                                          ScaffoldMessenger.of(
+                                                                  context)
+                                                              .showSnackBar(
+                                                                  const SnackBar(
+                                                            content: Text(
+                                                              'Deleted Successfully',
+                                                              style: TextStyle(
+                                                                  fontSize: 15),
+                                                            ),
+                                                            behavior:
+                                                                SnackBarBehavior
+                                                                    .floating,
+                                                            padding:
+                                                                EdgeInsets.all(
+                                                                    20),
+                                                          ));
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                        icon: const Icon(
+                                                            Icons.check),
+                                                      )
+                                                    ],
+                                                  )
+                                                ],
+                                              );
+                                            });
+                                      } else {
+                                        showDialog(
+                                            context: context,
+                                            builder: (ctx) {
+                                              return SimpleDialog(
+                                                title: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: [
+                                                    Text('''Oops! Can't Delete This Category''',style: TextStyle(color: Colors.red,fontFamily:
+                                                      'texgyreadventor-regular',),),
+                                                  ],
+                                                ),
                                                 children: [
-                                                  IconButton(
-                                                      onPressed: () {
+                                                  Container(
+                                                    height: 200,
+                                                    child: Row(
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: [
+                                                        Text('There are $count Transactions\nAdded In this Category\nPlease Delete the\nRelated Transactions to proceed',textAlign: TextAlign.center,style: TextStyle(fontSize: 20,fontFamily:
+                                                          'texgyreadventor-regular',)),
+                                                      ],
+                                                    ),
+                                                  )
+                                                ],
+                                              );
+                                            });
+                                      }
+                                      ;
+                                    } else {
+                                      showDialog(
+                                          context: context,
+                                          builder: (ctx) {
+                                            return AlertDialog(
+                                              content: const Text(
+                                                  'The Data Will Be Deleted'),
+                                              title: const Text('Are You Sure'),
+                                              actions: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.end,
+                                                  children: [
+                                                    IconButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                        icon: const Icon(
+                                                            Icons.close)),
+                                                    IconButton(
+                                                      onPressed: () async {
+                                                        CategoryDb()
+                                                            .deleteCategory(
+                                                                data.id);
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                                const SnackBar(
+                                                          content: Text(
+                                                            'Deleted Successfully',
+                                                            style: TextStyle(
+                                                                fontSize: 15),
+                                                          ),
+                                                          behavior:
+                                                              SnackBarBehavior
+                                                                  .floating,
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  20),
+                                                        ));
                                                         Navigator.of(context)
                                                             .pop();
                                                       },
-                                                      icon: const Icon(Icons.close)),
-                                                  IconButton(
-                                                    onPressed: () async {
-                                                      CategoryDb()
-                                                          .deleteCategory(
-                                                              data.id);
-                                                      ScaffoldMessenger.of(
-                                                              context)
-                                                          .showSnackBar(
-                                                              const SnackBar(
-                                                        content: Text(
-                                                          'Deleted Successfully',
-                                                          style: TextStyle(
-                                                              fontSize: 15),
-                                                        ),
-                                                        behavior:
-                                                            SnackBarBehavior
-                                                                .floating,
-                                                        padding:
-                                                            EdgeInsets.all(20),
-                                                      ));
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    icon: const Icon(Icons.check),
-                                                  )
-                                                ],
-                                              )
-                                            ],
-                                          );
-                                        });
-                                  },
+                                                      icon: const Icon(
+                                                          Icons.check),
+                                                    )
+                                                  ],
+                                                )
+                                              ],
+                                            );
+                                          });
+                                    }
+                              
+                            },
                                   icon: FontAwesomeIcons.trash,
                                   autoClose: true,
                                   backgroundColor: Colors.red,

@@ -149,7 +149,7 @@ class _AddTransactionsState extends State<EditTransaction> {
                                 border: InputBorder.none,
                               ),
                               validator: (value) {
-                                if (!RegExp(r'^\d+\S*$')
+                                if (!RegExp(r'^[0-9]+$')
                                     .hasMatch(value ?? '')) {
                                   return 'Please enter a valid amount.';
                                 }

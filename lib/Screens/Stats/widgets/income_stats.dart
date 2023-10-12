@@ -30,7 +30,7 @@ class _IncomeStatsState extends State<IncomeStats> {
       builder: (BuildContext context, List<IncomeData> newList, Widget? _){
         return IncomeChartDataNotifier.value.isNotEmpty?Center(
       child: SfCircularChart(
-        legend: Legend(
+        legend: const Legend(
             isVisible: true,
             isResponsive: true,
             overflowMode: LegendItemOverflowMode.wrap,
@@ -49,14 +49,14 @@ class _IncomeStatsState extends State<IncomeStats> {
               xValueMapper: (IncomeData data, _) => data.incomeSource,
               yValueMapper: (IncomeData data, _) => data.amount,      
               enableTooltip: true,
-              dataLabelSettings: DataLabelSettings(isVisible: true),
+              dataLabelSettings: const DataLabelSettings(isVisible: true),
               legendIconType: LegendIconType.seriesType),
               
         ],
       ),
     ):Center(
       child: SfCircularChart(
-        legend: Legend(
+        legend: const Legend(
             isVisible: true,
             isResponsive: true,
             overflowMode: LegendItemOverflowMode.wrap,
@@ -75,7 +75,7 @@ class _IncomeStatsState extends State<IncomeStats> {
               xValueMapper: (IncomeData data, _) => data.incomeSource,
               yValueMapper: (IncomeData data, _) => data.amount,      
               enableTooltip: true,
-              dataLabelSettings: DataLabelSettings(isVisible: true),
+              dataLabelSettings: const DataLabelSettings(isVisible: true),
               legendIconType: LegendIconType.seriesType),
               
         ],

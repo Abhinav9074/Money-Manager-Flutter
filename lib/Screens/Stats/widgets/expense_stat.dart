@@ -31,7 +31,7 @@ class _ExpenseStatsState extends State<ExpenseStats> {
       builder: (BuildContext context, List<ExpenseData> newList, Widget? _){
         return Center(
       child: SfCircularChart(
-        legend: Legend(
+        legend: const Legend(
             isVisible: true,
             isResponsive: true,
             overflowMode: LegendItemOverflowMode.wrap,
@@ -50,7 +50,7 @@ class _ExpenseStatsState extends State<ExpenseStats> {
               xValueMapper: (ExpenseData data, _) => data.expenseSource,
               yValueMapper: (ExpenseData data, _) => data.amount,      
               enableTooltip: true,
-              dataLabelSettings: DataLabelSettings(isVisible: true),
+              dataLabelSettings: const DataLabelSettings(isVisible: true),
               legendIconType: LegendIconType.seriesType),
               
         ],

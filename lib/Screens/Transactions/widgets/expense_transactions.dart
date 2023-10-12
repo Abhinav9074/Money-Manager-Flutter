@@ -4,8 +4,10 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:money_manager/Screens/Transactions/widgets/edit_transaction.dart';
 import 'package:money_manager/Screens/Transactions/widgets/transaction_details.dart';
+import 'package:money_manager/db/deleted/deleted_db_functions.dart';
 import 'package:money_manager/db/transactions/transaction_db.dart';
 import 'package:money_manager/models/category_model.dart';
+import 'package:money_manager/models/deleted_model.dart';
 import 'package:money_manager/models/transactions_model.dart';
 
 class ExpenseTransaction extends StatelessWidget {
@@ -88,9 +90,35 @@ class ExpenseTransaction extends StatelessWidget {
                                                           IconButton(
                                                             onPressed:
                                                                 () async {
-                                                              TransactionDb()
+                                                              final deleteData = DeletedModel(
+                                                                  id: data.id,
+                                                                  purpose: data
+                                                                      .purpose,
+                                                                  amount: data
+                                                                      .amount,
+                                                                  date:
+                                                                      data.date,
+                                                                  dateSum: data
+                                                                      .dateSum,
+                                                                  recieptImage: data
+                                                                      .recieptImage,
+                                                                  type:
+                                                                      data.type,
+                                                                  categorySubType:
+                                                                      data
+                                                                          .categorySubType,
+                                                                  deleteDate: DateTime
+                                                                          .now()
+                                                                      .add(Duration(
+                                                                          days:
+                                                                              30)));
+                                                              await DeletedTransactionDb()
+                                                                  .deleteTransactions(
+                                                                      deleteData);
+                                                              await TransactionDb()
                                                                   .deleteTransaction(
                                                                       data.id);
+
                                                               ScaffoldMessenger
                                                                       .of(
                                                                           context)
@@ -266,12 +294,9 @@ class ExpenseTransaction extends StatelessWidget {
                                                                 'texgyreadventor-regular',
                                                             fontWeight:
                                                                 FontWeight.w900,
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    2,
-                                                                    39,
-                                                                    71))),
+                                                            color: const Color
+                                                                .fromARGB(255,
+                                                                2, 39, 71))),
                                                     const SizedBox(
                                                       height: 10,
                                                     ),
@@ -290,7 +315,7 @@ class ExpenseTransaction extends StatelessWidget {
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w900,
-                                                                color: Color.fromARGB(
+                                                                color: const Color.fromARGB(
                                                                     255, 33, 165, 6)))
                                                         : Text(data.categorySubType,
                                                             style: TextStyle(
@@ -300,7 +325,7 @@ class ExpenseTransaction extends StatelessWidget {
                                                                     : textHeightLandscape - 5,
                                                                 fontFamily: 'texgyreadventor-regular',
                                                                 fontWeight: FontWeight.w900,
-                                                                color: Color.fromARGB(255, 255, 0, 0))),
+                                                                color: const Color.fromARGB(255, 255, 0, 0))),
                                                   ],
                                                 ),
                                               ),
@@ -341,7 +366,7 @@ class ExpenseTransaction extends StatelessWidget {
                       ),
                     )
                   : Center(
-                    child: Text(
+                      child: Text(
                         'No Data',
                         style: TextStyle(
                           fontSize: MediaQuery.of(context).orientation ==
@@ -352,7 +377,7 @@ class ExpenseTransaction extends StatelessWidget {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                  );
+                    );
             },
           ),
         ),

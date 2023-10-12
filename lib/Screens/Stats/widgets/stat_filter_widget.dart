@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:money_manager/Screens/stats/models/stat_models.dart';
-import 'package:money_manager/db/category/category_db.dart';
 import 'package:money_manager/db/transactions/transaction_db.dart';
 
 class StatFilterWidget extends StatefulWidget {
-  StatFilterWidget({
+  const StatFilterWidget({
     super.key,
   });
 
@@ -15,8 +14,11 @@ class StatFilterWidget extends StatefulWidget {
 
 class _StatFilterWidgetState extends State<StatFilterWidget> {
   DateTime? startDate;
+  // ignore: non_constant_identifier_names
   DateTime? EndDate;
+  // ignore: prefer_typing_uninitialized_variables, non_constant_identifier_names
   late final first_index;
+  // ignore: prefer_typing_uninitialized_variables
   late final indexValue;
 
   @override
@@ -24,7 +26,6 @@ class _StatFilterWidgetState extends State<StatFilterWidget> {
     if (TransactionDb().allTransactionsList.value.isNotEmpty) {
       first_index = TransactionDb().allTransactionsList.value.length - 1;
       indexValue = TransactionDb().allTransactionsList.value[first_index];
-      print(indexValue.date);
     } else {
       indexValue = null;
     }
@@ -66,7 +67,7 @@ class _StatFilterWidgetState extends State<StatFilterWidget> {
                 },
                 icon: const FaIcon(FontAwesomeIcons.calendar),
                 label: startDate == null
-                    ? Text(
+                    ? const Text(
                         'Pick Date')
                     : Text(startDate.toString().substring(0, 10))),
                     const Padding(
@@ -94,13 +95,13 @@ class _StatFilterWidgetState extends State<StatFilterWidget> {
                 },
                 icon: const FaIcon(FontAwesomeIcons.calendar),
                 label: EndDate == null
-                    ? Text(
+                    ? const Text(
                         'Date')
                     : Text(EndDate.toString().substring(0, 10)))
           ],
         ),
         
-        SizedBox(
+        const SizedBox(
           height: 40,
         ),
         Row(
@@ -109,6 +110,7 @@ class _StatFilterWidgetState extends State<StatFilterWidget> {
             ElevatedButton(
                 onPressed: () async {
                   await FilterPress();
+                  // ignore: use_build_context_synchronously
                   Navigator.of(context).pop();
                 },
                 child: const Text('Filter')),
@@ -122,6 +124,7 @@ class _StatFilterWidgetState extends State<StatFilterWidget> {
     );
   }
 
+  // ignore: non_constant_identifier_names
   Future<void> FilterPress() async {
     if (startDate != null && EndDate !=null) {
       await TransactionDb().FilterByDate(startDate!, EndDate!);

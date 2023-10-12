@@ -1,5 +1,7 @@
+// ignore_for_file: non_constant_identifier_names
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:money_manager/db/user/user_db.dart';
 import 'package:money_manager/models/category_model.dart';
 import 'package:money_manager/models/transactions_model.dart';
 
@@ -14,6 +16,9 @@ abstract class TransactionDetails {
   Future<void> FilterByDate(DateTime start, DateTime end);
   Future<void> FilterByCategory(String subCategory);
   Future<void> Sorting(int criteria);
+  Future<int> CheckCategoryBeforeDelete(String subCategory);
+  Future<void> CalculateTotal();
+ 
 }
 
 class TransactionDb implements TransactionDetails {
@@ -34,6 +39,10 @@ class TransactionDb implements TransactionDetails {
       ValueNotifier([]);
   ValueNotifier<List<TransactionModel>> recentTransactionsList =
       ValueNotifier([]);
+
+  ValueNotifier<double> expense = ValueNotifier(0);
+  ValueNotifier<double> income= ValueNotifier(0);
+  ValueNotifier<double> total = ValueNotifier(0);
   int CallCount = 0;
   dynamic indexValue;
 
@@ -53,6 +62,9 @@ class TransactionDb implements TransactionDetails {
   }
 
   Future<void> refreshUI() async {
+    expenseTransactionsList.notifyListeners();
+    incomeTransactionsList.notifyListeners();
+    allTransactionsList.notifyListeners();
     final allTransactions = await getTransactions();
     expenseTransactionsList.value.clear();
     incomeTransactionsList.value.clear();
@@ -74,13 +86,18 @@ class TransactionDb implements TransactionDetails {
         .sort((first, second) => second.date.compareTo(first.date));
     allTransactionsList.value
         .sort((first, second) => second.date.compareTo(first.date));
-    indexValue = TransactionDb()
-        .allTransactionsList
-        .value[TransactionDb().allTransactionsList.value.length - 1];
+    if (allTransactionsList.value.isNotEmpty) {
+      indexValue = TransactionDb()
+          .allTransactionsList
+          .value[TransactionDb().allTransactionsList.value.length - 1];
+    }
     expenseTransactionsList.notifyListeners();
     incomeTransactionsList.notifyListeners();
     allTransactionsList.notifyListeners();
     recentTransactionsList.notifyListeners();
+
+    await CalculateTotal();
+    await getUser();
   }
 
   Future<void> searchTransactions(String text) async {
@@ -134,7 +151,7 @@ class TransactionDb implements TransactionDetails {
     final transactionDb =
         await Hive.openBox<TransactionModel>(TRANSACTION_DB_NAME);
     await transactionDb.delete(value);
-    refreshUI();
+    await refreshUI();
   }
 
   @override
@@ -238,30 +255,27 @@ class TransactionDb implements TransactionDetails {
     CallCount = 0;
   }
 
+  // ignore: non_constant_identifier_names
   @override
   Future<void> Sorting(int criteria) async {
-    print(criteria);
     if (criteria == 0) {
       //price low to high
 
-      expenseTransactionsList.value
-          .sort((first, second) => int.parse(first.amount).compareTo(int.parse(second.amount)));
-      incomeTransactionsList.value
-          .sort((first, second) => int.parse(first.amount).compareTo(int.parse(second.amount)));
-      allTransactionsList.value
-          .sort((first, second) => int.parse(first.amount).compareTo(int.parse(second.amount)));
-
+      expenseTransactionsList.value.sort((first, second) =>
+          int.parse(first.amount).compareTo(int.parse(second.amount)));
+      incomeTransactionsList.value.sort((first, second) =>
+          int.parse(first.amount).compareTo(int.parse(second.amount)));
+      allTransactionsList.value.sort((first, second) =>
+          int.parse(first.amount).compareTo(int.parse(second.amount)));
     } else if (criteria == 1) {
       //price high to low
 
-
-      expenseTransactionsList.value
-          .sort((first, second) => int.parse(second.amount).compareTo(int.parse(first.amount)));
-      incomeTransactionsList.value
-          .sort((first, second) => int.parse(second.amount).compareTo(int.parse(first.amount)));
-      allTransactionsList.value
-          .sort((first, second) => int.parse(second.amount).compareTo(int.parse(first.amount)));
-      
+      expenseTransactionsList.value.sort((first, second) =>
+          int.parse(second.amount).compareTo(int.parse(first.amount)));
+      incomeTransactionsList.value.sort((first, second) =>
+          int.parse(second.amount).compareTo(int.parse(first.amount)));
+      allTransactionsList.value.sort((first, second) =>
+          int.parse(second.amount).compareTo(int.parse(first.amount)));
     } else if (criteria == 2) {
       //Date ascending
 
@@ -286,4 +300,46 @@ class TransactionDb implements TransactionDetails {
     incomeTransactionsList.notifyListeners();
     allTransactionsList.notifyListeners();
   }
+
+  @override
+  Future<int> CheckCategoryBeforeDelete(String subCategory) async {
+    await refreshUI();
+    int count = 0;
+    await Future.forEach(allTransactionsList.value, (element) {
+      if (element.categorySubType == subCategory) {
+        count++;
+      }
+    });
+    return count;
+  }
+
+  @override
+  Future<void> CalculateTotal() async {
+
+    total.value=0.0;
+    income.value=0;
+    expense.value=0;
+    
+    int year = int.parse(DateTime.now().toString().substring(0, 4));
+    int month = int.parse(DateTime.now().toString().substring(5, 7));
+
+    DateTime MonthFirst = DateTime(year,month,01);
+    DateTime MonthNow = DateTime.now();
+
+    await Future.forEach(allTransactionsList.value, (element){
+      if(element.type==CategoryType.expense && element.date.isAfter(MonthFirst) && element.date.isBefore(MonthNow)){
+        expense.value = expense.value + double.parse(element.amount);
+      }else if(element.type==CategoryType.income && element.date.isAfter(MonthFirst) && element.date.isBefore(MonthNow)){
+        income.value = income.value + double.parse(element.amount);
+      }
+    });
+
+    total.value = income.value - expense.value;
+
+    total.notifyListeners();
+    income.notifyListeners();
+    expense.notifyListeners();
+  }
+
+
 }

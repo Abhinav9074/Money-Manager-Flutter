@@ -193,7 +193,7 @@ class TransactionDetailsScreen extends StatelessWidget {
               valueListenable: TransactionDb().specificTransactionsList,
               builder: (BuildContext context, List<TransactionModel> newList,
                   Widget? _) {
-                return ListView.builder(
+                return newList.isNotEmpty?ListView.builder(
                   itemCount: newList.length,
                   itemBuilder: (context, index) {
                     final data = newList[index];
@@ -331,7 +331,8 @@ class TransactionDetailsScreen extends StatelessWidget {
                       ],
                     );
                   },
-                );
+                ):Center(child: Text('No Data',style: TextStyle(fontFamily:
+                                                'texgyreadventor-regular',),));
               },
             ))
           ],

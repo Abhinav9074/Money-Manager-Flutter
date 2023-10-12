@@ -1,9 +1,11 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:money_manager/Screens/deletedTransactions/screens/deleted_transactions.dart';
 import 'package:money_manager/Screens/faq/screens/faq_screen.dart';
 import 'package:money_manager/Screens/PrivacyPolicy/privacy_policy_screen.dart';
 import 'package:money_manager/Screens/ProfileEditScreen/screens/profile_edit_screen.dart';
 import 'package:money_manager/Screens/TermsAndCondition/terms_and_conditions.dart';
+import 'package:money_manager/db/user/user_db.dart';
 
 class DrawerItems extends StatelessWidget {
   const DrawerItems({super.key});
@@ -22,29 +24,51 @@ class DrawerItems extends StatelessWidget {
               color: Colors.black,
               shape: BoxShape.circle,
               elevation: 8.0,
-              child: InkWell(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
-                    return const ProfileEditScreen();
-                  }));
-                },
-                child: ClipOval(
-                  child: Image.asset(
-                    'assets/images/profile.png',
-                    height: 150,
-                    width: 150,
-                  ),
-                ),
-              ),
+              child: ValueListenableBuilder(
+                  valueListenable: userProfileNotifier,
+                  builder: (BuildContext context, String picture, Widget? _) {
+                    return picture == ''
+                        ? ClipOval(
+                            child: Image.asset(
+                              'assets/images/profile.png',
+                              height: 150,
+                              width: 150,
+                            ),
+                          )
+                        : ClipOval(
+                            child: Image.file(File(picture),
+                                height: 150, width: 150),
+                          );
+                  }),
             ),
             const SizedBox(
               height: 15,
             ),
-            const Text('User Name',
-                style: TextStyle(
-                    fontSize: 25,
-                    fontFamily: 'Raleway-VariableFont_wght',
-                    fontWeight: FontWeight.w600)),
+            ValueListenableBuilder(
+                valueListenable: userNameNotifier,
+                builder: (BuildContext context, String name, Widget? _) {
+                  return name == ''
+                      ? Text('User Name',
+                          style: TextStyle(
+                              fontSize: 25,
+                              fontFamily: 'Raleway-VariableFont_wght',
+                              fontWeight: FontWeight.w600))
+                      : Text('${name}',
+                          style: TextStyle(
+                              fontSize: 25,
+                              fontFamily: 'Raleway-VariableFont_wght',
+                              fontWeight: FontWeight.w600));
+                }),
+            TextButton.icon(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
+                    return ProfileEditScreen(
+                        image: userProfileNotifier.value,
+                        name: userNameNotifier.value);
+                  }));
+                },
+                icon: Icon(Icons.edit),
+                label: Text('Edit'))
           ],
         ),
         Column(
@@ -101,7 +125,7 @@ class DrawerItems extends StatelessWidget {
                                 fontSize: 20,
                                 fontFamily: 'texgyreadventor-regular',
                                 color: Color.fromARGB(255, 130, 129, 129)))),
-                                const SizedBox(
+                    const SizedBox(
                       height: 15,
                     ),
                     InkWell(

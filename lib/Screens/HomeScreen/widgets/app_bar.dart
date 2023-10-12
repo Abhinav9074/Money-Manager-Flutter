@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:money_manager/db/user/user_db.dart';
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
   const HomeAppBar({super.key});
@@ -23,22 +26,39 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                       onTap: () {
                         Scaffold.of(context).openDrawer();
                       },
-                      child: ClipOval(
-                        child: Image.asset(
-                          'assets/images/profile.png',
-                          width: 50,
-                        ),
+                      child: ValueListenableBuilder(
+                        valueListenable: userProfileNotifier,
+                        builder: (BuildContext context, String picture, Widget? _) {
+                          return ClipOval(
+                            child: picture == ''?
+                            Image.asset(
+                              'assets/images/profile.png',
+                              width: 50,
+                            ):Image.file(File(picture),width: 50,height: 50,),
+                          );
+                        }
                       ),
                     ),
                   ),
                   const SizedBox(
                     width: 20,
                   ),
-                  const Text(
-                    'Hi  ',
-                    style: TextStyle(
-                        fontFamily: 'Raleway-VariableFont_wght',
-                        fontWeight: FontWeight.w600),
+                  ValueListenableBuilder(
+                    valueListenable: userNameNotifier,
+                    builder: (BuildContext context, String name, Widget? _) {
+                      return  name == ''?
+                      Text(
+                        'Hi',
+                        style: TextStyle(
+                            fontFamily: 'Raleway-VariableFont_wght',
+                            fontWeight: FontWeight.w600),
+                      ):Text(
+                        'Hi ${name}',
+                        style: TextStyle(
+                            fontFamily: 'Raleway-VariableFont_wght',
+                            fontWeight: FontWeight.w600),
+                      );
+                    }
                   )
                 ],
               ),

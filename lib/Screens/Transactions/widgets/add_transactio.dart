@@ -78,7 +78,7 @@ class _AddTransactionsState extends State<AddTransactions> {
             children: [
               Column(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                 height: 20,
               ),
 
@@ -234,7 +234,7 @@ class _AddTransactionsState extends State<AddTransactions> {
                                 border: InputBorder.none,
                               ),
                               validator: (value) {
-                                if (!RegExp(r'^\d+\S*$')
+                                if (!RegExp(r'^[0-9]+$')
                                     .hasMatch(value ?? '')) {
                                   return 'Please enter a valid amount.';
                                 }

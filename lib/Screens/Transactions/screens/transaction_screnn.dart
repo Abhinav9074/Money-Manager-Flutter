@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:money_manager/Screens/categories/widgets/add_category.dart';
 import 'package:money_manager/Screens/transactions/widgets/add_transactio.dart';
 import 'package:money_manager/Screens/transactions/widgets/all_transaction.dart';
 import 'package:money_manager/Screens/transactions/widgets/expense_transactions.dart';
@@ -18,6 +19,7 @@ class TransactionsScreen extends StatefulWidget {
 
 class _TransactionsScreenState extends State<TransactionsScreen>
     with TickerProviderStateMixin {
+  // ignore: prefer_typing_uninitialized_variables
   var size, height;
   TextEditingController searchText = TextEditingController();
   late TabController _tabController;
@@ -134,7 +136,7 @@ class _TransactionsScreenState extends State<TransactionsScreen>
                   ]),
               Expanded(
                 child: TabBarView(
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     controller: _tabController,
                     children: const [
                       AllTransactions(),
@@ -153,10 +155,30 @@ class _TransactionsScreenState extends State<TransactionsScreen>
               backgroundColor: Colors.black,
               child: IconButton(
                   onPressed: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (ctx) {
-                      return const AddTransactions();
-                    }));
+                    CategoryDb().allCategoriesList.value.isNotEmpty
+                              ? Navigator.of(context)
+                                  .push(MaterialPageRoute(builder: (ctx) {
+                                  return AddTransactions();
+                                }))
+                              : ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                  content: Text(
+                                    'Please Add Some Categories Before Adding Transactions',
+                                    style: TextStyle(
+                                        fontFamily: 'texgyreadventor-regular'),
+                                  ),
+                                  behavior: SnackBarBehavior.floating,
+                                  padding: EdgeInsets.all(20),
+                                  action: SnackBarAction(
+                                      label: 'Add Category',
+                                      textColor: Colors.blue,
+                                      onPressed: () {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(builder: (ctx) {
+                                          return CategoryAddScreen();
+                                        }));
+                                      }),
+                                ));
                   },
                   icon: const FaIcon(FontAwesomeIcons.plus)),
             ),

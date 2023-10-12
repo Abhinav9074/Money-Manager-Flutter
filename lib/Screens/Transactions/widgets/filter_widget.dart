@@ -1,8 +1,11 @@
+// ignore_for_file: prefer_typing_uninitialized_variables, non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:money_manager/db/category/category_db.dart';
 import 'package:money_manager/db/transactions/transaction_db.dart';
 
+// ignore: must_be_immutable
 class FilterWidget extends StatefulWidget {
   final int index;
   dynamic startNotifier;
@@ -23,7 +26,6 @@ class FilterWidget extends StatefulWidget {
 class _FilterWidgetState extends State<FilterWidget> {
   DateTime? startDate;
   String? selectedDropownValue;
-  // ignore: non_constant_identifier_names
   DateTime? EndDate;
   late final first_index;
   late final indexValue;
@@ -33,7 +35,6 @@ class _FilterWidgetState extends State<FilterWidget> {
     if (TransactionDb().allTransactionsList.value.isNotEmpty) {
       first_index = TransactionDb().allTransactionsList.value.length - 1;
       indexValue = TransactionDb().allTransactionsList.value[first_index];
-      print(indexValue.date);
     } else {
       indexValue = null;
     }
@@ -123,7 +124,7 @@ class _FilterWidgetState extends State<FilterWidget> {
           hint:  Text(
             widget.categoryNotifier.value,
             style:
-                TextStyle(fontSize: 20, fontFamily: 'texgyreadventor-regular'),
+                const TextStyle(fontSize: 20, fontFamily: 'texgyreadventor-regular'),
           ),
           value: selectedDropownValue,
           items: (widget.index == 0
@@ -155,7 +156,7 @@ class _FilterWidgetState extends State<FilterWidget> {
             });
           },
         ),
-        SizedBox(
+        const SizedBox(
           height: 40,
         ),
         Row(
@@ -164,6 +165,7 @@ class _FilterWidgetState extends State<FilterWidget> {
             ElevatedButton(
                 onPressed: () async {
                   await FilterPress();
+                  // ignore: use_build_context_synchronously
                   Navigator.of(context).pop();
                 },
                 child: const Text('Filter')),

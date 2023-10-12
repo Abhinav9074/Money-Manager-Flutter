@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:money_manager/Screens/HomeScreen/widgets/app_bar.dart';
+import 'package:money_manager/Screens/HomeScreen/widgets/balance_widget.dart';
 import 'package:money_manager/Screens/HomeScreen/widgets/drawer_items.dart';
 import 'package:money_manager/Screens/HomeScreen/widgets/income_expense_tile.dart';
 import 'package:money_manager/Screens/HomeScreen/widgets/recent_transactions.dart';
 import 'package:money_manager/db/category/category_db.dart';
+import 'package:money_manager/db/deleted/deleted_db_functions.dart';
 import 'package:money_manager/db/transactions/transaction_db.dart';
+import 'package:money_manager/db/user/user_db.dart';
 
 
 // ignore: must_be_immutable
@@ -24,17 +27,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    getUser();
+    DeletedTransactionDb().refreshUI();
       TransactionDb().refreshUI();
       CategoryDb().refreshUI();
     super.initState();
   }
-
-  
-
   @override
   Widget build(BuildContext context) {
+    DeletedTransactionDb().AutoDeleting(context);
     TransactionDb().refreshUI();
-      notify = TransactionDb().allTransactionsList.value.isEmpty?'No Data Added':'Recent Transactions';
+      notify = 'Recent Transactions';
     
     size = MediaQuery.of(context).size;
     height = size.height;
@@ -58,28 +61,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
                   child: Column(
-                    children: [
-                      const Text(
-                        '₹ 12,356.50',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w700,
-                          fontSize: 30,
-                          fontFamily: 'texgyreadventor-regular',
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Text(
-                        'Total Balance',
-                        style: TextStyle(
-                            fontFamily: 'texgyreadventor-regular',
-                            color: Colors.grey),
-                      ),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                      IncomeExpenseTile(),
+                    children:[
+                      const TotalBalanace(),
+                      const IncomeExpenseTile(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -124,6 +108,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
-  
 }
