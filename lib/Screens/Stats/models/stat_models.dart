@@ -23,7 +23,9 @@ void getIncomeChartData(){
         sum=sum+int.parse(element.amount);
       }
     }
-    IncomeChartDataNotifier.value.add(IncomeData(incomeSource: CategoryDb().incomeCategoryList.value[i].categoryName, amount: sum));
+    if(sum!=0){
+      IncomeChartDataNotifier.value.add(IncomeData(incomeSource: CategoryDb().incomeCategoryList.value[i].categoryName, amount: sum));
+    }
     i++;
   }
   IncomeChartDataNotifier.notifyListeners();
@@ -54,8 +56,57 @@ void getExpenseChartData(){
         sum=sum+int.parse(element.amount);
       }
     }
-    ExpenseChartDataNotifier.value.add(ExpenseData(expenseSource: CategoryDb().expenseCategoryList.value[i].categoryName, amount: sum));
+    if(sum!=0){
+      ExpenseChartDataNotifier.value.add(ExpenseData(expenseSource: CategoryDb().expenseCategoryList.value[i].categoryName, amount: sum));
+    }
     i++;
   }
+  ExpenseChartDataNotifier.notifyListeners();
+}
+
+
+
+class TotalDataModel{
+  final String Type;
+  final int amount;
+
+  TotalDataModel({required this.Type, required this.amount});
+
+}
+
+ValueNotifier<List<TotalDataModel>> AllChartDataNotifier = ValueNotifier([]);
+
+void getAllChartData(){
+  int i=0,sum=0;
+  AllChartDataNotifier.value.clear();
+  while(i<CategoryDb().expenseCategoryList.value.length){
+    for (var element in TransactionDb().allTransactionsList.value) {
+      if(CategoryDb().expenseCategoryList.value[i].categoryName==element.categorySubType){
+        
+        sum=sum+int.parse(element.amount);
+      }
+    }
+    i++;
+  }
+  AllChartDataNotifier.value.add(TotalDataModel(Type: 'Expense', amount: sum));
+
+  i=0;
+  sum=0;
+  while(i<CategoryDb().incomeCategoryList.value.length){
+    
+    for (var element in TransactionDb().allTransactionsList.value) {
+      if(CategoryDb().incomeCategoryList.value[i].categoryName==element.categorySubType){
+        
+        sum=sum+int.parse(element.amount);
+      }
+    }
+    i++;
+  }
+
+  AllChartDataNotifier.value.add(TotalDataModel(Type: 'Income', amount: sum));
+
+
+
+  IncomeChartDataNotifier.notifyListeners();
   ExpenseChartDataNotifier.notifyListeners();
 }

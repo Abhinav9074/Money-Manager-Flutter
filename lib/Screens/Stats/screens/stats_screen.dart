@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:money_manager/Screens/Stats/widgets/total_stat.dart';
 import 'package:money_manager/Screens/stats/models/stat_models.dart';
 import 'package:money_manager/Screens/stats/widgets/expense_stat.dart';
 import 'package:money_manager/Screens/stats/widgets/income_stats.dart';
@@ -21,7 +22,7 @@ class _StatsScreenState extends State<StatsScreen>
   void initState() {
     
     
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     super.initState();
     CategoryDb().refreshUI();
     TransactionDb().refreshUI();
@@ -66,16 +67,20 @@ class _StatsScreenState extends State<StatsScreen>
                       controller: _tabController,
                       tabs: const [
                         Tab(
+                          text: 'All',
+                        ),
+                        Tab(
                           text: 'Income',
                         ),
                         Tab(
                           text: 'Expense',
-                        )
+                        ),
+                        
                       ]),
                   Expanded(
                     child: TabBarView(
                         controller: _tabController,
-                        children: const [IncomeStats(), ExpenseStats()]),
+                        children: const [TotalStats(),IncomeStats(), ExpenseStats()]),
                   )
                 ],
               ),
@@ -98,6 +103,7 @@ class _StatsScreenState extends State<StatsScreen>
                           await TransactionDb().refreshUI();
                           getExpenseChartData();
                           getIncomeChartData();
+                          getAllChartData();
                         },
                         icon: const FaIcon(FontAwesomeIcons.xmark),
                         label: const Text('Clear')),

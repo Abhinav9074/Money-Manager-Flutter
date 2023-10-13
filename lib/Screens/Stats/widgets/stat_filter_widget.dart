@@ -130,6 +130,7 @@ class _StatFilterWidgetState extends State<StatFilterWidget> {
       await TransactionDb().FilterByDate(startDate!, EndDate!);
       getIncomeChartData();
       getExpenseChartData();
+      getAllChartData();
     } 
   }
 }

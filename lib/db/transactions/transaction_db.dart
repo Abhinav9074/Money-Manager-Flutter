@@ -326,7 +326,7 @@ class TransactionDb implements TransactionDetails {
     int year = int.parse(DateTime.now().toString().substring(0, 4));
     int month = int.parse(DateTime.now().toString().substring(5, 7));
 
-    DateTime MonthFirst = DateTime(year,month,01);
+    DateTime MonthFirst = DateTime(year,month,01).subtract(Duration(days: 1));
     DateTime MonthNow = DateTime.now();
 
     await Future.forEach(allTransactionsList.value, (element){

@@ -55,31 +55,7 @@ class _IncomeStatsState extends State<IncomeStats> {
         ],
       ),
     ):Center(
-      child: SfCircularChart(
-        legend: const Legend(
-            isVisible: true,
-            isResponsive: true,
-            overflowMode: LegendItemOverflowMode.wrap,
-            alignment: ChartAlignment.center,
-            position: LegendPosition.left,
-            iconHeight: 20,
-            iconWidth: 30,
-            textStyle: TextStyle(
-                fontFamily: 'texgyreadventor-regular',
-                fontWeight: FontWeight.w900,
-                color: Color.fromARGB(255, 2, 39, 71))),
-        tooltipBehavior: _tooltipBehavior,
-        series: <CircularSeries>[
-          DoughnutSeries<IncomeData, String>(
-              dataSource: newList,
-              xValueMapper: (IncomeData data, _) => data.incomeSource,
-              yValueMapper: (IncomeData data, _) => data.amount,      
-              enableTooltip: true,
-              dataLabelSettings: const DataLabelSettings(isVisible: true),
-              legendIconType: LegendIconType.seriesType),
-              
-        ],
-      ),
+      child: Text('No Data'),
     );
       },
     );
