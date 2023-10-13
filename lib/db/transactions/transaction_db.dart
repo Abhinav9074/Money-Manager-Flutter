@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:money_manager/Screens/Transactions/widgets/all_transaction.dart';
 import 'package:money_manager/db/user/user_db.dart';
 import 'package:money_manager/models/category_model.dart';
 import 'package:money_manager/models/transactions_model.dart';
@@ -18,6 +19,7 @@ abstract class TransactionDetails {
   Future<void> Sorting(int criteria);
   Future<int> CheckCategoryBeforeDelete(String subCategory);
   Future<void> CalculateTotal();
+  Future<void> UpdateCategory(String oldCategoryName, String newCategoryName ,CategoryType oldType , CategoryType newType);
  
 }
 
@@ -339,6 +341,19 @@ class TransactionDb implements TransactionDetails {
     total.notifyListeners();
     income.notifyListeners();
     expense.notifyListeners();
+  }
+  
+  @override
+  Future<void> UpdateCategory(String oldCategoryName, String newCategoryName ,CategoryType oldType , CategoryType newType) async{
+    await refreshUI();
+    final allTransactions = await getTransactions();
+    await Future.forEach(allTransactions, (element)async{
+      if(element.categorySubType == oldCategoryName && element.type == oldType){
+        final insertValue = TransactionModel(id: element.id, purpose: element.purpose, amount: element.amount, date: element.date, dateSum: element.dateSum, type: newType, categorySubType: newCategoryName);
+        await addTransactions(insertValue);
+      }
+    });
+    refreshUI();
   }
 
 

@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:money_manager/db/category/category_db.dart';
+import 'package:money_manager/db/transactions/transaction_db.dart';
 import 'package:money_manager/models/category_model.dart';
 import 'package:recase/recase.dart';
 
@@ -186,6 +187,7 @@ class _CategoryEditScreenState extends State<CategoryEditScreen> {
         id: widget.CategoryId,
         categoryName: _nameCont.text.titleCase,
         type: _selectedCategory);
+        await TransactionDb().UpdateCategory(widget.categoryName,_nameCont.text.titleCase,widget.categoryType,_selectedCategory);
     await CategoryDb().insertCategory(updateCategory);
   }
 }
