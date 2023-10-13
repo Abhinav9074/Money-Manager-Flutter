@@ -20,6 +20,7 @@ abstract class TransactionDetails {
   Future<int> CheckCategoryBeforeDelete(String subCategory);
   Future<void> CalculateTotal();
   Future<void> UpdateCategory(String oldCategoryName, String newCategoryName ,CategoryType oldType , CategoryType newType);
+  Future<void> DeleteAllRelatedTransactions(String categoryName);
  
 }
 
@@ -351,6 +352,18 @@ class TransactionDb implements TransactionDetails {
       if(element.categorySubType == oldCategoryName && element.type == oldType){
         final insertValue = TransactionModel(id: element.id, purpose: element.purpose, amount: element.amount, date: element.date, dateSum: element.dateSum, type: newType, categorySubType: newCategoryName);
         await addTransactions(insertValue);
+      }
+    });
+    refreshUI();
+  }
+  
+  @override
+  Future<void> DeleteAllRelatedTransactions(String categoryName) async{
+    await refreshUI();
+    final allTransactions = await getTransactions();
+    await Future.forEach(allTransactions, (element)async{
+      if(element.categorySubType == categoryName){
+        await deleteTransaction(element.id);
       }
     });
     refreshUI();
