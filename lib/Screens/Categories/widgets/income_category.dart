@@ -6,7 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:money_manager/Screens/categories/widgets/edit_category.dart';
 import 'package:money_manager/db/category/category_db.dart';
 import 'package:money_manager/db/transactions/transaction_db.dart';
-import 'package:money_manager/models/category_model.dart';
+import 'package:money_manager/models/categoryModel/category_model.dart';
 
 class IncomeCategoryScreen extends StatelessWidget {
    IncomeCategoryScreen({super.key});
@@ -23,7 +23,6 @@ class IncomeCategoryScreen extends StatelessWidget {
                   final data = incomeList[index];
                   return Column(
                     children: [
-                      if (!data.isDeleted)
                         Slidable(
                           key: Key('$index'),
                           startActionPane: ActionPane(
@@ -228,6 +227,7 @@ class IncomeCategoryScreen extends StatelessWidget {
                                                                                 children: [
                                                                                   TextButton.icon(
                                                                                     onPressed: () {
+                                                                                      _captchaCont.clear();
                                                                                       Navigator.of(context).pop();
                                                                                     },
                                                                                     icon: const Icon(
@@ -389,13 +389,13 @@ class IncomeCategoryScreen extends StatelessWidget {
                             child: PhysicalModel(
                               color: Colors.black,
                               shape: BoxShape.rectangle,
-                              borderRadius: BorderRadius.circular(40),
+                              borderRadius: BorderRadius.circular(20),
                               elevation: 6.0,
                               child: Container(
                                 width: double.infinity,
-                                height: 100,
+                                height: 70,
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
+                                    borderRadius: BorderRadius.circular(10),
                                     color: Colors.white),
                                 child: Padding(
                                   padding:
@@ -416,7 +416,7 @@ class IncomeCategoryScreen extends StatelessWidget {
                                           children: [
                                             Text(data.categoryName,
                                                 style: const TextStyle(
-                                                    fontSize: 25,
+                                                    fontSize: 19,
                                                     fontFamily:
                                                         'texgyreadventor-regular',
                                                     fontWeight: FontWeight.w900,

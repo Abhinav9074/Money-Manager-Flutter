@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:money_manager/models/user_model.dart';
+import 'package:money_manager/models/userModel/user_model.dart';
 
 const USER_DB = "user_database";
 

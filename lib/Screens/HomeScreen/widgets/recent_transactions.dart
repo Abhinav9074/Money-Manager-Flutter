@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:money_manager/Screens/Transactions/widgets/add_transactio.dart';
+import 'package:money_manager/Screens/Transactions/widgets/add_transaction_sample.dart';
 import 'package:money_manager/Screens/categories/widgets/add_category.dart';
 import 'package:money_manager/db/category/category_db.dart';
 import 'package:money_manager/db/transactions/transaction_db.dart';
-import 'package:money_manager/models/category_model.dart';
-import 'package:money_manager/models/transactions_model.dart';
+import 'package:money_manager/models/categoryModel/category_model.dart';
+import 'package:money_manager/models/transactionModel/transactions_model.dart';
 
 class RecentTransactions extends StatelessWidget {
   ScrollController scrollController = ScrollController();
@@ -173,10 +173,10 @@ class RecentTransactions extends StatelessWidget {
                   },
                   separatorBuilder: (context, index) {
                     return const SizedBox(
-                      height: 10,
+                      height: 1,
                     );
                   },
-                  itemCount: newList.length)
+                  itemCount: newList.length>5?5:newList.length)
               : Center(
                   child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -187,7 +187,7 @@ class RecentTransactions extends StatelessWidget {
                           CategoryDb().allCategoriesList.value.isNotEmpty
                               ? Navigator.of(context)
                                   .push(MaterialPageRoute(builder: (ctx) {
-                                  return AddTransactions();
+                                  return AddTransactionsSample();
                                 }))
                               : ScaffoldMessenger.of(context)
                                   .showSnackBar(SnackBar(

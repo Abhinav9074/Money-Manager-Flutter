@@ -45,7 +45,7 @@ class _StatsScreenState extends State<StatsScreen>
           title: const Text(
             'Statistics',
             style: TextStyle(
-                fontSize: 25,
+                fontSize: 17,
                 fontFamily: 'texgyreadventor-regular',
                 color: Colors.black,
                 fontWeight: FontWeight.w900),
@@ -62,7 +62,7 @@ class _StatsScreenState extends State<StatsScreen>
                   TabBar(
                       labelColor: Colors.black,
                       labelStyle: const TextStyle(
-                          fontSize: 20, fontFamily: 'texgyreadventor-regular'),
+                          fontSize: 17, fontFamily: 'texgyreadventor-regular'),
                       unselectedLabelColor: Colors.grey,
                       controller: _tabController,
                       tabs: const [
@@ -93,19 +93,27 @@ class _StatsScreenState extends State<StatsScreen>
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(40, 25),
+                    maximumSize: const Size(400, 50),
+                  ),
                         onPressed: () {
                           ShowStatFilterSheet(context);
                         },
-                        icon: const FaIcon(FontAwesomeIcons.filter),
+                        icon: const FaIcon(FontAwesomeIcons.filter,size: 10,),
                         label: const Text('Filter')),
                         ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(40, 25),
+                    maximumSize: const Size(400, 50),
+                  ),
                         onPressed: () async{
                           await TransactionDb().refreshUI();
                           getExpenseChartData();
                           getIncomeChartData();
                           getAllChartData();
                         },
-                        icon: const FaIcon(FontAwesomeIcons.xmark),
+                        icon: const FaIcon(FontAwesomeIcons.xmark,size:10,),
                         label: const Text('Clear')),
                   ],
                 ),

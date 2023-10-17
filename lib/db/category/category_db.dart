@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:money_manager/models/category_model.dart';
+import 'package:money_manager/models/categoryModel/category_model.dart';
+
 
 const CATEGORY_DB_NAME = 'category-database';
 

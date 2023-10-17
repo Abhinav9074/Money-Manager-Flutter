@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:intl/intl.dart';
-import 'package:money_manager/Screens/Transactions/widgets/edit_transaction_sample.dart';
-import 'package:money_manager/Screens/Transactions/widgets/transaction_details.dart';
-import 'package:money_manager/db/deleted/deleted_db_functions.dart';
-import 'package:money_manager/db/transactions/transaction_db.dart';
-import 'package:money_manager/models/categoryModel/category_model.dart';
-import 'package:money_manager/models/deletedModel/deleted_model.dart';
-import 'package:money_manager/models/transactionModel/transactions_model.dart';
+import 'package:money_manager/Screens/budget/widgets/budget_editor.dart';
+import 'package:money_manager/db/budget/budget_db.dart';
+import 'package:money_manager/models/budgetModel/budget_model.dart';
 
-class ExpenseTransaction extends StatelessWidget {
-  const ExpenseTransaction({super.key});
+class BudgetList extends StatefulWidget {
+  final BuildContext ctx;
 
+  const BudgetList({super.key, required this.ctx});
+
+  @override
+  State<BudgetList> createState() => _BudgetListState();
+}
+
+class _BudgetListState extends State<BudgetList> {
   @override
   Widget build(BuildContext context) {
     var tileHeightPortrait = MediaQuery.of(context).size.height > 800
@@ -29,30 +31,17 @@ class ExpenseTransaction extends StatelessWidget {
       children: [
         Expanded(
           child: ValueListenableBuilder(
-            valueListenable: TransactionDb().expenseTransactionsList,
-            builder: (BuildContext contex, List<TransactionModel> newList,
-                Widget? _) {
-              return TransactionDb().expenseTransactionsList.value.isNotEmpty
+            valueListenable: BudgetDb().BudgetListNotifier,
+            builder:
+                (BuildContext context, List<BudgetModel> newList, Widget? _) {
+              return BudgetDb().BudgetListNotifier.value.isNotEmpty
                   ? SlidableAutoCloseBehavior(
                       child: ListView.builder(
                         itemCount: newList.length,
                         itemBuilder: (context, index) {
                           final data = newList[index];
                           return InkWell(
-                            onTap: () {
-                              Navigator.of(context)
-                                  .push(MaterialPageRoute(builder: (ctx) {
-                                return TransactionDetailsScreen(
-                                  price: data.amount,
-                                  purpose: data.purpose,
-                                  subcategory: data.categorySubType,
-                                  date: data.date,
-                                  image: data.recieptImage!,
-                                  category: data.type,
-                                  id: data.id,
-                                );
-                              }));
-                            },
+                            onTap: () {},
                             child: Column(
                               children: [
                                 Slidable(
@@ -90,57 +79,31 @@ class ExpenseTransaction extends StatelessWidget {
                                                           IconButton(
                                                             onPressed:
                                                                 () async {
-                                                              final deleteData = DeletedModel(
-                                                                  id: data.id,
-                                                                  purpose: data
-                                                                      .purpose,
-                                                                  amount: data
-                                                                      .amount,
-                                                                  date:
-                                                                      data.date,
-                                                                  dateSum: data
-                                                                      .dateSum,
-                                                                  recieptImage: data
-                                                                      .recieptImage,
-                                                                  type:
-                                                                      data.type,
-                                                                  categorySubType:
-                                                                      data
-                                                                          .categorySubType,
-                                                                  deleteDate: DateTime
-                                                                          .now()
-                                                                      .add(Duration(
-                                                                          days:
-                                                                              30)));
-                                                              await DeletedTransactionDb()
-                                                                  .deleteTransactions(
-                                                                      deleteData);
-                                                              await TransactionDb()
-                                                                  .deleteTransaction(
+                                                              await BudgetDb()
+                                                                  .deleteBudget(
                                                                       data.id);
-
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
                                                               ScaffoldMessenger
                                                                       .of(
                                                                           context)
                                                                   .showSnackBar(
-                                                                      const SnackBar(
+                                                                      SnackBar(
                                                                 content: Text(
-                                                                  'Deleted Successfully',
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          15),
-                                                                ),
+                                                                    'Deleted Successfully',
+                                                                    style: TextStyle(
+                                                                        fontSize:
+                                                                            10,
+                                                                        fontFamily:
+                                                                            'texgyreadventor-regular',
+                                                                        color: const Color.fromARGB(255, 255, 255, 255),
+                                                                        fontWeight:
+                                                                            FontWeight.w400)),
                                                                 behavior:
                                                                     SnackBarBehavior
                                                                         .floating,
-                                                                padding:
-                                                                    EdgeInsets
-                                                                        .all(
-                                                                            20),
                                                               ));
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pop();
                                                             },
                                                             icon: const Icon(
                                                                 Icons.check),
@@ -164,20 +127,33 @@ class ExpenseTransaction extends StatelessWidget {
                                       children: [
                                         SlidableAction(
                                           onPressed: (ctx) {
-                                            Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                    builder: (ctx) {
-                                              return EditTransactionsSample(
-                                                purpose: data.purpose,
-                                                amount: data.amount,
-                                                date: data.date,
-                                                category: data.type,
-                                                id: data.id,
-                                                subType: data.categorySubType,
-                                                dateSum: data.dateSum,
-                                                image: data.recieptImage!,
-                                              );
-                                            }));
+                                            showDialog(
+                                                context: context,
+                                                builder: (ctx) {
+                                                  return SimpleDialog(
+                                                    title: Text(
+                                                        'Add a Budget For This Month',
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(
+                                                            fontSize: 17,
+                                                            fontFamily:
+                                                                'texgyreadventor-regular',
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w400)),
+                                                    children: [
+                                                      BudgetEditorDialogue(
+                                                          ctx: context,
+                                                          amount:
+                                                              data.BudgetAmount,
+                                                          category:
+                                                              data.CategoryName,
+                                                          id: data.id)
+                                                    ],
+                                                  );
+                                                });
                                           },
                                           icon: FontAwesomeIcons.penToSquare,
                                           autoClose: true,
@@ -202,7 +178,7 @@ class ExpenseTransaction extends StatelessWidget {
                                         height: MediaQuery.of(context)
                                                     .orientation ==
                                                 Orientation.portrait
-                                            ? tileHeightPortrait
+                                            ? tileHeightPortrait+20
                                             : tileHeightLandscape,
                                         decoration: BoxDecoration(
                                             borderRadius:
@@ -250,23 +226,12 @@ class ExpenseTransaction extends StatelessWidget {
                                                         CrossAxisAlignment
                                                             .center,
                                                     children: [
-                                                      Text(
-                                                        parseDate(data.date),
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style: const TextStyle(
-                                                            fontSize: 15,
-                                                            fontFamily:
-                                                                'texgyreadventor-regular',
-                                                            fontWeight:
-                                                                FontWeight.w900,
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    2,
-                                                                    39,
-                                                                    71)),
-                                                      ),
+                                                     int.parse(data.currentAmount)<=int.parse(data.BudgetAmount)?Column(
+                                                       children: [
+                                                         Text('₹${int.parse(data.BudgetAmount)-int.parse(data.currentAmount)}',style: TextStyle(fontFamily:'texgyreadventor-regular',fontSize: 20),),
+                                                         Text('Left',style: TextStyle(fontFamily:'texgyreadventor-regular',fontSize: 15,fontWeight: FontWeight.w900),),
+                                                       ],
+                                                     ):Text('Failed',style: TextStyle(fontFamily:'texgyreadventor-regular',color: Colors.red,fontSize: 15,fontWeight: FontWeight.w900),)
                                                     ],
                                                   ),
                                                 ),
@@ -281,7 +246,7 @@ class ExpenseTransaction extends StatelessWidget {
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    Text(data.purpose,
+                                                    Text(data.CategoryName,
                                                         style: TextStyle(
                                                             fontSize: MediaQuery.of(
                                                                             context)
@@ -300,55 +265,57 @@ class ExpenseTransaction extends StatelessWidget {
                                                     const SizedBox(
                                                       height: 10,
                                                     ),
-                                                    data.type == CategoryType.income
-                                                        ? Text(data.categorySubType,
-                                                            style: TextStyle(
-                                                                fontSize: MediaQuery.of(context).orientation ==
-                                                                        Orientation
-                                                                            .portrait
-                                                                    ? textHeightPortrait -
-                                                                        5
-                                                                    : textHeightLandscape -
-                                                                        5,
-                                                                fontFamily:
-                                                                    'texgyreadventor-regular',
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w900,
-                                                                color: const Color.fromARGB(
-                                                                    255, 33, 165, 6)))
-                                                        : Text(data.categorySubType,
-                                                            style: TextStyle(
-                                                                fontSize: MediaQuery.of(context).orientation ==
-                                                                        Orientation.portrait
-                                                                    ? textHeightPortrait - 5
-                                                                    : textHeightLandscape - 5,
-                                                                fontFamily: 'texgyreadventor-regular',
-                                                                fontWeight: FontWeight.w900,
-                                                                color: const Color.fromARGB(255, 255, 0, 0))),
+                                                    Container(
+                                                      width: 170,
+                                                      child: LinearProgressIndicator(
+                                                        value: data.progress,
+                                                        minHeight: 10,
+                                                        borderRadius: BorderRadius.circular(10),
+                                                        color: data.progress>0.7?Color.fromARGB(255, 255, 0, 0):Colors.green,
+                                                        ),
+                                                    )
                                                   ],
                                                 ),
                                               ),
-                                              Text('₹${data.amount}',
-                                                  style: TextStyle(
-                                                      fontSize: MediaQuery.of(
-                                                                      context)
-                                                                  .orientation ==
-                                                              Orientation
-                                                                  .portrait
-                                                          ? textHeightPortrait +
-                                                              5
-                                                          : textHeightLandscape +
-                                                              5,
-                                                      fontFamily:
-                                                          'texgyreadventor-regular',
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      color: data.type ==
-                                                              CategoryType
-                                                                  .income
-                                                          ? Colors.green
-                                                          : Colors.red)),
+                                              Row(
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                children: [
+                                                  Text('₹${data.currentAmount}',
+                                                      style: TextStyle(
+                                                          fontSize: MediaQuery.of(
+                                                                          context)
+                                                                      .orientation ==
+                                                                  Orientation
+                                                                      .portrait
+                                                              ? textHeightPortrait +
+                                                                  3
+                                                              : textHeightLandscape +
+                                                                  3,
+                                                          fontFamily:
+                                                              'texgyreadventor-regular',
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: Color.fromARGB(255, 10, 154, 10))),
+                                                          Text(' / ',style: TextStyle(fontSize: 30,fontFamily:'texgyreadventor-regular',fontWeight: FontWeight.w100),),
+                                                  Text('₹${data.BudgetAmount}',
+                                                      style: TextStyle(
+                                                          fontSize: MediaQuery.of(
+                                                                          context)
+                                                                      .orientation ==
+                                                                  Orientation
+                                                                      .portrait
+                                                              ? textHeightPortrait +
+                                                                  3
+                                                              : textHeightLandscape +
+                                                                  3,
+                                                          fontFamily:
+                                                              'texgyreadventor-regular',
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color: Colors.red)),
+                                                ],
+                                              ),
                                               const SizedBox(
                                                 width: 20,
                                               )
@@ -387,11 +354,5 @@ class ExpenseTransaction extends StatelessWidget {
         )
       ],
     );
-  }
-
-  String parseDate(DateTime date) {
-    final date0 = DateFormat.MMMd().format(date);
-    final splitDate = date0.split(' ');
-    return '${splitDate[1]}\n${splitDate[0]}';
   }
 }

@@ -22,7 +22,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
         title: const Text(
           'Privacy Policy',
           style: TextStyle(
-              fontSize: 25,
+              fontSize: 17,
               fontFamily: 'texgyreadventor-regular',
               color: Colors.black,
               fontWeight: FontWeight.w900),

@@ -26,6 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SizedBox(
         width: double.infinity,
         height: double.infinity,
@@ -37,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
             const Text(
               'Money Manager',
               style: TextStyle(
-                  fontSize: 25,
+                  fontSize: 17,
                   fontFamily: 'texgyreadventor-regular',
                   color: Colors.black,
                   fontWeight: FontWeight.w900),

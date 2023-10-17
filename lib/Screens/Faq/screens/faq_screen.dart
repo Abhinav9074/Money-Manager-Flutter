@@ -22,7 +22,7 @@ class FaqScreen extends StatelessWidget {
         title: const Text(
           'FAQ',
           style: TextStyle(
-              fontSize: 25,
+              fontSize: 17,
               fontFamily: 'texgyreadventor-regular',
               color: Colors.black,
               fontWeight: FontWeight.w900),
@@ -36,7 +36,7 @@ class FaqScreen extends StatelessWidget {
             style: TextStyle(
                 fontSize: 20,
                 fontFamily: 'texgyreadventor-regular',
-                color: Color.fromARGB(255, 150, 144, 144),
+                color: Color.fromARGB(255, 0, 0, 0),
                 fontWeight: FontWeight.w900),
           ),
           children: [
@@ -60,7 +60,7 @@ class FaqScreen extends StatelessWidget {
             style: TextStyle(
                 fontSize: 20,
                 fontFamily: 'texgyreadventor-regular',
-                color: Color.fromARGB(255, 150, 144, 144),
+                color: Color.fromARGB(255, 0, 0, 0),
                 fontWeight: FontWeight.w900),
           ),
           children: [
@@ -84,7 +84,7 @@ class FaqScreen extends StatelessWidget {
             style: TextStyle(
                 fontSize: 20,
                 fontFamily: 'texgyreadventor-regular',
-                color: Color.fromARGB(255, 150, 144, 144),
+                color: Color.fromARGB(255, 0, 0, 0),
                 fontWeight: FontWeight.w900),
           ),
           children: [
@@ -108,7 +108,7 @@ class FaqScreen extends StatelessWidget {
             style: TextStyle(
                 fontSize: 20,
                 fontFamily: 'texgyreadventor-regular',
-                color: Color.fromARGB(255, 150, 144, 144),
+                color: Color.fromARGB(255, 0, 0, 0),
                 fontWeight: FontWeight.w900),
           ),
           children: [

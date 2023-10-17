@@ -30,7 +30,7 @@ class _CategoryScreenState extends State<CategoryScreen> with SingleTickerProvid
         title: const Text(
           'Categories',
           style: TextStyle(
-              fontSize: 25,
+              fontSize: 17,
               fontFamily: 'texgyreadventor-regular',
               color: Colors.black,
               fontWeight: FontWeight.w900),
@@ -46,7 +46,7 @@ class _CategoryScreenState extends State<CategoryScreen> with SingleTickerProvid
               TabBar(
                   labelColor: Colors.black,
                   labelStyle: const TextStyle(
-                      fontSize: 20, fontFamily: 'texgyreadventor-regular'),
+                      fontSize: 17, fontFamily: 'texgyreadventor-regular'),
                   unselectedLabelColor: Colors.grey,
                   controller: _tabController,
                   tabs: const [

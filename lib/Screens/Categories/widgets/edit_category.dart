@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:money_manager/db/category/category_db.dart';
 import 'package:money_manager/db/transactions/transaction_db.dart';
-import 'package:money_manager/models/category_model.dart';
+import 'package:money_manager/models/categoryModel/category_model.dart';
 import 'package:recase/recase.dart';
 
 class CategoryEditScreen extends StatefulWidget {
@@ -53,7 +53,7 @@ class _CategoryEditScreenState extends State<CategoryEditScreen> {
         title: const Text(
           'Edit Category',
           style: TextStyle(
-              fontSize: 25,
+              fontSize: 17,
               fontFamily: 'texgyreadventor-regular',
               color: Colors.black,
               fontWeight: FontWeight.w900),
@@ -79,6 +79,7 @@ class _CategoryEditScreenState extends State<CategoryEditScreen> {
                   child: Form(
                     key: _formKey,
                     child: TextFormField(
+                      maxLength: 20,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'This field cannot be empty.';

@@ -18,7 +18,7 @@ class DrawerItems extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const SizedBox(
-              height: 100,
+              height: 50,
             ),
             PhysicalModel(
               color: Colors.black,
@@ -31,13 +31,13 @@ class DrawerItems extends StatelessWidget {
                         ? ClipOval(
                             child: Image.asset(
                               'assets/images/profile.png',
-                              height: 150,
-                              width: 150,
+                              height: 100,
+                              width: 100,
                             ),
                           )
                         : ClipOval(
                             child: Image.file(File(picture),
-                                height: 150, width: 150),
+                                height: 100, width: 100),
                           );
                   }),
             ),
@@ -50,12 +50,12 @@ class DrawerItems extends StatelessWidget {
                   return name == ''
                       ? Text('User Name',
                           style: TextStyle(
-                              fontSize: 25,
+                              fontSize: 20,
                               fontFamily: 'Raleway-VariableFont_wght',
                               fontWeight: FontWeight.w600))
                       : Text('${name}',
                           style: TextStyle(
-                              fontSize: 25,
+                              fontSize: 20,
                               fontFamily: 'Raleway-VariableFont_wght',
                               fontWeight: FontWeight.w600));
                 }),

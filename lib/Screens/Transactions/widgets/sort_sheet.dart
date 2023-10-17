@@ -10,8 +10,11 @@ Future<void> ShowSortSheet(BuildContext ctx, dynamic sortIndex) async {
         ),
         context: ctx,
         builder: (ctx) {
-          return  Column(
-            children: [SortWidget(indexCount: sortIndex,)],
+          return  Container(
+            height: 200,
+            child: Column(
+              children: [SortWidget(indexCount: sortIndex,)],
+            ),
           );
         });
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:money_manager/Screens/Transactions/widgets/add_transaction_sample.dart';
 import 'package:money_manager/Screens/categories/widgets/add_category.dart';
-import 'package:money_manager/Screens/transactions/widgets/add_transactio.dart';
 import 'package:money_manager/Screens/transactions/widgets/all_transaction.dart';
 import 'package:money_manager/Screens/transactions/widgets/expense_transactions.dart';
 import 'package:money_manager/Screens/transactions/widgets/filter_sheet.dart';
@@ -60,7 +60,7 @@ class _TransactionsScreenState extends State<TransactionsScreen>
         title: const Text(
           'Transactions',
           style: TextStyle(
-              fontSize: 25,
+              fontSize: 17,
               fontFamily: 'texgyreadventor-regular',
               color: Colors.black,
               fontWeight: FontWeight.w900),
@@ -76,7 +76,7 @@ class _TransactionsScreenState extends State<TransactionsScreen>
               // ignore: sized_box_for_whitespace
               Container(
                   width: double.infinity,
-                  height: 70,
+                  height: 40,
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(15, 5, 15, 0),
                     child: TextFormField(
@@ -102,7 +102,7 @@ class _TransactionsScreenState extends State<TransactionsScreen>
                           label: const Text(
                             'Search Transactions',
                             style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 16,
                                 fontFamily: 'texgyreadventor-regular'),
                           )),
                     ),
@@ -120,7 +120,7 @@ class _TransactionsScreenState extends State<TransactionsScreen>
                   isScrollable: false,
                   labelColor: Colors.black,
                   labelStyle: const TextStyle(
-                      fontSize: 20, fontFamily: 'texgyreadventor-regular'),
+                      fontSize: 16, fontFamily: 'texgyreadventor-regular'),
                   unselectedLabelColor: Colors.grey,
                   controller: _tabController,
                   tabs: const [
@@ -147,7 +147,7 @@ class _TransactionsScreenState extends State<TransactionsScreen>
             ],
           ),
           Positioned(
-            bottom: 20,
+            bottom: 15,
             right: 20,
             child: CircleAvatar(
               minRadius: 15,
@@ -158,7 +158,7 @@ class _TransactionsScreenState extends State<TransactionsScreen>
                     CategoryDb().allCategoriesList.value.isNotEmpty
                               ? Navigator.of(context)
                                   .push(MaterialPageRoute(builder: (ctx) {
-                                  return AddTransactions();
+                                  return AddTransactionsSample();
                                 }))
                               : ScaffoldMessenger.of(context)
                                   .showSnackBar(SnackBar(
@@ -184,7 +184,7 @@ class _TransactionsScreenState extends State<TransactionsScreen>
             ),
           ),
           Positioned(
-            bottom: 30,
+            bottom: 0,
             right: 0,
             left: 0,
             child: Row(
@@ -192,18 +192,26 @@ class _TransactionsScreenState extends State<TransactionsScreen>
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(40, 25),
+                    maximumSize: const Size(400, 50),
+                  ),
                     onPressed: () {
                       ShowSortSheet(context, sortIndex);
                     },
-                    icon: const FaIcon(FontAwesomeIcons.sort),
-                    label: const Text('Sort')),
+                    icon: const FaIcon(FontAwesomeIcons.sort,size: 10,),
+                    label: const Text('Sort',style: TextStyle(fontSize: 15,fontFamily: 'texgyreadventor-regular'),)),
                 ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(40, 25),
+                    maximumSize: const Size(400, 50),
+                  ),
                     onPressed: () {
                       ShowFilterSheet(context, _tabController.index, height,
                           startDateNotifier, endDateNotifier, categoryNotifier);
                     },
-                    icon: const FaIcon(FontAwesomeIcons.filter),
-                    label: const Text('Filter')),
+                    icon: const FaIcon(FontAwesomeIcons.filter,size: 10,),
+                    label: const Text('Filter',style: TextStyle(fontSize: 15,fontFamily: 'texgyreadventor-regular'))),
               ],
             ),
           )

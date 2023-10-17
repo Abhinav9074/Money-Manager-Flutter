@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:money_manager/Screens/Transactions/widgets/add_transactio.dart';
 import 'package:money_manager/Screens/Transactions/widgets/transaction_details.dart';
 import 'package:money_manager/db/deleted/deleted_db_functions.dart';
 import 'package:money_manager/db/transactions/transaction_db.dart';
-import 'package:money_manager/models/category_model.dart';
-import 'package:money_manager/models/deleted_model.dart';
-import 'package:money_manager/models/transactions_model.dart';
+import 'package:money_manager/models/categoryModel/category_model.dart';
+import 'package:money_manager/models/deletedModel/deleted_model.dart';
+import 'package:money_manager/models/transactionModel/transactions_model.dart';
 
 class DeletedTransactions extends StatefulWidget {
   const DeletedTransactions({super.key});
@@ -52,7 +51,7 @@ class _DeletedTransactionsState extends State<DeletedTransactions> {
         title: const Text(
           'Deleted Transactions',
           style: TextStyle(
-              fontSize: 25,
+              fontSize: 17,
               fontFamily: 'texgyreadventor-regular',
               color: Colors.black,
               fontWeight: FontWeight.w900),

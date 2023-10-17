@@ -33,8 +33,8 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
         child: currentScreen,
       ),
       floatingActionButton: SizedBox(
-        height: 55,
-        width: 55,
+        height: 40,
+        width: 40,
         child: FittedBox(
           child: FloatingActionButton(
             onPressed: () {
@@ -74,7 +74,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                       'Transactions',
                       style: TextStyle(
                         color: currentTab == 0 ? Colors.blue : Colors.black,
-                        fontSize: 10
+                        fontSize: 15
                         
                       ),
                     )
@@ -101,7 +101,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                       'Stats',
                       style: TextStyle(
                         color: currentTab == 1 ? Colors.blue : Colors.black,
-                        fontSize: 10
+                        fontSize: 15
                       ),
                     )
                   ],
@@ -127,7 +127,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                       'Categories',
                       style: TextStyle(
                         color: currentTab == 2 ? Colors.blue : Colors.black,
-                        fontSize: 10
+                        fontSize: 15
                       ),
                     )
                   ],
@@ -153,7 +153,7 @@ class _CustomNavigationBarState extends State<CustomNavigationBar> {
                       'Settings',
                       style: TextStyle(
                         color: currentTab == 3 ? Colors.blue : Colors.black,
-                        fontSize: 10
+                        fontSize: 15
                       ),
                     )
                   ],

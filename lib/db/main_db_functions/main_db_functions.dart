@@ -1,8 +1,10 @@
 import 'package:hive_flutter/adapters.dart';
-import 'package:money_manager/models/category_model.dart';
-import 'package:money_manager/models/deleted_model.dart';
-import 'package:money_manager/models/transactions_model.dart';
-import 'package:money_manager/models/user_model.dart';
+import 'package:money_manager/models/budgetModel/budget_model.dart';
+import 'package:money_manager/models/categoryModel/category_model.dart';
+import 'package:money_manager/models/deletedModel/deleted_model.dart';
+import 'package:money_manager/models/transactionModel/transactions_model.dart';
+import 'package:money_manager/models/userModel/user_model.dart';
+
 
 // ignore: non_constant_identifier_names
 Future<void>InitDb()async{
@@ -29,6 +31,10 @@ if(!Hive.isAdapterRegistered(DeletedModelAdapter().typeId)){
 
 if(!Hive.isAdapterRegistered(UserModelAdapter().typeId)){
   Hive.registerAdapter(UserModelAdapter());
+}
+
+if(!Hive.isAdapterRegistered(BudgetModelAdapter().typeId)){
+  Hive.registerAdapter(BudgetModelAdapter());
 }
 
 }

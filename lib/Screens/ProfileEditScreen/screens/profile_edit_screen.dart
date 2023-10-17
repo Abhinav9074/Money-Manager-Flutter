@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:money_manager/db/user/user_db.dart';
-import 'package:money_manager/models/user_model.dart';
+import 'package:money_manager/models/userModel/user_model.dart';
 import 'package:recase/recase.dart';
 
 class ProfileEditScreen extends StatefulWidget {
@@ -39,7 +39,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
         title: const Text(
           'Edit Profile',
           style: TextStyle(
-              fontSize: 25,
+              fontSize: 17,
               fontFamily: 'texgyreadventor-regular',
               color: Colors.black,
               fontWeight: FontWeight.w900),

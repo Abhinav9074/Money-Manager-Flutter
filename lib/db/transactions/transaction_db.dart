@@ -1,10 +1,16 @@
 // ignore_for_file: non_constant_identifier_names
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:money_manager/Screens/Transactions/widgets/all_transaction.dart';
+import 'package:money_manager/Screens/stats/models/stat_models.dart';
+import 'package:money_manager/db/budget/budget_db.dart';
+import 'package:money_manager/db/category/category_db.dart';
+import 'package:money_manager/db/deleted/deleted_db_functions.dart';
 import 'package:money_manager/db/user/user_db.dart';
-import 'package:money_manager/models/category_model.dart';
-import 'package:money_manager/models/transactions_model.dart';
+import 'package:money_manager/models/budgetModel/budget_model.dart';
+import 'package:money_manager/models/categoryModel/category_model.dart';
+import 'package:money_manager/models/deletedModel/deleted_model.dart';
+import 'package:money_manager/models/transactionModel/transactions_model.dart';
+import 'package:money_manager/models/userModel/user_model.dart';
 
 // ignore: constant_identifier_names
 const TRANSACTION_DB_NAME = 'transaction-database';
@@ -21,6 +27,7 @@ abstract class TransactionDetails {
   Future<void> CalculateTotal();
   Future<void> UpdateCategory(String oldCategoryName, String newCategoryName ,CategoryType oldType , CategoryType newType);
   Future<void> DeleteAllRelatedTransactions(String categoryName);
+  Future<void> DeleteAllDb();
  
 }
 
@@ -55,6 +62,7 @@ class TransactionDb implements TransactionDetails {
         await Hive.openBox<TransactionModel>(TRANSACTION_DB_NAME);
     await transactionDb.put(values.id, values);
     refreshUI();
+    BudgetDb().AutoUpdateTotal();
   }
 
   @override
@@ -101,6 +109,7 @@ class TransactionDb implements TransactionDetails {
 
     await CalculateTotal();
     await getUser();
+    BudgetDb().refreshUi();
   }
 
   Future<void> searchTransactions(String text) async {
@@ -155,6 +164,7 @@ class TransactionDb implements TransactionDetails {
         await Hive.openBox<TransactionModel>(TRANSACTION_DB_NAME);
     await transactionDb.delete(value);
     await refreshUI();
+    await BudgetDb().AutoUpdateTotal();
   }
 
   @override
@@ -206,6 +216,8 @@ class TransactionDb implements TransactionDetails {
         .sort((first, second) => second.date.compareTo(first.date));
     allTransactionsList.value
         .sort((first, second) => second.date.compareTo(first.date));
+
+        getAllChartData();
 
     expenseTransactionsList.notifyListeners();
     incomeTransactionsList.notifyListeners();
@@ -354,6 +366,24 @@ class TransactionDb implements TransactionDetails {
         await addTransactions(insertValue);
       }
     });
+
+    final allDeletedTransactions = await DeletedTransactionDb().getDeletedTransactions();
+    await Future.forEach(allDeletedTransactions, (element)async{
+      if(element.categorySubType == oldCategoryName && element.type == oldType){
+        final insertValue = DeletedModel(id: element.id, purpose: element.purpose, amount: element.amount, date: element.date, dateSum: element.dateSum, type: newType, categorySubType: newCategoryName,recieptImage: element.recieptImage,deleteDate: element.deleteDate,);
+        await DeletedTransactionDb().deleteTransactions(insertValue);
+      }
+    });
+
+    final budgtes = await BudgetDb().getAllBudgets();
+    await Future.forEach(budgtes, (element)async{
+      if(element.CategoryName == oldCategoryName){
+        final insertValue = BudgetModel(CategoryName: newCategoryName, BudgetAmount: element.BudgetAmount, id: element.id, currentAmount: element.currentAmount, progress: element.progress);
+        await BudgetDb().addBudget(insertValue);
+      }
+    });
+
+
     refreshUI();
   }
   
@@ -366,8 +396,32 @@ class TransactionDb implements TransactionDetails {
         await deleteTransaction(element.id);
       }
     });
+
+    final allBudgets = await BudgetDb().getAllBudgets();
+    await Future.forEach(allBudgets, (element)async{
+      if(element.CategoryName == categoryName){
+        await BudgetDb().deleteBudget(element.id);
+      }
+    });
+    BudgetDb().refreshUi();
     refreshUI();
   }
+  
+  @override
+  Future<void> DeleteAllDb() async{
+    final transactDb = await Hive.openBox<TransactionModel>(TRANSACTION_DB_NAME);
+    await transactDb.clear();
 
+    final categoryDb = await Hive.openBox<CategoryModel>(CATEGORY_DB_NAME);
+    await categoryDb.clear();
 
+    final deletedDb = await Hive.openBox<DeletedModel>(DELETE_TRANSACTION);
+    await deletedDb.clear();
+
+    final budgetDb = await Hive.openBox<BudgetModel>(BUDGET_DB);
+    await budgetDb.clear();
+
+    final userDb = await Hive.openBox<UserModel>(USER_DB);
+    await userDb.clear();
+  }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:money_manager/Screens/splashScreen/splash_screen.dart';
+import 'package:money_manager/db/transactions/transaction_db.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -16,7 +18,7 @@ class SettingsScreen extends StatelessWidget {
         title: const Text(
           'App Settings',
           style: TextStyle(
-              fontSize: 25,
+              fontSize: 17,
               fontFamily: 'texgyreadventor-regular',
               color: Colors.black,
               fontWeight: FontWeight.w900),
@@ -37,7 +39,7 @@ class SettingsScreen extends StatelessWidget {
                 child: const Text(
                   'About',
                   style: TextStyle(
-                      fontSize: 25,
+                      fontSize: 17,
                       fontFamily: 'texgyreadventor-regular',
                       color: Colors.black,
                       fontWeight: FontWeight.w900),
@@ -52,7 +54,7 @@ class SettingsScreen extends StatelessWidget {
                 child: const Text(
                   'Contact Us',
                   style: TextStyle(
-                      fontSize: 25,
+                      fontSize: 17,
                       fontFamily: 'texgyreadventor-regular',
                       color: Colors.black,
                       fontWeight: FontWeight.w900),
@@ -76,9 +78,11 @@ class SettingsScreen extends StatelessWidget {
                                   }, 
                                   icon: const FaIcon(FontAwesomeIcons.x,color: Colors.red,)),
                                 IconButton(
-                                  onPressed: (){
+                                  onPressed: ()async{
+                                    await TransactionDb().DeleteAllDb();
                                     Navigator.of(context).pop();
-                                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('App Reset Completed') ));
+                                    await ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('App Reset Completed') ));
+                                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (ctx){return SplashScreen();}), (route) => false);
                                   }, 
                                   icon: const FaIcon(FontAwesomeIcons.check,color: Colors.green,))
                               ],
@@ -87,7 +91,7 @@ class SettingsScreen extends StatelessWidget {
                           title: const Text(
                             'Are You Sure',
                             style: TextStyle(
-                                fontSize: 25,
+                                fontSize: 17,
                                 fontFamily: 'texgyreadventor-regular',
                                 color: Colors.black,
                                 fontWeight: FontWeight.w900),
@@ -106,7 +110,7 @@ class SettingsScreen extends StatelessWidget {
                 child: const Text(
                   'Clear App Data',
                   style: TextStyle(
-                      fontSize: 25,
+                      fontSize: 17,
                       fontFamily: 'texgyreadventor-regular',
                       color: Color.fromARGB(255, 255, 0, 0),
                       fontWeight: FontWeight.w900),

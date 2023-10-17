@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_manager/db/category/category_db.dart';
 import 'package:money_manager/db/transactions/transaction_db.dart';
+import 'package:money_manager/models/categoryModel/category_model.dart';
 
 class IncomeData{
   final String incomeSource;
@@ -11,6 +12,7 @@ class IncomeData{
 
   IncomeData({required this.incomeSource, required this.amount});
 }
+
 ValueNotifier<List<IncomeData>> IncomeChartDataNotifier = ValueNotifier([]);
 void getIncomeChartData(){ 
   int i=0,sum=0;
@@ -77,36 +79,30 @@ class TotalDataModel{
 ValueNotifier<List<TotalDataModel>> AllChartDataNotifier = ValueNotifier([]);
 
 void getAllChartData(){
-  int i=0,sum=0;
+  int sum=0;
   AllChartDataNotifier.value.clear();
-  while(i<CategoryDb().expenseCategoryList.value.length){
-    for (var element in TransactionDb().allTransactionsList.value) {
-      if(CategoryDb().expenseCategoryList.value[i].categoryName==element.categorySubType){
-        
-        sum=sum+int.parse(element.amount);
+  
+
+    TransactionDb().allTransactionsList.value.forEach((e) {
+      if(e.type == CategoryType.expense){
+        sum= sum+int.parse(e.amount);
       }
-    }
-    i++;
-  }
+    });
+ 
   AllChartDataNotifier.value.add(TotalDataModel(Type: 'Expense', amount: sum));
 
-  i=0;
+
   sum=0;
-  while(i<CategoryDb().incomeCategoryList.value.length){
-    
-    for (var element in TransactionDb().allTransactionsList.value) {
-      if(CategoryDb().incomeCategoryList.value[i].categoryName==element.categorySubType){
-        
-        sum=sum+int.parse(element.amount);
+    TransactionDb().allTransactionsList.value.forEach((e){
+      if(e.type == CategoryType.income){
+        sum= sum+int.parse(e.amount);
       }
-    }
-    i++;
-  }
+    });
+
 
   AllChartDataNotifier.value.add(TotalDataModel(Type: 'Income', amount: sum));
 
-
-
+  AllChartDataNotifier.notifyListeners();
   IncomeChartDataNotifier.notifyListeners();
   ExpenseChartDataNotifier.notifyListeners();
 }

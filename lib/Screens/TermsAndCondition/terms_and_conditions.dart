@@ -22,7 +22,7 @@ class TermsAndConditionsScreen extends StatelessWidget {
         title: const Text(
           'Terms And Conditions',
           style: TextStyle(
-              fontSize: 25,
+              fontSize: 17,
               fontFamily: 'texgyreadventor-regular',
               color: Colors.black,
               fontWeight: FontWeight.w900),

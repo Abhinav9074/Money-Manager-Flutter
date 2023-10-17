@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:money_manager/Screens/Transactions/widgets/edit_transaction.dart';
+import 'package:money_manager/Screens/Transactions/widgets/edit_transaction_sample.dart';
 import 'package:money_manager/Screens/Transactions/widgets/transaction_details.dart';
 import 'package:money_manager/db/deleted/deleted_db_functions.dart';
 import 'package:money_manager/db/transactions/transaction_db.dart';
-import 'package:money_manager/models/category_model.dart';
-import 'package:money_manager/models/deleted_model.dart';
-import 'package:money_manager/models/transactions_model.dart';
+import 'package:money_manager/models/categoryModel/category_model.dart';
+import 'package:money_manager/models/deletedModel/deleted_model.dart';
+import 'package:money_manager/models/transactionModel/transactions_model.dart';
 
 class AllTransactions extends StatelessWidget {
   const AllTransactions({super.key});
@@ -165,7 +165,7 @@ class AllTransactions extends StatelessWidget {
                                               Navigator.of(context).push(
                                                   MaterialPageRoute(
                                                       builder: (ctx) {
-                                                return EditTransaction(
+                                                return EditTransactionsSample(
                                                   purpose: data.purpose,
                                                   amount: data.amount,
                                                   date: data.date,
@@ -394,7 +394,7 @@ class AllTransactions extends StatelessWidget {
         ),
         Container(
           color: Colors.transparent,
-          height: 80,
+          height: 50,
         )
       ],
     );

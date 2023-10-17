@@ -13,7 +13,7 @@ Future<void> ShowFilterSheet(BuildContext ctx,int ScreenCount,double height,dyna
         context: ctx,
         builder: (ctx) {
           return  Container(
-            height: MediaQuery.of(ctx).size.height,
+            height: 300,
             child: Column(
           
               children: [

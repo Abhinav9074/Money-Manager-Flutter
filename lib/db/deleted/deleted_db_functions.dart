@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:money_manager/models/deleted_model.dart';
+import 'package:money_manager/models/deletedModel/deleted_model.dart';
+
 
 abstract class DeletedTransactions {
   Future<void> deleteTransactions(DeletedModel values);
